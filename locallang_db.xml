@@ -6,10 +6,10 @@
 	</meta>
 	<data type="array">
 		<languageKey index="default" type="array">
-			<label index="tx_keyac_cat">Calendar Category</label>
+			<label index="tx_keyac_cat">Calendar Categories</label>
 			<label index="tx_keyac_cat.title">Category title</label>
 			<label index="tx_keyac_cat.image">Category item for list</label>
-			<label index="tx_keyac_dates">Calendar date</label>
+			<label index="tx_keyac_dates">Calendar Dates</label>
 			<label index="tx_keyac_dates.startdat">Start date (and time)</label>
 			<label index="tx_keyac_dates.enddat">End date (and time)</label>
 			<label index="tx_keyac_dates.showtime">Show time?</label>
@@ -17,15 +17,16 @@
 			<label index="tx_keyac_dates.place">place</label>
 			<label index="tx_keyac_dates.bodytext">Bodytext</label>
 			<label index="tx_keyac_dates.infolink">Infolink</label>
-			<label index="tx_keyac_dates.infolink_text">Text for infolink</label>
 			<label index="tx_keyac_dates.cat">Category</label>
-			<label index="tt_content.list_type_pi1">Show Calendar</label>
+			<label index="tx_keyac_dates.owner">Owner</label>
+			<label index="tx_keyac_dates.attendees">Attendees</label>
+			<label index="tt_content.list_type_pi1">Insert YAC-Calendar</label>
 		</languageKey>
 		<languageKey index="de" type="array">
-			<label index="tx_keyac_cat">Kalender-Kategorie</label>
+			<label index="tx_keyac_cat">Kalender-Kategorien</label>
 			<label index="tx_keyac_cat.title">Kategorie-Titel</label>
-			<label index="tx_keyac_cat.image">Kategorie-Bild für Auflistung</label>
-			<label index="tx_keyac_dates">Kalender-Termin</label>
+			<label index="tx_keyac_cat.image">Kategorie-Bild f�r Auflistung</label>
+			<label index="tx_keyac_dates">Kalender-Termine</label>
 			<label index="tx_keyac_dates.startdat">Startdatum (und -zeit)</label>
 			<label index="tx_keyac_dates.enddat">Enddatum (und -zeit)</label>
 			<label index="tx_keyac_dates.showtime">Zeige Uhrzeit?</label>
@@ -33,9 +34,10 @@
 			<label index="tx_keyac_dates.place">Ort</label>
 			<label index="tx_keyac_dates.bodytext">Erklärungstext</label>
 			<label index="tx_keyac_dates.infolink">Infolink</label>
-			<label index="tx_keyac_dates.infolink_text">Text für Infolink</label>
 			<label index="tx_keyac_dates.cat">Kategorie</label>
-			<label index="tt_content.list_type_pi1">Zeige Kalender</label>
+			<label index="tx_keyac_dates.owner">Besitzer</label>
+			<label index="tx_keyac_dates.attendees">Teilnehmer</label>
+			<label index="tt_content.list_type_pi1">YAC-Kalender einfügen</label>
 		</languageKey>
 	</data>
 </T3locallang>

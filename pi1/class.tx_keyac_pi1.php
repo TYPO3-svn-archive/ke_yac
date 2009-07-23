@@ -864,13 +864,13 @@ class tx_keyac_pi1 extends tslib_pibase {
 			strftime('%H:%M',$row['enddat']) != '00:00' ? $ende_uhrzeit = strftime($this->formatStringWithoutTime,$row['enddat']) : $ende_uhrzeit = "";
 			strftime('%H:%M',$row['enddat']) != '00:00' ? $ende_uhrzeit = strftime($this->formatTime,$row['enddat']) : $ende_uhrzeit = "";
 			$dat = array('start datum' => $beginn_datum,
-						'ende datum' => $ende_datum,
-						'start zeit' => $beginn_uhrzeit,
-						'ende zeit' => $ende_uhrzeit );
+				'ende datum' => $ende_datum,
+				'start zeit' => $beginn_uhrzeit,
+				'ende zeit' => $ende_uhrzeit
+			);
 			
 			// no start date set
-			if (!$row['startdat'])
-				$datstring = $this->pi_getLL('nodate');
+			if (!$row['startdat'])	$datstring = $this->pi_getLL('nodate');
 			// don't show time - just date
 			else if ($row['showtime'] == 0) {
 				// begin and end at one day 
@@ -887,21 +887,35 @@ class tx_keyac_pi1 extends tslib_pibase {
 				// begin and end at different days
 				else $datstring = $beginn_datum .', '.$beginn_uhrzeit.'<br /> '.$this->pi_getLL('until').' '.$ende_datum.', '.$ende_uhrzeit;
 			}
-			$content.='	<h1>'.$row['datetitle'].'</h1>
-						<div class="category-title">'.$row['cattitle'].'</div>
-						<div class="content-left"><b>'.$this->pi_getLL('event').'</b></div>
-						<div class="content-right">'.$datstring.'</div><hr class="clearer">
-						<div class="content-left"><b>'.$this->pi_getLL('place').'</b></div>
-						<div class="content-right">'.$row['place'].'</div><hr class="clearer">
-						<div class="content-left"><b>'.$this->pi_getLL('description').'</b></div>
-						<div class="content-right">'.$this->pi_RTEcssText($row['bodytext']).'</div><hr class="clearer">';
+			
+			$markerArray = array(
+				'title' => $row['datetitle'],
+				'category' => $row['cattitle'],
+				'label_event' => $this->pi_getLL('event'),
+				'datestring' => $datstring,
+				'label_place' => $this->pi_getLL('place'),
+				'place' => $row['place'],
+				'label_description' => $this->pi_getLL('description'),
+				'description' => $this->pi_RTEcssText($row['bodytext']),
+			);
+			$content = $this->cObj->getSubpart($this->templateCode,'###SINGLEVIEW_TEMPLATE###');
+			$content = $this->cObj->substituteMarkerArray($content,$markerArray,$wrap='###|###',$uppercase=1);
+			
+			
 			// if infolink is set
 			if ($row['infolink']) {
 				// if linktext is set: take it; otherwise take url as linktext
 				$text = $row['infolink_text'] ? $row['infolink_text'] : $row['infolink'];
-				$content.='	<div class="content-left"><b>'.$this->pi_getLL('infolink').'</b></div>
-							<div class="content-right">'.$this->pi_linkToPage($text,$row['infolink'],$target='_blank',$urlParameters=array()).'</div><hr class="clearer">';
+				$markerArray = array (
+					'label_infolink' => $this->pi_getLL('infolink'),
+					'infolink' => $this->pi_linkToPage($text,$row['infolink'],$target='_blank',$urlParameters=array()),
+				);
+				$content = $this->cObj->substituteMarkerArray($content,$markerArray,$wrap='###|###',$uppercase=1);
 			}
+			else {
+				$content = $this->cObj->substituteSubpart($content, $marker, '');
+			}
+			
 		}
 		
 		// back link

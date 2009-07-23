@@ -6,12 +6,12 @@
 	</meta>
 	<data type="array">
 		<languageKey index="default" type="array">
-			<label index="pi1_title">Show calendar</label>
+			<label index="pi1_title">Insert YAC-Calendar</label>
 			<label index="pi1_plus_wiz_description">Adds a calendar to the page.</label>
 		</languageKey>
 		<languageKey index="de" type="array">
-			<label index="pi1_title">Zeige Kalender</label>
-			<label index="pi1_plus_wiz_description">Fuegt einen Kalender auf der Seite ein.</label>
+			<label index="pi1_title">YAC-Kalender einfügen</label>
+			<label index="pi1_plus_wiz_description">Fügt einen Kalender auf der Seite ein.</label>
 		</languageKey>
 	</data>
 </T3locallang>
