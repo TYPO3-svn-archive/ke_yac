@@ -70,6 +70,9 @@ class tx_keyac_pi1 extends tslib_pibase {
 			}
 		}
 		
+		// DB DEBUG
+ 		$GLOBALS['TYPO3_DB']->debugOutput = true;
+		
 		// starting point
 		$pages = $this->cObj->data['pages'] ? $this->cObj->data['pages'] : ( $this->conf['dataPids'] ? $this->conf['dataPids'] : $GLOBALS['TSFE']->id);
 		$this->pids = $this->pi_getPidList($pages,$this->cObj->data['recursive']);
@@ -77,6 +80,10 @@ class tx_keyac_pi1 extends tslib_pibase {
 		// Include HTML Template 
 		$this->templateFile = $this->ffdata['templateFile'] ? $this->uploadFolder.$this->ffdata['templateFile'] : $this->conf['templateFile'];
 		$this->templateCode = $this->cObj->fileResource($this->templateFile);		
+		
+		// Include CSS File
+		$cssfile = $this->conf['cssfile'] ? $this->conf['cssfile'] : t3lib_extMgm::siteRelPath($this->extKey).'res/css/yac.css';
+		$GLOBALS['TSFE']->additionalHeaderData[$this->prefixId] .= '<link rel="stylesheet" type="text/css" href="'.$cssfile.'" />';
 		
 		// get Format Strings from FF or TS
 		$this->formatStringWithTime = $this->ffdata['strftimeFormatStringWithTime'] ? $this->ffdata['strftimeFormatStringWithTime'] : $this->conf['strftimeFormatStringWithTime'];
@@ -129,8 +136,8 @@ class tx_keyac_pi1 extends tslib_pibase {
 		// Load Javascript Library (Mootools)
 		// only if listview is shown
 		if ($this->conf['useJS']) {
-			$slideJS = t3lib_extMgm::siteRelPath($this->extKey).'pi1/js/slide.js';
-			$mootoolsJS = t3lib_extMgm::siteRelPath($this->extKey).'pi1/js/mootools-1.2.js';
+			$slideJS = t3lib_extMgm::siteRelPath($this->extKey).'res/js/slide.js';
+			$mootoolsJS = t3lib_extMgm::siteRelPath($this->extKey).'res/js/mootools-1.2.js';
 			#$mootoolsJS = t3lib_extMgm::siteRelPath($this->extKey).'pi1/js/mootoolsv1.11.js';
 			$GLOBALS['TSFE']->additionalHeaderData[$this->prefixId] .= '<script src="'.$mootoolsJS.'" type="text/javascript"></script>';
 			$GLOBALS['TSFE']->additionalHeaderData[$this->prefixId] .= '<script src="'.$slideJS.'" type="text/javascript"></script>';
@@ -143,6 +150,11 @@ class tx_keyac_pi1 extends tslib_pibase {
 	* show calendars and other elements of this view
 	*/
 	function getCalendarView($month=0,$year=0) {
+		
+		// use rows and columns values from ff or conf?
+		$this->calRows = $this->ffdata['rows'] ? $this->ffdata['rows'] : $this->conf['rows'];
+		$this->calColumns = $this->ffdata['columns'] ? $this->ffdata['columns'] : $this->conf['columns'];
+		$this->cals = $this->calRows * $this->calColumns;
 		
 		// if no month is set -> get current
 		if (!$month && !$year) {
@@ -157,8 +169,8 @@ class tx_keyac_pi1 extends tslib_pibase {
 		}
 		
 		// Show months navigation row ?
-		if ($this->ffdata['showMonthsNavigation'] > 0) $monthsNav = $this->getMonthsNavigation($this->ffdata['showMonthsNavigation'], $cur_month, $cur_year);
-		else if ($this->conf['showMonthsNavigation'] > 0) $monthsNav = $this->getMonthsNavigation($this->conf['showMonthsNavigation'], $cur_month, $cur_year);
+		$showMonthsNavigation = $this->ffdata['showMonthsNavigation'] ? $this->ffdata['showMonthsNavigation'] : $this->conf['showMonthsNavigation'];
+		if ($showMonthsNavigation > 0) $monthsNav = $this->getMonthsNavigation($showMonthsNavigation, $cur_month, $cur_year);
 		else $monthsNav = '';
 			
 		// navigation arrow "back"
@@ -168,13 +180,13 @@ class tx_keyac_pi1 extends tslib_pibase {
 		$calendarsContent = '';
 		$i=0;
 		// run through number of rows
-		for ($row=0; $row < $this->ffdata['rows']; $row++) {
+		for ($row=0; $row < $this->calRows; $row++) {
 			
 			// run through number of cols for every row
-			for ($col=0; $col < $this->ffdata['columns']; $col++) {
+			for ($col=0; $col < $this->calColumns; $col++) {
 				
 				// which month has to be shown?
-				$show_month = ($row * $this->ffdata['columns']) + $col + $cur_month;
+				$show_month = ($row * $this->calColumns) + $col + $cur_month;
 				$show_year = $cur_year;
 				if ($show_month > 12) {
 					$show_month -= 12;
@@ -187,7 +199,7 @@ class tx_keyac_pi1 extends tslib_pibase {
 				
 				// Set values of first and last month timestamp for listview
 				if ($i==0) $this->starttime = $this->getStartTimestamp($show_month,$show_year);
-				if ($i==$this->cals) $this->endtime =  $this->getEndTimestamp($show_month,$show_year);
+				if ($i==($this->cals-1)) $this->endtime =  $this->getEndTimestamp($show_month,$show_year);
 				
 				$i++;
 			}
@@ -288,7 +300,7 @@ class tx_keyac_pi1 extends tslib_pibase {
 	function getMonthsNavigation($num, $cur_month, $cur_year) {
 		if ($num % 2 != 0) $num += 1;
 		$center = ceil($num / 2);
-		$cals = $this->ffdata['rows'] * $this->ffdata['columns'];
+		#$cals = $this->ffdata['rows'] * $this->ffdata['columns'];
 		
 		$pre_month = $cur_month - $center;
 		$pre_year = $cur_year;
@@ -297,7 +309,7 @@ class tx_keyac_pi1 extends tslib_pibase {
 			$pre_year -= 1;
 		}
 		
-		$post_month = $cur_month + $cals;
+		$post_month = $cur_month + $this->cals;
 		$post_year = $cur_year;
 		if ($post_month > 12) {
 			$post_month -=12;
@@ -888,6 +900,17 @@ class tx_keyac_pi1 extends tslib_pibase {
 				else $datstring = $beginn_datum .', '.$beginn_uhrzeit.'<br /> '.$this->pi_getLL('until').' '.$ende_datum.', '.$ende_uhrzeit;
 			}
 			
+			// generate infolink
+			if ($row['infolink']) {
+				$infolinkText = $row['infolink_text'] ? $row['infolink_text'] : $row['infolink'];
+				$infolink = $this->pi_linkToPage($infolinkText,$row['infolink'],$target='_blank',$urlParameters=array());
+			}
+			
+			// generate backlink
+			if ($this->piVars['backPid']) $backlink = $this->pi_linkToPage($this->pi_getLL('back'),$this->piVars['backPid'],$target='',$urlParameters=array());
+			else $backlink = $this->pi_linkTP_keepPIvars($this->pi_getLL('back'),$pivars,$cache=1,$clearAnyway=0);
+			
+			// fill markers
 			$markerArray = array(
 				'title' => $row['datetitle'],
 				'category' => $row['cattitle'],
@@ -895,39 +918,147 @@ class tx_keyac_pi1 extends tslib_pibase {
 				'datestring' => $datstring,
 				'label_place' => $this->pi_getLL('place'),
 				'place' => $row['place'],
+				'label_teasertext' => $this->pi_getLL('teaser'),
+				'teasertext' => $this->pi_RTEcssText($row['teaser']),
 				'label_description' => $this->pi_getLL('description'),
 				'description' => $this->pi_RTEcssText($row['bodytext']),
+				'label_infolink' => $this->pi_getLL('infolink'),
+				'infolink' => $infolink,
+				'label_images' => $this->pi_getLL('images'),
+				'images' => $this->renderFEField('images',$row['images']),
+				'label_attachments' => $this->pi_getLL('attachments'),
+				'attachments' => $this->renderFEField('attachments',$row['attachments']),
+				'label_owner' => $this->pi_getLL('owner'),
+				'owner' => $this->renderFEField('owner',$row['owner']),
+				'label_attandees' => $this->pi_getLL('attandees'),
+				'attandees' => $this->renderFEField('attandees',$row['dateuid']),
+				'backlink' => $backlink,
 			);
 			$content = $this->cObj->getSubpart($this->templateCode,'###SINGLEVIEW_TEMPLATE###');
 			$content = $this->cObj->substituteMarkerArray($content,$markerArray,$wrap='###|###',$uppercase=1);
 			
-			
-			// if infolink is set
-			if ($row['infolink']) {
-				// if linktext is set: take it; otherwise take url as linktext
-				$text = $row['infolink_text'] ? $row['infolink_text'] : $row['infolink'];
-				$markerArray = array (
-					'label_infolink' => $this->pi_getLL('infolink'),
-					'infolink' => $this->pi_linkToPage($text,$row['infolink'],$target='_blank',$urlParameters=array()),
-				);
-				$content = $this->cObj->substituteMarkerArray($content,$markerArray,$wrap='###|###',$uppercase=1);
-			}
-			else {
-				$content = $this->cObj->substituteSubpart($content, $marker, '');
-			}
-			
+			// overwrite subparts if no content 
+			if (empty($row['teaser'])) $content = $this->cObj->substituteSubpart($content, '###BLOCK_TEASERTEXT###', '');
+			if (empty($row['bodytext'])) $content = $this->cObj->substituteSubpart($content, '###BLOCK_DESCRIPTION###', '');
+			if (empty($row['infolink'])) $content = $this->cObj->substituteSubpart($content, '###BLOCK_INFOLINK###', '');
+			if (empty($row['images'])) $content = $this->cObj->substituteSubpart($content, '###BLOCK_IMAGES###', '');
+			if (empty($row['attachments'])) $content = $this->cObj->substituteSubpart($content, '###BLOCK_ATTACHMENTS###', '');
 		}
 		
-		// back link
-		if ($this->piVars['backPid']) 
-			$zLink = $this->pi_linkToPage($this->pi_getLL('back'),$this->piVars['backPid'],$target='',$urlParameters=array());
-		else	$zLink = $this->pi_linkTP_keepPIvars($this->pi_getLL('back'),$pivars,$cache=1,$clearAnyway=0);
-		$content.= '	<br />
-					<div class="content-left">&nbsp;</div>
-					<div class="content-right">'.$zLink.'</div>';
 		return $content;
 	} 
 
+	
+	/**
+ 	* Description:
+ 	* Author: Andreas Kiefer (kiefer@kennziffer.com)
+ 	*
+ 	*/ 
+ 	function renderFEField($fieldname, $data) {
+		
+		switch ($fieldname) {
+			
+			// IMAGES
+			case 'images':
+				// explode images string
+				$images = explode(',', $data);
+				// run through the array and render image as set in ts
+				foreach ($images as $img) {
+					$imgConf = $this->conf['singleviewImg.'];
+					$imgConf['file'] = 'uploads/tx_keyac/'.$img;
+					$imgContent = $this->cObj->getSubpart($this->templateCode,'###IMAGE_ROW###');
+					$imgContent = $this->cObj->substituteMarker($imgContent,'###IMAGE###',$this->cObj->IMAGE($imgConf));
+					$fieldContent .= $imgContent;
+				}
+				break;
+			
+			// ATTACHMENTS
+			case 'attachments':
+				// explode attachments string
+				$attachments = explode(',', $data);
+				// run through the array and render links to files
+				foreach ($attachments as $att) {
+					unset($linkconf);
+					$linkconf['parameter'] = 'uploads/tx_keyac/'.$att;
+					$linkconf['target'] = '_blank';
+					$attContent = $this->cObj->getSubpart($this->templateCode,'###ATTACHMENT_ROW###');
+					$attContent = $this->cObj->substituteMarker($attContent,'###ATTACHMENT###',$this->cObj->typoLink($att,$linkconf));
+					$fieldContent .= $attContent;
+				}
+				break;
+			
+			// OWNER
+			case 'owner':
+				$fields = '*';
+ 				$table = 'fe_users';
+ 				$where = 'uid="'.intval($data).'" ';
+ 				$where .= $this->cObj->enableFields($table);
+ 				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($fields,$table,$where,$groupBy='',$orderBy='',$limit='1');
+ 				while ($row=$GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+					$fieldContent .= $this->cObj->getSubpart($this->templateCode,'###OWNER_ROW###');
+					
+					// generate www link
+					unset($linkconf);
+					$linkconf['parameter'] = $row['www'].' _blank';
+					$wwwLink = $this->cObj->typoLink($row['www'],$linkconf);
+					
+					// generate email link
+					unset($linkconf);
+					$linkconf['parameter'] = $row['email'];
+					$emailLink = $this->cObj->typoLink($row['email'],$linkconf);
+					
+					$markerArray = array (
+						'name' => $row['name'],
+						'email' => $emailLink,
+						'company' => $row['company'],
+						'www'  => $wwwLink,
+					);
+					$fieldContent = $this->cObj->substituteMarkerArray($fieldContent,$markerArray,$wrap='###|###',$uppercase=1);
+ 				}
+				
+				break;
+			
+			// ATTANDEES
+			case 'attandees':
+				$fields = '*';
+ 				$table = 'fe_users, tx_keyac_dates_attendees_mm';
+ 				$where = 'uid_local = "'.intval($data).'" ';
+ 				$where .= 'AND uid_foreign=fe_users.uid';
+ 				$where .= $this->cObj->enableFields('fe_users');
+ 				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($fields,$table,$where,$groupBy='',$orderBy='',$limit='');
+ 				while ($row=$GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+					$fieldContent .= $this->cObj->getSubpart($this->templateCode,'###ATTANDEE_ROW###');
+					
+					// generate www link
+					unset($linkconf);
+					$linkconf['parameter'] = $row['www'].' _blank';
+					$wwwLink = $this->cObj->typoLink($row['www'],$linkconf);
+					
+					// generate email link
+					unset($linkconf);
+					$linkconf['parameter'] = $row['email'];
+					$emailLink = $this->cObj->typoLink($row['email'],$linkconf);
+					
+					$markerArray = array (
+						'name' => $row['name'],
+						'email' => $emailLink,
+						'company' => $row['company'],
+						'www'  => $wwwLink,
+						
+						
+						
+					);
+					$fieldContent = $this->cObj->substituteMarkerArray($fieldContent,$markerArray,$wrap='###|###',$uppercase=1);					
+ 				}
+				
+				
+				break;
+			
+		}
+		
+		return $fieldContent;    
+ 	}
+	
 	
 	
 	/*

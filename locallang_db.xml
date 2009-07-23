@@ -15,11 +15,14 @@
 			<label index="tx_keyac_dates.showtime">Show time?</label>
 			<label index="tx_keyac_dates.title">Title</label>
 			<label index="tx_keyac_dates.place">place</label>
+			<label index="tx_keyac_dates.teaser">Teaser Text</label>
 			<label index="tx_keyac_dates.bodytext">Bodytext</label>
 			<label index="tx_keyac_dates.infolink">Infolink</label>
 			<label index="tx_keyac_dates.cat">Category</label>
 			<label index="tx_keyac_dates.owner">Owner</label>
 			<label index="tx_keyac_dates.attendees">Attendees</label>
+			<label index="tx_keyac_dates.images">Images</label>
+			<label index="tx_keyac_dates.attachments">File Attachments</label>
 			<label index="tt_content.list_type_pi1">Insert YAC-Calendar</label>
 		</languageKey>
 		<languageKey index="de" type="array">
@@ -32,11 +35,14 @@
 			<label index="tx_keyac_dates.showtime">Zeige Uhrzeit?</label>
 			<label index="tx_keyac_dates.title">Titel</label>
 			<label index="tx_keyac_dates.place">Ort</label>
+			<label index="tx_keyac_dates.teaser">Anreißertext</label>
 			<label index="tx_keyac_dates.bodytext">Erklärungstext</label>
 			<label index="tx_keyac_dates.infolink">Infolink</label>
 			<label index="tx_keyac_dates.cat">Kategorie</label>
 			<label index="tx_keyac_dates.owner">Besitzer</label>
 			<label index="tx_keyac_dates.attendees">Teilnehmer</label>
+			<label index="tx_keyac_dates.images">Bilder</label>
+			<label index="tx_keyac_dates.attachments">Dateianhänge</label>
 			<label index="tt_content.list_type_pi1">YAC-Kalender einfügen</label>
 		</languageKey>
 	</data>

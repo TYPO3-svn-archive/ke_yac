@@ -54,23 +54,6 @@
 			</TCEforms>
 			<type>array</type>
 			<el>
-				<!-- How many calendars are shown -->
-				<!--
-				<calendars>
-					<TCEforms>
-						<label>LLL:EXT:ke_yac/pi1/locallang.php:calendars</label>
-						<config>
-							<type>input</type>
-							<size>3</size>
-							<eval>int</eval>
-							<range type="array">
-								<upper>24</upper>
-								<lower>1</lower>
-							</range>
-						</config>
-					</TCEforms>
-				</calendars>
-				-->
 				
 				<columns>
 					<TCEforms>
@@ -81,7 +64,7 @@
 							<eval>int</eval>
 							<range type="array">
 								<upper>12</upper>
-								<lower>1</lower>
+								<lower>0</lower>
 							</range>
 						</config>
 					</TCEforms>
@@ -97,7 +80,7 @@
 							<eval>int</eval>
 							<range type="array">
 								<upper>12</upper>
-								<lower>1</lower>
+								<lower>0</lower>
 							</range>
 						</config>
 					</TCEforms>

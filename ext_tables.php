@@ -56,11 +56,13 @@ $TCA['tx_keyac_dates'] = array (
 t3lib_div::loadTCA('tt_content');
 $TCA['tt_content']['types']['list']['subtypes_excludelist'][$_EXTKEY.'_pi1']='layout,select_key';
 
+
 // Show FlexForm field in plugin configuration
 $TCA['tt_content']['types']['list']['subtypes_addlist'][$_EXTKEY.'_pi1']='pi_flexform';
 
 // Configure FlexForm field
 t3lib_extMgm::addPiFlexFormValue($_EXTKEY.'_pi1','FILE:EXT:ke_yac/flexform_ds.xml');
+
 
 t3lib_extMgm::addPlugin(array(
 	'LLL:EXT:ke_yac/locallang_db.xml:tt_content.list_type_pi1',

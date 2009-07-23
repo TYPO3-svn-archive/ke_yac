@@ -134,7 +134,7 @@ $TCA['tx_keyac_cat'] = array (
 $TCA['tx_keyac_dates'] = array (
 	'ctrl' => $TCA['tx_keyac_dates']['ctrl'],
 	'interface' => array (
-		'showRecordFieldList' => 'sys_language_uid,l10n_parent,l10n_diffsource,hidden,starttime,endtime,fe_group,startdat,enddat,showtime,title,place,bodytext,infolink,cat,owner,attendees'
+		'showRecordFieldList' => 'sys_language_uid,l10n_parent,l10n_diffsource,hidden,starttime,endtime,fe_group,startdat,enddat,showtime,title,place,teaser,bodytext,infolink,cat,owner,attendees,images,attachments'
 	),
 	'feInterface' => $TCA['tx_keyac_dates']['feInterface'],
 	'columns' => array (
@@ -276,6 +276,26 @@ $TCA['tx_keyac_dates'] = array (
 				'size' => '30',
 			)
 		),
+		'teaser' => array (		
+			'exclude' => 0,		
+			'label' => 'LLL:EXT:ke_yac/locallang_db.xml:tx_keyac_dates.teaser',		
+			'config' => array (
+				'type' => 'text',
+				'cols' => '30',
+				'rows' => '5',
+				'wizards' => array(
+					'_PADDING' => 2,
+					'RTE' => array(
+						'notNewRecords' => 1,
+						'RTEonly'       => 1,
+						'type'          => 'script',
+						'title'         => 'Full screen Rich Text Editing|Formatteret redigering i hele vinduet',
+						'icon'          => 'wizard_rte2.gif',
+						'script'        => 'wizard_rte.php',
+					),
+				),
+			)
+		),
 		'bodytext' => array (		
 			'exclude' => 1,		
 			'label' => 'LLL:EXT:ke_yac/locallang_db.xml:tx_keyac_dates.bodytext',		
@@ -355,9 +375,39 @@ $TCA['tx_keyac_dates'] = array (
 				"MM" => "tx_keyac_dates_attendees_mm",
 			)
 		),
+		'images' => array (		
+			'exclude' => 0,		
+			'label' => 'LLL:EXT:ke_yac/locallang_db.xml:tx_keyac_dates.images',		
+			'config' => array (
+				'type' => 'group',
+				'internal_type' => 'file',
+				'allowed' => 'gif,png,jpeg,jpg',	
+				'max_size' => $GLOBALS['TYPO3_CONF_VARS']['BE']['maxFileSize'],	
+				'uploadfolder' => 'uploads/tx_keyac',
+				'show_thumbs' => 1,	
+				'size' => 3,	
+				'minitems' => 0,
+				'maxitems' => 20,
+			)
+		),
+		'attachments' => array (		
+			'exclude' => 0,		
+			'label' => 'LLL:EXT:ke_yac/locallang_db.xml:tx_keyac_dates.attachments',		
+			'config' => array (
+				'type' => 'group',
+				'internal_type' => 'file',
+				'allowed' => '',	
+				'disallowed' => 'php,php3',	
+				'max_size' => $GLOBALS['TYPO3_CONF_VARS']['BE']['maxFileSize'],	
+				'uploadfolder' => 'uploads/tx_keyac',
+				'size' => 3,	
+				'minitems' => 0,
+				'maxitems' => 100,
+			)
+		),
 	),
 	'types' => array (
-		'0' => array('showitem' => 'sys_language_uid;;;;1-1-1, l10n_parent, l10n_diffsource, hidden;;1, startdat, enddat, showtime, title;;;;2-2-2, place;;;;3-3-3, bodytext;;;richtext[]:rte_transform[mode=ts], infolink, cat, owner, attendees')
+		'0' => array('showitem' => 'sys_language_uid;;;;1-1-1, l10n_parent, l10n_diffsource, hidden;;1, startdat, enddat, showtime, title;;;;2-2-2, place;;;;3-3-3, teaser;;;richtext[]:rte_transform[mode=ts], bodytext;;;richtext[]:rte_transform[mode=ts], infolink, cat, owner, attendees, images, attachments')
 	),
 	'palettes' => array (
 		'1' => array('showitem' => 'starttime, endtime, fe_group')

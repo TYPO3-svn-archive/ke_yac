@@ -65,6 +65,10 @@
 
 
 /* CALENDARS */
+.tx-keyac-pi1 div.calendars {
+	float:left;
+}
+
 .tx-keyac-pi1 #yac_calendars {
 	float:left;
 	text-align: center;
@@ -219,6 +223,10 @@
 	margin-top:0;
 }
 
+.tx-keyac-pi1 .images  img{
+	margin: 5px;
+}
+
 
 
 /* Kalender - TeaserView  */
@@ -265,3 +273,13 @@
 	margin:0 0 0px 0;
 	width: 200px;
 }
+
+
+
+
+
+
+
+
+
+

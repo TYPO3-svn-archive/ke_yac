@@ -67,7 +67,12 @@
 			<label index="hideCalendar">hide calendar</label>
 			<label index="event">Event</label>
 			<label index="description">Description</label>
-			<label index="nodate">No date given</label>
+			<label index="nodate">No date set</label>
+			<label index="teaser">Teaser Text</label>
+			<label index="images">Images</label>
+			<label index="attachments">File Attachments</label>
+			<label index="owner">Owner</label>
+			<label index="attandees">Attandees</label>
 		</languageKey>
 		
 		
@@ -121,7 +126,7 @@
 			<label index="teaserHeader">Teaser-Titel</label>
 			<label index="teaserLimit">max. Einträge in Teaser</label>
 			<label index="teaserLength">max. Länge des Titels in Teaser</label>
-						
+			
 			<label index="until">bis</label>
 			<label index="uhr">Uhr</label>
 			<label index="place">Ort</label>
@@ -133,6 +138,11 @@
 			<label index="event">Termin</label>
 			<label index="description">Beschreibung</label>
 			<label index="nodate">Kein Datum angegeben</label>
+			<label index="teaser">Anreißertext</label>
+			<label index="images">Bilder</label>
+			<label index="attachments">Dateianhänge</label>
+			<label index="owner">Besitzer</label>
+			<label index="attandees">Teilnehmer</label>
 		</languageKey>
 		
 		
