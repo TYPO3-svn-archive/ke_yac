@@ -63,7 +63,9 @@
 			<label index="images">Images</label>
 			<label index="attachments">File Attachments</label>
 			<label index="owner">Owner</label>
-			<label index="attandees">Attandees</label>
+			<label index="attendees">Attendees</label>
+			<label index="attend">attend</label>
+			<label index="more">more...</label>
 		</languageKey>
 		
 		
@@ -123,7 +125,9 @@
 			<label index="images">Bilder</label>
 			<label index="attachments">Dateianhänge</label>
 			<label index="owner">Besitzer</label>
-			<label index="attandees">Teilnehmer</label>
+			<label index="attendees">Teilnehmer</label>
+			<label index="attend">Teilnehmer</label>
+			<label index="more">mehr Informationen</label>
 		</languageKey>
 		
 		

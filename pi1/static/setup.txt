@@ -53,6 +53,24 @@ plugin.tx_keyac_pi1 {
 		file.maxH = 16
 	}
 	
+	#-- BACKLINK ICON
+	singleview.backlinkIcon = IMAGE
+	singleview.backlinkIcon.file = EXT:ke_yac/res/images/backlink.gif
+	
+	#-- INFOLINK ICON
+	singleview.infolinkIcon = IMAGE
+	singleview.infolinkIcon.file = EXT:ke_yac/res/images/infolink.gif
+	
+	#-- THUMBNAIL IN LISTVIEW
+	listview.thumbnail = IMAGE
+	listview.thumbnail {
+		file.maxW = 50
+		file.maxH = 50
+		imageLinkWrap = 1
+		imageLinkWrap.enable = 1
+	}
+	
+	
 	#-- ATTACHMENT ICONS 
 	attachmentIcon.default = IMAGE
 	attachmentIcon.default.file = EXT:ke_yac/res/images/attachmentIcons/default.gif

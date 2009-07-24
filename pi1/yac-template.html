@@ -36,60 +36,62 @@
 	<div class="category-title">###CATEGORY###</div>
 	
 	<div class="content-left"><b>###LABEL_EVENT###</b></div>
-	<div class="content-right">###DATESTRING###</div>
+	<div class="content-right datestring">###DATESTRING###</div>
 	<hr class="clearer">
 	
 	<div class="content-left"><b>###LABEL_PLACE###</b></div>
-	<div class="content-right">###PLACE###</div>
+	<div class="content-right place">###PLACE###</div>
 	<hr class="clearer">
 	
 	<!-- ###BLOCK_TEASERTEXT### start -->
 		<div class="content-left"><b>###LABEL_TEASERTEXT###</b></div>
-		<div class="content-right">###TEASERTEXT###</div>
+		<div class="content-right teasertext">###TEASERTEXT###</div>
 		<hr class="clearer">
 	<!-- ###BLOCK_TEASERTEXT### end -->
 	
 	<!-- ###BLOCK_DESCRIPTION### start -->
 		<div class="content-left"><b>###LABEL_DESCRIPTION###</b></div>
-		<div class="content-right">###DESCRIPTION###</div>
+		<div class="content-right description">###DESCRIPTION###</div>
 		<hr class="clearer">
 	<!-- ###BLOCK_DESCRIPTION### end -->
 	
 	<!-- ###BLOCK_INFOLINK### start -->
 		<div class="content-left"><b>###LABEL_INFOLINK###</b></div>
-		<div class="content-right">###INFOLINK###</div>
+		<div class="content-right infolink">###INFOLINK_ICON### ###INFOLINK###</div>
 		<hr class="clearer">
 	<!-- ###BLOCK_INFOLINK### end -->
 	
 	<!-- ###BLOCK_IMAGES### start -->
 	<div class="images">
 		<div class="content-left"><b>###LABEL_IMAGES###</b></div>
-		<div class="content-right">###IMAGES###</div>
+		<div class="content-right images">###IMAGES###</div>
 		<hr class="clearer">
 	</div>
 	<!-- ###BLOCK_IMAGES### end -->
 	
 	<!-- ###BLOCK_ATTACHMENTS### start -->
 		<div class="content-left"><b>###LABEL_ATTACHMENTS###</b></div>
-		<div class="content-right">###ATTACHMENTS###</div>
+		<div class="content-right attachments">###ATTACHMENTS###</div>
 		<hr class="clearer">
 	<!-- ###BLOCK_ATTACHMENTS### end -->
 	
 	<!-- ###BLOCK_OWNER### start -->
 		<div class="content-left"><b>###LABEL_OWNER###</b></div>
-		<div class="content-right">###OWNER###</div>
+		<div class="content-right owner">###OWNER###</div>
 		<hr class="clearer">
 	<!-- ###BLOCK_OWNER### end -->
 	
-	<!-- ###BLOCK_ATTANDEES### start -->
-		<div class="content-left"><b>###LABEL_ATTANDEES###</b></div>
-		<div class="content-right">###ATTANDEES###</div>
+	<!-- ###BLOCK_ATTENDEES### start -->
+		<div class="content-left"><b>###LABEL_ATTENDEES###</b></div>
+		<div class="content-right attendees">###ATTENDEES###</div>
 		<hr class="clearer">
-	<!-- ###BLOCK_ATTANDEES### end -->
+	<!-- ###BLOCK_ATTENDEES### end -->
 	
 	<br />
 	<div class="content-left">&nbsp;</div>
-	<div class="content-right">###BACKLINK###</div>
+	<div class="content-right backlink">###BACKLINK_ICON### ###BACKLINK###</div>
+	
+	
 	
 <!-- ###SINGLEVIEW_TEMPLATE### end -->
 
@@ -104,9 +106,9 @@
 	###ATTACHMENT_ICON### ###ATTACHMENT_LINK###<br />
 <!-- ###ATTACHMENT_ROW### end -->
 
-<!-- ###ATTANDEE_ROW### start -->
+<!-- ###ATTENDEE_ROW### start -->
 	###NAME###, ###EMAIL###, ###COMPANY###, ###WWW###<br />
-<!-- ###ATTANDEE_ROW### end -->
+<!-- ###ATTENDEE_ROW### end -->
 
 <!-- ###OWNER_ROW### start -->
 	###NAME###, ###EMAIL###, ###COMPANY###, ###WWW###<br />
@@ -150,8 +152,13 @@
 <!-- ###LISTVIEW_SINGLE### begin -->
 	<div class="event-item">
 		###ANCHOR### 
-		<span class="caticon">###CATICON###</span>###DATE### ###TITLE###<br />
-		<span class="more">###MORE_ICON### ###MORE_LINK###</span>
+		<div class="caticon">###CATICON###</div>
+		###LINK_START### ###DATE### ###TITLE### ###LINK_END###
+		<br />
+		<div class="more">
+			###THUMBNAIL###<br /><br />
+			###LINK_START### ###MORE_ICON### ###MORE_TEXT### ###LINK_END###
+		</div>
 	</div>
 <!-- ###LISTVIEW_SINGLE### end -->
 

@@ -816,30 +816,37 @@ class tx_keyac_pi1 extends tslib_pibase {
 				// begin and end at different days
 				else $datstring = $beginn_datum .', '.$beginn_uhrzeit.' '.$this->pi_getLL('until').' '.$ende_datum.', '.$ende_uhrzeit;
 			}
+			// generate link 
 			$overrulePIvars = array('showUid' => $row['dateuid']);
-			$date = $this->pi_linkTP_keepPIvars($datstring, $overrulePIvars,$cache=1,$clearAnyway=0);
-			// generate "more" link
-			$moreLink = $this->pi_linkTP_keepPIvars($this->pi_getLL('more', 'more...'), $overrulePIvars,$cache=1,$clearAnyway=0);
+			$linkStart = $this->pi_linkTP_keepPIvars_url ($overrulePIvars, $cache=1, $clearAnyway=0);
 			
+			// generate anchor tag
 			if ($day!=0 && $month!=0 && $year!=0) $anchor = '';
-			else $anchor = '<a name="'.$start.'"></a>';
+			else $anchor = '<a name="'.$start.'" />';
 			
 			// generate category icon
 			$catIconConf = $this->conf['categoryIcon.'][$row['catuid'].'.'];
 			if (empty($catIconConf)) $catIconConf = $this->conf['categoryIcon.']['default.'];
 			$catIcon = $this->cObj->IMAGE($catIconConf);
 			
-			// generate "more" link
-			
+			// generate thumbnail
+			$images = explode(',',$row['images']);
+			$thumbConf = $this->conf['listview.']['thumbnail.'];
+			$thumbConf['file'] = 'uploads/tx_keyac/'.$images[0];
+			$thumbnail = $this->cObj->IMAGE($thumbConf);
 			
 			$markerArray = array(
 				'title' => $row['datetitle'],
-				'date' => $date,
+				'date' => $datstring,
 				'anchor' => $anchor,
 				'caticon' => $catIcon,
 				'more_icon' => $moreIcon,
-				'more_link' => $moreLink,
+				'more_text' => $this->pi_getLL('more'),
+				'link_start' => '<a href="'.$linkStart.'">',
+				'link_end' => '</a>',
+				'thumbnail' => $thumbnail,
 			);
+			
 			
 			// use listview or special tooltip subpart for rendering?
 			$subpart = $tooltip ? '###TOOLTIP_ROW###' : '###LISTVIEW_SINGLE###';
@@ -919,7 +926,7 @@ class tx_keyac_pi1 extends tslib_pibase {
 			else $backlink = $this->pi_linkTP_keepPIvars($this->pi_getLL('back'),$pivars,$cache=1,$clearAnyway=0);
 			
 			// fill markers
-			$markerArray = array(
+			$this->markerArray = array(
 				'title' => $row['datetitle'],
 				'category' => $row['cattitle'],
 				'label_event' => $this->pi_getLL('event'),
@@ -932,20 +939,33 @@ class tx_keyac_pi1 extends tslib_pibase {
 				'description' => $this->pi_RTEcssText($row['bodytext']),
 				'label_infolink' => $this->pi_getLL('infolink'),
 				'infolink' => $infolink,
+				'infolink_icon' => $this->cObj->IMAGE($this->conf['singleview.']['infolinkIcon.']),
 				'label_images' => $this->pi_getLL('images'),
 				'images' => $this->renderFEField('images',$row['images']),
 				'label_attachments' => $this->pi_getLL('attachments'),
 				'attachments' => $this->renderFEField('attachments',$row['attachments']),
 				'label_owner' => $this->pi_getLL('owner'),
 				'owner' => $this->renderFEField('owner',$row['owner']),
-				'label_attandees' => $this->pi_getLL('attandees'),
-				'attandees' => $this->renderFEField('attandees',$row['dateuid']),
+				'label_attendees' => $this->pi_getLL('attendees'),
+				'attendees' => $this->renderFEField('attendees',$row['dateuid']),
 				'backlink' => $backlink,
+				'backlink_icon' => $this->cObj->IMAGE($this->conf['singleview.']['backlinkIcon.']),
 			);
-			$content = $this->cObj->getSubpart($this->templateCode,'###SINGLEVIEW_TEMPLATE###');
-			$content = $this->cObj->substituteMarkerArray($content,$markerArray,$wrap='###|###',$uppercase=1);
 			
-			// overwrite subparts if no content 
+			
+			// Hook for additional markers
+			if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['tx_keyac']['additionalSingleviewMarkers'])) {
+				foreach($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['tx_keyac']['additionalSingleviewMarkers'] as $_classRef) {
+					$_procObj = & t3lib_div::getUserObj($_classRef);
+					$_procObj->additionalSingleviewMarkers($this);
+				}
+			}
+			
+			// fill marker
+			$content = $this->cObj->getSubpart($this->templateCode,'###SINGLEVIEW_TEMPLATE###');
+			$content = $this->cObj->substituteMarkerArray($content,$this->markerArray,$wrap='###|###',$uppercase=1);
+			
+			// overwrite subparts if no content available
 			if (empty($row['teaser'])) $content = $this->cObj->substituteSubpart($content, '###BLOCK_TEASERTEXT###', '');
 			if (empty($row['bodytext'])) $content = $this->cObj->substituteSubpart($content, '###BLOCK_DESCRIPTION###', '');
 			if (empty($row['infolink'])) $content = $this->cObj->substituteSubpart($content, '###BLOCK_INFOLINK###', '');
@@ -1035,8 +1055,8 @@ class tx_keyac_pi1 extends tslib_pibase {
 				
 				break;
 			
-			// ATTANDEES
-			case 'attandees':
+			// ATTENDEES
+			case 'attendees':
 				$fields = '*';
  				$table = 'fe_users, tx_keyac_dates_attendees_mm';
  				$where = 'uid_local = "'.intval($data).'" ';
@@ -1044,7 +1064,7 @@ class tx_keyac_pi1 extends tslib_pibase {
  				$where .= $this->cObj->enableFields('fe_users');
  				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($fields,$table,$where,$groupBy='',$orderBy='',$limit='');
  				while ($row=$GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-					$fieldContent .= $this->cObj->getSubpart($this->templateCode,'###ATTANDEE_ROW###');
+					$fieldContent .= $this->cObj->getSubpart($this->templateCode,'###ATTENDEE_ROW###');
 					
 					// generate www link
 					unset($linkconf);
@@ -1194,7 +1214,7 @@ class tx_keyac_pi1 extends tslib_pibase {
 					$timestr = $startWithTime;
 				// startdate without time
 				else $timestr = $startNoTime;
-								
+				
 				$linkconf['parameter'] = $singlePid;
 				$linkconf['additionalParams'] = '&tx_keyac_pi1[showUid]='.$row['uid'];
 				$linkconf['additionalParams'] .= '&tx_keyac_pi1[backPid]='.$GLOBALS['TSFE']->id;
