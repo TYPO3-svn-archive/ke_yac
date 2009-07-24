@@ -3,22 +3,22 @@
 	<MAIN>
 		<ROOT>
 			<TCEforms>
-				<sheetTitle>LLL:EXT:ke_yac/pi1/locallang.php:main</sheetTitle>
+				<sheetTitle>LLL:EXT:ke_yac/pi1/locallang.php:ff_main</sheetTitle>
 			</TCEforms>
 			<type>array</type>
 			<el>
 				<mode_selector>
 					<TCEforms>
-						<label>LLL:EXT:ke_yac/pi1/locallang.php:mode_selector</label>
+						<label>LLL:EXT:ke_yac/pi1/locallang.php:ff_mode_selector</label>
 						<config>
 							<type>select</type>
 							<items>
 								<numIndex index="0">
-									<numIndex index="0">LLL:EXT:ke_yac/pi1/locallang.xml:mode.I.0</numIndex>
+									<numIndex index="0">LLL:EXT:ke_yac/pi1/locallang.xml:ff_mode.I.0</numIndex>
 									<numIndex index="1">0</numIndex>
 								</numIndex>
 								<numIndex index="1">
-									<numIndex index="0">LLL:EXT:ke_yac/pi1/locallang.xml:mode.I.1</numIndex>
+									<numIndex index="0">LLL:EXT:ke_yac/pi1/locallang.xml:ff_mode.I.1</numIndex>
 									<numIndex index="1">1</numIndex>
 								</numIndex>
 							</items>
@@ -29,7 +29,7 @@
 				
 				<templateFile>
 					<TCEforms type="array">
-	                    <label>LLL:EXT:ke_yac/pi1/locallang.php:templateFile</label>
+	                    <label>LLL:EXT:ke_yac/pi1/locallang.php:ff_templateFile</label>
 						<config type="array">
 	                        <type>group</type>
 	                        <internal_type>file</internal_type>
@@ -50,14 +50,14 @@
 	<CALENDAR>
 		<ROOT>
 			<TCEforms>
-				<sheetTitle>LLL:EXT:ke_yac/pi1/locallang.php:calendar</sheetTitle>
+				<sheetTitle>LLL:EXT:ke_yac/pi1/locallang.php:ff_calendar</sheetTitle>
 			</TCEforms>
 			<type>array</type>
 			<el>
 				
 				<columns>
 					<TCEforms>
-						<label>LLL:EXT:ke_yac/pi1/locallang.php:columns</label>
+						<label>LLL:EXT:ke_yac/pi1/locallang.php:ff_columns</label>
 						<config>
 							<type>input</type>
 							<size>3</size>
@@ -73,7 +73,7 @@
 				
 				<rows>
 					<TCEforms>
-						<label>LLL:EXT:ke_yac/pi1/locallang.php:rows</label>
+						<label>LLL:EXT:ke_yac/pi1/locallang.php:ff_rows</label>
 						<config>
 							<type>input</type>
 							<size>3</size>
@@ -93,7 +93,7 @@
 				<!-- Show day of week-->
 				<showDaysRow>
 					<TCEforms>
-						<label>LLL:EXT:ke_yac/pi1/locallang.php:showDaysRow</label>
+						<label>LLL:EXT:ke_yac/pi1/locallang.php:ff_showDaysRow</label>
 						<config>
 							<type>check</type>
 						</config>
@@ -102,7 +102,7 @@
 				<!-- Show number of week -->
 				<showWeekNumberRow>
 					<TCEforms>
-						<label>LLL:EXT:ke_yac/pi1/locallang.php:showWeekNumberRow</label>
+						<label>LLL:EXT:ke_yac/pi1/locallang.php:ff_showWeekNumberRow</label>
 						<config>
 							<type>check</type>
 						</config>
@@ -111,7 +111,7 @@
 				<!-- months-navigation -->
 				<showMonthsNavigation>
 					<TCEforms>
-						<label>LLL:EXT:ke_yac/pi1/locallang.php:showMonthsNavigation</label>
+						<label>LLL:EXT:ke_yac/pi1/locallang.php:ff_showMonthsNavigation</label>
 						<config>
 							<type>input</type>
 							<size>3</size>
@@ -122,7 +122,7 @@
 				<!-- Hide Calendar-->
 				<showHideCalendarLink>
 					<TCEforms>
-						<label>LLL:EXT:ke_yac/pi1/locallang.php:showHideCalendarLink</label>
+						<label>LLL:EXT:ke_yac/pi1/locallang.php:ff_showHideCalendarLink</label>
 						<config>
 							<type>check</type>
 						</config>
@@ -131,7 +131,7 @@
 				<!-- Show Legend -->
 				<showLegend>
 					<TCEforms>
-						<label>LLL:EXT:ke_yac/pi1/locallang.php:showLegend</label>
+						<label>LLL:EXT:ke_yac/pi1/locallang.php:ff_showLegend</label>
 						<config>
 							<type>check</type>
 						</config>
@@ -140,7 +140,7 @@
 				<!-- Show List-View -->
 				<showList>
 					<TCEforms>
-						<label>LLL:EXT:ke_yac/pi1/locallang.php:showList</label>
+						<label>LLL:EXT:ke_yac/pi1/locallang.php:ff_showList</label>
 						<config>
 							<type>check</type>
 						</config>
@@ -149,7 +149,7 @@
 				<!-- LinkToSingleView -->
 				<linkToSingleView>
 					<TCEforms>
-						<label>LLL:EXT:ke_yac/pi1/locallang.php:linkToSingleView</label>
+						<label>LLL:EXT:ke_yac/pi1/locallang.php:ff_linkToSingleView</label>
 						<config>
 							<type>check</type>
 						</config>
@@ -163,14 +163,14 @@
 	<TOOLTIPS>
 		<ROOT>
 			<TCEforms>
-				<sheetTitle>LLL:EXT:ke_yac/pi1/locallang.php:tooltips</sheetTitle>
+				<sheetTitle>LLL:EXT:ke_yac/pi1/locallang.php:ff_tooltips</sheetTitle>
 			</TCEforms>
 			<type>array</type>
 			<el>
 				<!-- Show tooltips -->
 				<showTooltips>
 					<TCEforms>
-						<label>LLL:EXT:ke_yac/pi1/locallang.php:showTooltips</label>
+						<label>LLL:EXT:ke_yac/pi1/locallang.php:ff_showTooltips</label>
 						<config>
 							<type>check</type>
 						</config>
@@ -180,7 +180,7 @@
 				<!-- Duration of tooltip in ms  -->
 				<tooltipDuration>
 					<TCEforms>
-						<label>LLL:EXT:ke_yac/pi1/locallang.php:tooltipDuration</label>
+						<label>LLL:EXT:ke_yac/pi1/locallang.php:ff_tooltipDuration</label>
 						<config>
 							<type>input</type>
 							<size>5</size>
@@ -199,7 +199,7 @@
 	<TEASER>
 		<ROOT>
 			<TCEforms>
-				<sheetTitle>LLL:EXT:ke_yac/pi1/locallang.php:teaser</sheetTitle>
+				<sheetTitle>LLL:EXT:ke_yac/pi1/locallang.php:ff_teaser</sheetTitle>
 			</TCEforms>
 			<type>array</type>
 			<el>
@@ -207,7 +207,7 @@
 				<singlePid>
 					<TCEforms>
 						<exclude>1</exclude>
-						<label>LLL:EXT:ke_yac/pi1/locallang.xml:singlePid</label>
+						<label>LLL:EXT:ke_yac/pi1/locallang.xml:ff_singlePid</label>
 						<config>
 							<type>group</type>
 							<internal_type>db</internal_type>
@@ -222,7 +222,7 @@
 				<!-- headertext of teaser view -->
 				<teaserHeader>
 					<TCEforms>
-						<label>LLL:EXT:ke_yac/pi1/locallang.xml:teaserHeader</label>
+						<label>LLL:EXT:ke_yac/pi1/locallang.xml:ff_teaserHeader</label>
 						<config>
 							<type>input</type>
 							<size>30</size>
@@ -232,7 +232,7 @@
 				<!-- how many items are shown in teaser-view -->
 				<teaserLimit>
 					<TCEforms>
-						<label>LLL:EXT:ke_yac/pi1/locallang.xml:teaserLimit</label>
+						<label>LLL:EXT:ke_yac/pi1/locallang.xml:ff_teaserLimit</label>
 						<config>
 							<type>input</type>
 							<size>10</size>
@@ -242,7 +242,7 @@
 				<!-- lenght of item title (crop title at this length) -->
 				<teaserLength>
 					<TCEforms>
-						<label>LLL:EXT:ke_yac/pi1/locallang.xml:teaserLength</label>
+						<label>LLL:EXT:ke_yac/pi1/locallang.xml:ff_teaserLength</label>
 						<config>
 							<type>input</type>
 							<size>10</size>
@@ -257,13 +257,13 @@
 	<DATEFORMAT>
 		<ROOT>
 			<TCEforms>
-				<sheetTitle>LLL:EXT:ke_yac/pi1/locallang.php:dateFormat</sheetTitle>
+				<sheetTitle>LLL:EXT:ke_yac/pi1/locallang.php:ff_dateFormat</sheetTitle>
 			</TCEforms>
 			<type>array</type>
 			<el>
 				<strftimeFormatStringWithTime>
 					<TCEforms>
-						<label>LLL:EXT:ke_yac/pi1/locallang.xml:strftimeFormatStringWithTime</label>
+						<label>LLL:EXT:ke_yac/pi1/locallang.xml:ff_strftimeFormatStringWithTime</label>
 						<config>
 							<type>input</type>
 							<size>20</size>
@@ -273,7 +273,7 @@
 				
 				<strftimeFormatStringWithoutTime>
 					<TCEforms>
-						<label>LLL:EXT:ke_yac/pi1/locallang.xml:strftimeFormatStringWithoutTime</label>
+						<label>LLL:EXT:ke_yac/pi1/locallang.xml:ff_strftimeFormatStringWithoutTime</label>
 						<config>
 							<type>input</type>
 							<size>20</size>
@@ -283,7 +283,7 @@
 				
 				<strftimeFormatTime>
 					<TCEforms>
-						<label>LLL:EXT:ke_yac/pi1/locallang.xml:strftimeFormatTime</label>
+						<label>LLL:EXT:ke_yac/pi1/locallang.xml:ff_strftimeFormatTime</label>
 						<config>
 							<type>input</type>
 							<size>20</size>
@@ -294,55 +294,6 @@
 			</el>
 		</ROOT>
 	</DATEFORMAT>
-
-	
-	
-
-	
-	<IMAGES>
-		<ROOT>
-			<TCEforms>
-				<sheetTitle>LLL:EXT:ke_yac/pi1/locallang.php:images</sheetTitle>
-			</TCEforms>
-			<type>array</type>
-			<el>
-				<backImagePath>
-					<TCEforms type="array">
-						<config type="array">
-							<type>group</type>
-							<internal_type>file</internal_type>
-							<allowed>gif,png,jpg,jpeg</allowed>
-							<max_size>1000</max_size>
-							<uploadfolder>uploads/tx_keyac</uploadfolder>
-							<show_thumbs>1</show_thumbs>
-							<size>1</size>
-							<maxitems>1</maxitems>
-							<minitems>0</minitems>
-						</config>
-					<label>LLL:EXT:ke_yac/pi1/locallang.php:backImagePath</label>
-					</TCEforms>
-				</backImagePath>
-				
-				<nextImagePath>
-					<TCEforms type="array">
-						<config type="array">
-							<type>group</type>
-							<internal_type>file</internal_type>
-							<allowed>gif,png,jpg,jpeg</allowed>
-							<max_size>1000</max_size>
-							<uploadfolder>uploads/tx_keyac</uploadfolder>
-							<show_thumbs>1</show_thumbs>
-							<size>1</size>
-							<maxitems>1</maxitems>
-							<minitems>0</minitems>
-						</config>
-					<label>LLL:EXT:ke_yac/pi1/locallang.php:nextImagePath</label>
-					</TCEforms>
-				</nextImagePath>
-				
-			</el>
-		</ROOT>
-	</IMAGES>
 	
 </sheets>
 </T3DataStructure>

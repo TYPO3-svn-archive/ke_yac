@@ -79,7 +79,7 @@ class tx_keyac_pi1 extends tslib_pibase {
 		
 		// Include HTML Template 
 		$this->templateFile = $this->ffdata['templateFile'] ? $this->uploadFolder.$this->ffdata['templateFile'] : $this->conf['templateFile'];
-		$this->templateCode = $this->cObj->fileResource($this->templateFile);		
+		$this->templateCode = $this->cObj->fileResource($this->templateFile);
 		
 		// Include CSS File
 		$cssfile = $this->conf['cssfile'] ? $this->conf['cssfile'] : t3lib_extMgm::siteRelPath($this->extKey).'res/css/yac.css';
@@ -91,7 +91,7 @@ class tx_keyac_pi1 extends tslib_pibase {
 		$this->formatTime = $this->ffdata['strftimeFormatTime'] ? $this->ffdata['strftimeFormatTime'] : $this->conf['strftimeFormatTime'];
 		
 		// Duration until fadeout for tooltips
-		$this->tooltipDuration = isset($this->ffdata['tooltipDuration']) ? $this->ffdata['tooltipDuration'] : $this->conf['tooltipDuration'];
+		$this->tooltipDuration = $this->ffdata['tooltipDuration'] ? $this->ffdata['tooltipDuration'] : $this->conf['tooltipDuration'];
 		
 		// get the plugin-mode from flexforms
 		$mode_selector = $this->ffdata['mode_selector'];
@@ -245,6 +245,7 @@ class tx_keyac_pi1 extends tslib_pibase {
 	* Generate linked nav arrows for switching to prev/next month
 	*/
 	function getNavArrow($mode, $cur_month, $cur_year) {
+		
 		// calculate target month
 		$target_month = $mode == 'prev' ? $cur_month -1 : $cur_month + 1;
 		$target_year = $cur_year;
@@ -258,15 +259,14 @@ class tx_keyac_pi1 extends tslib_pibase {
 		}
 		
 		// Prev Image
-		$backImageConf['file'] = $this->ffdata['backImagePath'] ? $this->uploadFolder.$this->ffdata['backImagePath'] : $this->conf['backImagePath'];
-		$prevImage=$this->lcObj->IMAGE($backImageConf);
-		
+		$imageConf = $this->conf['calendar.']['prevIcon.'];
+		$prevIcon=$this->cObj->IMAGE($imageConf);
 		// Next Image
-		$nextImageConf['file'] = $this->ffdata['nextImagePath'] ? $this->uploadFolder.$this->ffdata['nextImagePath'] : $this->conf['nextImagePath'];
-		$nextImage=$this->lcObj->IMAGE($nextImageConf);
+		$imageConf = $this->conf['calendar.']['nextIcon.'];
+		$nextIcon=$this->cObj->IMAGE($imageConf);
 		
 		// generate link
-		$image = $mode == 'prev' ? $prevImage : $nextImage;
+		$image = $mode == 'prev' ? $prevIcon : $nextIcon;
 		$overrulePIVars=array('month' => $target_month, 'year' => $target_year);
 		$link = $this->pi_linkTP_keepPIVars($image, $overrulePIVars,$cache=1,0);
 		return $link;
@@ -414,7 +414,7 @@ class tx_keyac_pi1 extends tslib_pibase {
 			// no enddate 
 			if (!$row['enddat']) {
 				if ($datesarray[$starttag]!='')  
-					$datesarray[$starttag] = "99s0";
+					$datesarray[$starttag] = "999s0";
 				else $datesarray[$starttag] = $row['catuid']."s0";
 			}
 			// event with end date
@@ -427,11 +427,11 @@ class tx_keyac_pi1 extends tslib_pibase {
 					if ($month == $startmonat && $year==$startyear) {
 						for ($i=$starttag;$i<=$days_month;$i++) {
 								
-							// if there is already another event this day -> set type to "99"
+							// if there is already another event this day -> set type to "999"
 							// if "s" is already set -> maintain
 							if ($datesarray[$i]!='' && strpos($datesarray[$i],"s")) 
-								$datesarray[$i]="99s2";
-							else if ($datesarray[$i]!='') $datesarray[$i]=99;
+								$datesarray[$i]="999s2";
+							else if ($datesarray[$i]!='') $datesarray[$i]=999;
 							// if there is no other event this day -> set type to category
 							else $datesarray[$i]=$row['catuid'];
 							// mark start day with "s"
@@ -442,15 +442,15 @@ class tx_keyac_pi1 extends tslib_pibase {
 					//if endmonth
 					else if ($month == $endmonat && $year == $endyear) {
 						for ($i=$endtag;$i>0;$i--) {
-							// if there is already another event this day -> set type to "99"
-							if ($datesarray[$i]!='') $datesarray[$i]=99;
+							// if there is already another event this day -> set type to "999"
+							if ($datesarray[$i]!='') $datesarray[$i]=999;
 							else $datesarray[$i]=$row['catuid'];
 						}	
 					}
 					// if month between startmonth and endmonth
 					else {
 						for ($i=1; $i<=$days_month; $i++) {
-							if ($datesarray[$i]!='') $datesarray[$i]=99;
+							if ($datesarray[$i]!='') $datesarray[$i]=999;
 							else $datesarray[$i]=$row['catuid'];
 						}
 					}
@@ -463,9 +463,9 @@ class tx_keyac_pi1 extends tslib_pibase {
 					if ($startmonat == $endmonat) {
 						// one-day
 						if ($starttag == $endtag) {
-							// if there is already another event this day -> set type to "99"
+							// if there is already another event this day -> set type to "999"
 							if ($datesarray[$starttag]!='') 
-								$datesarray[$starttag]="99s1";
+								$datesarray[$starttag]="999s1";
 							// if there is no other event this day -> set type to category
 							else $datesarray[$starttag]=$row['catuid']."s1";
 						} 
@@ -473,11 +473,11 @@ class tx_keyac_pi1 extends tslib_pibase {
 						else {
 							for ($i=$starttag;$i<=$endtag;$i++) {
 								
-								// if there is already another event this day -> set type to "99"
+								// if there is already another event this day -> set type to "999"
 								// if "s" is already set -> maintain
 								if ($datesarray[$i]!='' && strpos($datesarray[$i],"s")) 
-									$datesarray[$i]="99s2";
-								else if ($datesarray[$i]!='') $datesarray[$i]=99;
+									$datesarray[$i]="999s2";
+								else if ($datesarray[$i]!='') $datesarray[$i]=999;
 								// if there is no other event this day -> set type to category
 								else $datesarray[$i]=$row['catuid'];
 								// mark start day with "s"
@@ -491,11 +491,11 @@ class tx_keyac_pi1 extends tslib_pibase {
 						// start of event in current month
 						if ($month == $startmonat) {
 							for ($i=$starttag;$i<=$days_month;$i++) {
-								// if there is already another event this day -> set type to "99"
+								// if there is already another event this day -> set type to "999"
 								if ($datesarray[$i]!="" && strpos($datesarray[$i],"s"))
-									$datesarray[$i]="99s3";
+									$datesarray[$i]="999s3";
 								else if ($datesarray[$i]!='') 
-									$datesarray[$i]=99;
+									$datesarray[$i]=999;
 								else $datesarray[$i]=$row['catuid'];
 								// mark start day with "s"
 								if ($i==$starttag && !strpos($datesarray[$i],"s")) 
@@ -505,8 +505,8 @@ class tx_keyac_pi1 extends tslib_pibase {
 						// end of date in current month
 						if ($month == $endmonat) {
 							for ($i=$endtag;$i>0;$i--) {
-								// if there is already another event this day -> set type to "99"
-								if ($datesarray[$i]!='') $datesarray[$i]=99;
+								// if there is already another event this day -> set type to "999"
+								if ($datesarray[$i]!='') $datesarray[$i]=999;
 								else $datesarray[$i]=$row['catuid'];
 							}	
 						}
@@ -515,7 +515,7 @@ class tx_keyac_pi1 extends tslib_pibase {
 						// all days with event
 						if ($month > $startmonat && $month < $endmonat) {
 							for ($i=1; $i<=$days_month; $i++) {
-								if ($datesarray[$i]!='') $datesarray[$i]=99;
+								if ($datesarray[$i]!='') $datesarray[$i]=999;
 								else $datesarray[$i]=$row['catuid'];
 							}
 						}
@@ -675,7 +675,7 @@ class tx_keyac_pi1 extends tslib_pibase {
 						$content.='
 							<td class="'.$class.'" id="'.$anchorlink.'_cell">
 								<a href="'.$daylink.'" id="'.$anchorlink.'_link">'.sprintf("%0{$stellen}d",$day).'</a>
-								<div id="'.$anchorlink.'_layer" class="yac-tooltip" style="display:none;">'.$this->listView($day_format, $month_format, $year).'</div>
+								<div id="'.$anchorlink.'_layer" class="yac-tooltip" style="display:none;">'.$this->listView($day_format, $month_format, $year,true).'</div>
 							</td>';
 						
 						
@@ -731,18 +731,13 @@ class tx_keyac_pi1 extends tslib_pibase {
 	/**
 	 * list view of events for the 3 months shown in calendar
 	 */
-	function listView($day=0,$month=0,$year=0) {
+	function listView($day=0,$month=0,$year=0,$tooltip=false) {
 		
 		$lcObj=t3lib_div::makeInstance('tslib_cObj');
-	
-		//init category items
-		$table = 'tx_keyac_cat';
-		$where = '1=1'.$lcObj->enableFields($table,$show_hidden=0);
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*',$table,$where,$groupBy='',$orderBy='',$limit='');
-		while($row=$GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-			$this->conf['catImage.']['file'] = $this->uploadFolder.$row['image'];
-			$catImages[$row['uid']] = $lcObj->IMAGE($this->conf['catImage.']);
-		}
+		
+		// generate "more" icon
+		$imageConf = $this->conf['listview.']['moreIcon.'];
+		$moreIcon=$this->cObj->IMAGE($imageConf);
 		
 		// list events 
 		$table = 'tx_keyac_dates, tx_keyac_cat, tx_keyac_dates_cat_mm';
@@ -782,8 +777,6 @@ class tx_keyac_pi1 extends tslib_pibase {
 			$endmonth = strftime('%m', $row['enddat']);
 			$endyear = strftime('%Y', $row['enddat']);
 			
-			#$content.='	<div class="termine-item">';
-			
 			// no end date set
 			if (!$row['enddat']) $ende_uhrzeit =0;
 			
@@ -817,7 +810,7 @@ class tx_keyac_pi1 extends tslib_pibase {
 			// show time
 			else {
 				// no end date
-				if (!$row['enddat'])	$datstring = $beginn_datum.', '.$beginn_uhrzeit;
+				if (!$row['enddat']) $datstring = $beginn_datum.', '.$beginn_uhrzeit;
 				// begin and end on the same day
 				else if ($ende_datum==$beginn_datum ) $datstring = $beginn_datum.' '.$beginn_uhrzeit.' '.$this->pi_getLL('until').' '.$ende_uhrzeit;
 				// begin and end at different days
@@ -825,17 +818,32 @@ class tx_keyac_pi1 extends tslib_pibase {
 			}
 			$overrulePIvars = array('showUid' => $row['dateuid']);
 			$date = $this->pi_linkTP_keepPIvars($datstring, $overrulePIvars,$cache=1,$clearAnyway=0);
+			// generate "more" link
+			$moreLink = $this->pi_linkTP_keepPIvars($this->pi_getLL('more', 'more...'), $overrulePIvars,$cache=1,$clearAnyway=0);
 			
 			if ($day!=0 && $month!=0 && $year!=0) $anchor = '';
 			else $anchor = '<a name="'.$start.'"></a>';
+			
+			// generate category icon
+			$catIconConf = $this->conf['categoryIcon.'][$row['catuid'].'.'];
+			if (empty($catIconConf)) $catIconConf = $this->conf['categoryIcon.']['default.'];
+			$catIcon = $this->cObj->IMAGE($catIconConf);
+			
+			// generate "more" link
+			
 			
 			$markerArray = array(
 				'title' => $row['datetitle'],
 				'date' => $date,
 				'anchor' => $anchor,
-				'catimage' => $catImages[$row['catuid']],
+				'caticon' => $catIcon,
+				'more_icon' => $moreIcon,
+				'more_link' => $moreLink,
 			);
-			$temp_content = $this->cObj->getSubpart($this->templateCode,'###LISTVIEW_SINGLE###');
+			
+			// use listview or special tooltip subpart for rendering?
+			$subpart = $tooltip ? '###TOOLTIP_ROW###' : '###LISTVIEW_SINGLE###';
+			$temp_content = $this->cObj->getSubpart($this->templateCode,$subpart);
 			$temp_content = $this->cObj->substituteMarkerArray($temp_content,$markerArray,$wrap='###|###',$uppercase=1);
 			$content .= $temp_content;
 		}
@@ -979,10 +987,19 @@ class tx_keyac_pi1 extends tslib_pibase {
 				// run through the array and render links to files
 				foreach ($attachments as $att) {
 					unset($linkconf);
+					// generate link
 					$linkconf['parameter'] = 'uploads/tx_keyac/'.$att;
 					$linkconf['target'] = '_blank';
+					
+					// generate attachment icon
+					$filetype = strtolower(substr(strrchr($att, '.'), 1));
+					if (!empty($this->conf['attachmentIcon.'][$filetype.'.'])) $imageConf = $this->conf['attachmentIcon.'][$filetype.'.'];
+					else $imageConf = $this->conf['attachmentIcon.']['default.'];
+					$attIcon = $this->cObj->IMAGE($imageConf);
+					
 					$attContent = $this->cObj->getSubpart($this->templateCode,'###ATTACHMENT_ROW###');
-					$attContent = $this->cObj->substituteMarker($attContent,'###ATTACHMENT###',$this->cObj->typoLink($att,$linkconf));
+					$attContent = $this->cObj->substituteMarker($attContent,'###ATTACHMENT_LINK###',$this->cObj->typoLink($att,$linkconf));
+					$attContent = $this->cObj->substituteMarker($attContent,'###ATTACHMENT_ICON###',$attIcon);
 					$fieldContent .= $attContent;
 				}
 				break;
@@ -1093,11 +1110,11 @@ class tx_keyac_pi1 extends tslib_pibase {
 		$cat_entries = '';
 		while($row=$GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 			
-			$this->conf['catimage.']['file'] = 'uploads/tx_keyac/'.$row['image'];
-			$catimage=$this->cObj->IMAGE($this->conf['catimage.']);
-						
+			// generate category icon
+			$catIcon=$this->cObj->IMAGE($this->conf['categoryIcon.'][$row['uid'].'.']);
+			
 			$markerArray = array(
-				'catimage' => $catimage,
+				'caticon' => $catIcon,
 				'cattext' => $row['title'],
 			);
 					

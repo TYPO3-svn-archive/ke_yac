@@ -6,56 +6,47 @@
 	</meta>
 	<data type="array">
 		<languageKey index="default" type="array">
-		
-			<label index="mode_selector">Plugin-Mode</label>
-			<label index="mode.I.0">Calendar</label>
-			<label index="mode.I.1">Teaser</label>
-			<label index="templateFile">HTML-Template</label>
-		
-			<label index="main">MAIN SETTINGS</label>
-			<label index="calendar">CALENDAR</label>
-			<label index="tooltips">TOOLTIPS</label>
-			<label index="dateFormat">DATE FORMAT</label>
-			<label index="teaser">TEASER</label>
-			<label index="images">IMAGES</label>
+			<!-- FLEXFORMS -->
+			<label index="ff_mode_selector">Plugin-Mode</label>
+			<label index="ff_mode.I.0">Calendar</label>
+			<label index="ff_mode.I.1">Teaser</label>
+			<label index="ff_templateFile">HTML-Template</label>
+			<label index="ff_main">MAIN SETTINGS</label>
+			<label index="ff_calendar">CALENDAR</label>
+			<label index="ff_tooltips">TOOLTIPS</label>
+			<label index="ff_dateFormat">DATE FORMAT</label>
+			<label index="ff_teaser">TEASER</label>
+			<label index="ff_calendars">Number of calendars to show?</label>
+			<label index="ff_rows">Number of rows to show?</label>
+			<label index="ff_columns">Number of columns to show?</label>
+			<label index="ff_showDaysRow">Show row with weekday?</label>
+			<label index="ff_showWeekNumberRow">Show row with number of week?</label>
+			<label index="ff_showMonthsNavigation">Show navigation bar? (0 hides bar) </label>
+			<label index="ff_showHideCalendarLink">Show "Hide calendar" link?</label>
+			<label index="ff_showList">Show Listview?</label>
+			<label index="ff_linkToSingleView">Link to Singleview? (otherwise link to Listview)</label>
+			<label index="ff_showLegend">Show legend?</label>
+			<label index="ff_showTooltips">Show Tooltips?</label>
+			<label index="ff_tooltipDuration">Time until fade out (in ms)</label>
+			<label index="ff_strftimeFormatStringWithTime">strftime() date and time</label>
+			<label index="ff_strftimeFormatStringWithoutTime">strftime() date</label>
+			<label index="ff_strftimeFormatTime">strftime() time</label>
+			<label index="ff_listFieldHeader_startdat">Start date (and time)</label>
+			<label index="ff_listFieldHeader_enddat">End date (and time)</label>
+			<label index="ff_listFieldHeader_showtime">Show time?</label>
+			<label index="ff_listFieldHeader_title">Title</label>
+			<label index="ff_listFieldHeader_place">place</label>
+			<label index="ff_listFieldHeader_bodytext">Bodytext</label>
+			<label index="ff_listFieldHeader_infolink">Infolink</label>
+			<label index="ff_listFieldHeader_cat">Category</label>
+			<label index="ff_singlePid">page for single view</label>
+			<label index="ff_teaserHeader">Header for Teaser</label>
+			<label index="ff_teaserLimit">Limit number of entries in teaser</label>
+			<label index="ff_teaserLength">max. length of title in teaser</label>
 			
-			<label index="calendars">Number of calendars to show?</label>
-			<label index="rows">Number of rows to show?</label>
-			<label index="columns">Number of columns to show?</label>
-			<label index="showDaysRow">Show row with weekday?</label>
-			<label index="showWeekNumberRow">Show row with number of week?</label>
-			<label index="showMonthsNavigation">Show navigation bar? (0 hides bar) </label>
-			<label index="showHideCalendarLink">Show "Hide calendar" link?</label>
-			<label index="showList">Show Listview?</label>
-			<label index="linkToSingleView">Link to Singleview? (otherwise link to Listview)</label>
-			<label index="showLegend">Show legend?</label>
-			
-			<label index="showTooltips">Show Tooltips?</label>
-			<label index="tooltipDuration">Time until fade out (in ms)</label>
 			
 			
-			<label index="strftimeFormatStringWithTime">strftime() date and time</label>
-			<label index="strftimeFormatStringWithoutTime">strftime() date</label>
-			<label index="strftimeFormatTime">strftime() time</label>
 			
-			<label index="backImagePath">"previous" image</label>
-			<label index="backImageAltText">alt text for "back" image</label>
-			<label index="nextImagePath">"next" image</label>
-			<label index="nextImageAltText">alt text for "next" image</label>
-			
-			<label index="listFieldHeader_startdat">Start date (and time)</label>
-			<label index="listFieldHeader_enddat">End date (and time)</label>
-			<label index="listFieldHeader_showtime">Show time?</label>
-			<label index="listFieldHeader_title">Title</label>
-			<label index="listFieldHeader_place">place</label>
-			<label index="listFieldHeader_bodytext">Bodytext</label>
-			<label index="listFieldHeader_infolink">Infolink</label>
-			<label index="listFieldHeader_cat">Category</label>
-			
-			<label index="singlePid">page for single view</label>
-			<label index="teaserHeader">Header for Teaser</label>
-			<label index="teaserLimit">Limit number of entries in teaser</label>
-			<label index="teaserLength">max. length of title in teaser</label>
 			
 			<label index="until"> - </label>
 			<label index="uhr"></label>
@@ -79,53 +70,43 @@
 		
 		<languageKey index="de" type="array">
 			
-			<label index="mode_selector">Plugin-Modus</label>
-			<label index="mode.I.0">Kalender</label>
-			<label index="mode.I.1">Teaser</label>
-			<label index="templateFile">HTML-Template</label>
+			<label index="ff_mode_selector">Plugin-Modus</label>
+			<label index="ff_mode.I.0">Kalender</label>
+			<label index="ff_mode.I.1">Teaser</label>
+			<label index="ff_templateFile">HTML-Template</label>
+			<label index="ff_main">ALLGEMEIN</label>
+			<label index="ff_calendar">KALENDER</label>
+			<label index="ff_dateFormat">DATUMSFORMAT</label>
+			<label index="ff_teaser">TEASER</label>
+			<label index="ff_calendars">Wieviele Kalender sollen angezeigt werden?</label>
+			<label index="ff_rows">Wieviele Zeilen?</label>
+			<label index="ff_columns">Wieviele Spalten?</label>
+			<label index="ff_showDaysRow">Zeige Name des Wochentags?</label>
+			<label index="ff_showWeekNumberRow">Zeige Kalenderwoche?</label>
+			<label index="ff_showMonthsNavigation">Zeige Monats-Navigation? (0 deaktiviert die Navigation)</label>
+			<label index="ff_showHideCalendarLink">Zeige "Kalender verstecken"-Link?</label>
+			<label index="ff_showList">Zeige Listenansicht?</label>
+			<label index="ff_linkToSingleView">Verlinkung auf Single-View? (ansonsten Verlinkung auf List-View)</label>
+			<label index="ff_showLegend">Legende anzeigen?</label>
+			<label index="ff_showTooltips">Zeige Tooltips?</label>
+			<label index="ff_tooltipDuration">Zeit bis zum Ausblenden (in ms)</label>
+			<label index="ff_strftimeFormatStringWithTime">strftime() Datum + Uhrzeit</label>
+			<label index="ff_strftimeFormatStringWithoutTime">strftime() Datum</label>
+			<label index="ff_strftimeFormatTime">strftime() Uhrzeit</label>
+			<label index="ff_listFieldHeader_startdat">Startdatum (inkl. Zeit)</label>
+			<label index="ff_listFieldHeader_enddat">Enddatum (inkl. Zeit)</label>
+			<label index="ff_listFieldHeader_showtime">Uhrzeit anzeigen?</label>
+			<label index="ff_listFieldHeader_title">Titel</label>
+			<label index="ff_listFieldHeader_place">Ort</label>
+			<label index="ff_listFieldHeader_bodytext">Beschreibungstext</label>
+			<label index="ff_listFieldHeader_infolink">Infolink</label>
+			<label index="ff_listFieldHeader_cat">Kategorie</label>
+			<label index="ff_singlePid">Einzelansicht-Seite</label>
+			<label index="ff_teaserHeader">Teaser-Titel</label>
+			<label index="ff_teaserLimit">max. Einträge in Teaser</label>
+			<label index="ff_teaserLength">max. Länge des Titels in Teaser</label>
 			
-			<label index="main">ALLGEMEIN</label>
-			<label index="calendar">KALENDER</label>
-			<label index="dateFormat">DATUMSFORMAT</label>
-			<label index="teaser">TEASER</label>
-			<label index="images">GRAFIKEN</label>
 			
-			<label index="calendars">Wieviele Kalender sollen angezeigt werden?</label>
-			<label index="rows">Wieviele Zeilen?</label>
-			<label index="columns">Wieviele Spalten?</label>
-			<label index="showDaysRow">Zeige Name des Wochentags?</label>
-			<label index="showWeekNumberRow">Zeige Kalenderwoche?</label>
-			<label index="showMonthsNavigation">Zeige Monats-Navigation? (0 deaktiviert die Navigation)</label>
-			<label index="showHideCalendarLink">Zeige "Kalender verstecken"-Link?</label>
-			<label index="showList">Zeige Listenansicht?</label>
-			<label index="linkToSingleView">Verlinkung auf Single-View? (ansonsten Verlinkung auf List-View)</label>
-			<label index="showLegend">Legende anzeigen?</label>
-			
-			<label index="showTooltips">Zeige Tooltips?</label>
-			<label index="tooltipDuration">Zeit bis zum Ausblenden (in ms)</label>
-		
-			<label index="strftimeFormatStringWithTime">strftime() Datum + Uhrzeit</label>
-			<label index="strftimeFormatStringWithoutTime">strftime() Datum</label>
-			<label index="strftimeFormatTime">strftime() Uhrzeit</label>
-			
-			<label index="backImagePath">"zurück" Grafik</label>
-			<label index="backImageAltText">zurück</label>
-			<label index="nextImagePath">"vor" Grafik</label>
-			<label index="nextImageAltText">Alt-Text für "vor"-Grafik</label>
-		
-			<label index="listFieldHeader_startdat">Startdatum (inkl. Zeit)</label>
-			<label index="listFieldHeader_enddat">Enddatum (inkl. Zeit)</label>
-			<label index="listFieldHeader_showtime">Uhrzeit anzeigen?</label>
-			<label index="listFieldHeader_title">Titel</label>
-			<label index="listFieldHeader_place">Ort</label>
-			<label index="listFieldHeader_bodytext">Beschreibungstext</label>
-			<label index="listFieldHeader_infolink">Infolink</label>
-			<label index="listFieldHeader_cat">Kategorie</label>
-			
-			<label index="singlePid">Einzelansicht-Seite</label>
-			<label index="teaserHeader">Teaser-Titel</label>
-			<label index="teaserLimit">max. Einträge in Teaser</label>
-			<label index="teaserLength">max. Länge des Titels in Teaser</label>
 			
 			<label index="until">bis</label>
 			<label index="uhr">Uhr</label>

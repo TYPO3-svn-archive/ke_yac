@@ -101,7 +101,7 @@
 <!-- ###IMAGE_ROW### end -->
 
 <!-- ###ATTACHMENT_ROW### start -->
-	###ATTACHMENT###<br />
+	###ATTACHMENT_ICON### ###ATTACHMENT_LINK###<br />
 <!-- ###ATTACHMENT_ROW### end -->
 
 <!-- ###ATTANDEE_ROW### start -->
@@ -148,8 +148,23 @@
 <!-- ################### -->
 
 <!-- ###LISTVIEW_SINGLE### begin -->
-	<div class="event-item">###CATIMAGE### ###ANCHOR### ###DATE### ###TITLE###</div>
+	<div class="event-item">
+		###ANCHOR### 
+		<span class="caticon">###CATICON###</span>###DATE### ###TITLE###<br />
+		<span class="more">###MORE_ICON### ###MORE_LINK###</span>
+	</div>
 <!-- ###LISTVIEW_SINGLE### end -->
+
+
+<!-- ################### -->
+<!-- ##### TOOLTIP   ###### -->
+<!-- ################### -->
+
+<!-- ###TOOLTIP_ROW### begin -->
+	<div class="tooltip-row">
+		###DATE### ###TITLE###
+	</div>
+<!-- ###TOOLTIP_ROW### end -->
 
 
 
@@ -162,7 +177,7 @@
 <!-- ###LEGEND_TEMPLATE### end -->
 
 <!-- ###LEGEND_SINGLE### begin -->
-	<span class="cat-entry"><nobr>###CATIMAGE### ###CATTEXT###</nobr></span>
+	<span class="cat-entry"><nobr>###CATICON### ###CATTEXT###</nobr></span>
 <!-- ###LEGEND_SINGLE### end -->
 
 
