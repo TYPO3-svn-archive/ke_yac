@@ -109,6 +109,36 @@ class tx_keyac_pi1 extends tslib_pibase {
 			// CALENDAR VIEW
 			case "0": 
 			default: 
+				
+				// action handling
+				// user wants to attend
+				if ($this->piVars['action'] == 'attend' && $GLOBALS['TSFE']->loginUser) {
+					$table = 'tx_keyac_dates_attendees_mm';
+					$fields_values = array(
+						'uid_local' => $this->piVars['showUid'],
+						'uid_foreign' => $GLOBALS['TSFE']->fe_user->user['uid'],
+					);
+					$GLOBALS['TYPO3_DB']->exec_INSERTquery($table,$fields_values,$no_quote_fields=FALSE);
+					debug('angemeldet');
+					
+					$TCE = t3lib_div::makeInstance('t3lib_TCEmain');
+					$TCE->admin = 1;
+					$TCE->clear_cacheCmd('pages');
+					$TCE->clear_cacheCmd($GLOBALS['TSFE']->id);
+				}
+				// user wants to delete his attendance
+				if ($this->piVars['action'] == 'delattendance' && $GLOBALS['TSFE']->loginUser) {
+					$table = 'tx_keyac_dates_attendees_mm';
+					$where = ' uid_local="'.$this->piVars['showUid'].'" AND uid_foreign="'.$GLOBALS['TSFE']->fe_user->user['uid'].'"  ';
+					$GLOBALS['TYPO3_DB']->exec_DELETEquery($table,$where);
+					debug('abgemeldet');
+					
+					$TCE = t3lib_div::makeInstance('t3lib_TCEmain');
+					$TCE->admin = 1;
+					$TCE->clear_cacheCmd('pages');
+					$TCE->clear_cacheCmd($GLOBALS['TSFE']->id);
+				}
+				
 				if ($this->piVars['showCal']=="") $this->piVars['showCal']=1;
 				// single view if event is chosen
 				if ($this->piVars['showUid']) {
@@ -927,6 +957,28 @@ class tx_keyac_pi1 extends tslib_pibase {
 			if ($this->piVars['backPid']) $backlink = $this->pi_linkToPage($this->pi_getLL('back'),$this->piVars['backPid'],$target='',$urlParameters=array());
 			else $backlink = $this->pi_linkTP_keepPIvars($this->pi_getLL('back'),$pivars,$cache=1,$clearAnyway=0);
 			
+			
+			// generate attendance info / link
+			if ($this->feuserIsAttendent($GLOBALS['TSFE']->fe_user->user['uid'],$id)) {
+				$attendanceStatus = $this->pi_getLL('user_is_attendee');
+				unset($linkconf);
+				$linkconf['parameter'] = $GLOBALS['TSFE']->id;
+	 			$linkconf['additionalParams'] = '&'.$this->prefixId.'[showUid]='.$this->piVars['showUid'];
+	 			$linkconf['additionalParams'] .= '&'.$this->prefixId.'[action]=delattendance';
+	 			$linkconf['useCacheHash'] = true;
+	 			$attendanceAction = $this->cObj->typoLink($this->pi_getLL('delete_attendance'),$linkconf);
+			}
+			else {
+				$attendanceStatus = $this->pi_getLL('user_is_no_attendee');
+				unset($linkconf);
+				$linkconf['parameter'] = $GLOBALS['TSFE']->id;
+	 			$linkconf['additionalParams'] = '&'.$this->prefixId.'[showUid]='.$this->piVars['showUid'];
+	 			$linkconf['additionalParams'] .= '&'.$this->prefixId.'[action]=attend';
+	 			$linkconf['useCacheHash'] = true;
+	 			$attendanceAction = $this->cObj->typoLink($this->pi_getLL('attend'),$linkconf);
+			}
+			
+			
 			// fill markers
 			$this->markerArray = array(
 				'title' => $row['datetitle'],
@@ -952,6 +1004,9 @@ class tx_keyac_pi1 extends tslib_pibase {
 				'attendees' => $this->renderFEField('attendees',$row['dateuid']),
 				'backlink' => $backlink,
 				'backlink_icon' => $this->cObj->IMAGE($this->conf['singleview.']['backlinkIcon.']),
+				'label_attendance' => $this->pi_getLL('attendance'),
+				'attendance_status' => $attendanceStatus,
+				'attendance_action' => $attendanceAction,
 			);
 			
 			// show map?
@@ -993,6 +1048,7 @@ class tx_keyac_pi1 extends tslib_pibase {
 			if (empty($row['images'])) $content = $this->cObj->substituteSubpart($content, '###SUB_IMAGES###', '');
 			if (empty($row['attachments'])) $content = $this->cObj->substituteSubpart($content, '###SUB_ATTACHMENTS###', '');
 			if (!$row['location'] && !$row['address'] && !$row['zip'] && !$row['city']) $content = $this->cObj->substituteSubpart($content, '###SUB_MAP###', '');
+			if (!$GLOBALS['TSFE']->loginUser) $content = $this->cObj->substituteSubpart($content, '###SUB_ATTENDANCE###', '');
 		}
 		
 		return $content;
@@ -1157,7 +1213,8 @@ class tx_keyac_pi1 extends tslib_pibase {
 				
 				
 				break;
-			
+				
+						
 		}
 		
 		return $fieldContent;    
@@ -1339,6 +1396,26 @@ class tx_keyac_pi1 extends tslib_pibase {
 		}
 		
 		return $content;    
+ 	}
+	
+	
+	/**
+ 	* Description:
+ 	* Author: Andreas Kiefer (kiefer@kennziffer.com)
+ 	*
+ 	*/ 
+ 	function feuserIsAttendent($feUserUid, $eventUid) {
+		$fields = '*';
+ 		$table = 'tx_keyac_dates, tx_keyac_dates_attendees_mm';
+ 		$where = 'tx_keyac_dates.uid=tx_keyac_dates_attendees_mm.uid_local';
+		$where .= ' AND tx_keyac_dates_attendees_mm.uid_local ="'.$eventUid.'" ';
+		$where .= ' AND tx_keyac_dates_attendees_mm.uid_foreign="'.$feUserUid.'" ';
+ 		$where .= $this->cObj->enableFields('tx_keyac_dates');
+ 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($fields,$table,$where,$groupBy='',$orderBy='',$limit='');
+ 		$anz = $GLOBALS['TYPO3_DB']->sql_num_rows($res);
+ 		if ($anz) return true;
+		else return false;
+		
  	}
 	
 	

@@ -65,9 +65,14 @@
 			<label index="owner">Owner</label>
 			<label index="attendees">Attendees</label>
 			<label index="attend">attend</label>
+			<label index="delete_attendance">delete attendance</label>
+			<label index="attendance">Attendance</label>
+			<label index="user_is_attendee">You are an attendee.</label>
+			<label index="user_is_no_attendee">You are not an attendee.</label>
 			<label index="more">more...</label>
 			<label index="map">Google Map</label>
 			<label index="teaserheader">Next Events</label>
+			
 		</languageKey>
 		
 		
@@ -129,6 +134,10 @@
 			<label index="owner">Besitzer</label>
 			<label index="attendees">Teilnehmer</label>
 			<label index="attend">teilnehmen</label>
+			<label index="delete_attendance">Teilnahme stornieren</label>
+			<label index="attendance">Teilnahme</label>
+			<label index="user_is_attendee">Sie nehmen an diesem Termin teil.</label>
+			<label index="user_is_no_attendee">Sie nehmen nicht an diesem Termin teil.</label>
 			<label index="more">mehr Informationen</label>
 			<label index="map">Google Map</label>
 			<label index="teaserheader">Anstehende Termine</label>
