@@ -134,7 +134,7 @@ $TCA['tx_keyac_cat'] = array (
 $TCA['tx_keyac_dates'] = array (
 	'ctrl' => $TCA['tx_keyac_dates']['ctrl'],
 	'interface' => array (
-		'showRecordFieldList' => 'sys_language_uid,l10n_parent,l10n_diffsource,hidden,starttime,endtime,fe_group,startdat,enddat,showtime,title,place,teaser,bodytext,infolink,cat,owner,attendees,images,attachments'
+		'showRecordFieldList' => 'sys_language_uid,l10n_parent,l10n_diffsource,hidden,starttime,endtime,fe_group,startdat,enddat,showtime,title,location,address,city,zip,teaser,bodytext,infolink,cat,owner,attendees,images,attachments,googlemap_zoom'
 	),
 	'feInterface' => $TCA['tx_keyac_dates']['feInterface'],
 	'columns' => array (
@@ -268,9 +268,34 @@ $TCA['tx_keyac_dates'] = array (
 				'eval' => 'required',
 			)
 		),
-		'place' => array (		
+		'location' => array (		
 			'exclude' => 1,		
-			'label' => 'LLL:EXT:ke_yac/locallang_db.xml:tx_keyac_dates.place',		
+			'label' => 'LLL:EXT:ke_yac/locallang_db.xml:tx_keyac_dates.location',		
+			'config' => array (
+				'type' => 'input',	
+				'size' => '30',
+			)
+		),
+		'address' => array (		
+			'exclude' => 0,		
+			'label' => 'LLL:EXT:ke_yac/locallang_db.xml:tx_keyac_dates.address',		
+			'config' => array (
+				'type' => 'text',
+				'cols' => '30',	
+				'rows' => '5',
+			)
+		),
+		'city' => array (		
+			'exclude' => 0,		
+			'label' => 'LLL:EXT:ke_yac/locallang_db.xml:tx_keyac_dates.city',		
+			'config' => array (
+				'type' => 'input',	
+				'size' => '30',
+			)
+		),
+		'zip' => array (		
+			'exclude' => 0,		
+			'label' => 'LLL:EXT:ke_yac/locallang_db.xml:tx_keyac_dates.zip',		
 			'config' => array (
 				'type' => 'input',	
 				'size' => '30',
@@ -405,9 +430,25 @@ $TCA['tx_keyac_dates'] = array (
 				'maxitems' => 100,
 			)
 		),
+		'googlemap_zoom' => array (		
+			'exclude' => 0,		
+			'label' => 'LLL:EXT:ke_yac/locallang_db.xml:tx_keyac_dates.googlemap_zoom',		
+			'config' => array (
+				'type'     => 'input',
+				'size'     => '4',
+				'max'      => '4',
+				'eval'     => 'int',
+				'checkbox' => '0',
+				'range'    => array (
+					'upper' => '17',
+					'lower' => '1'
+				),
+				'default' => 0
+			)
+		),
 	),
 	'types' => array (
-		'0' => array('showitem' => 'sys_language_uid;;;;1-1-1, l10n_parent, l10n_diffsource, hidden;;1, startdat, enddat, showtime, title;;;;2-2-2, place;;;;3-3-3, teaser;;;richtext[]:rte_transform[mode=ts], bodytext;;;richtext[]:rte_transform[mode=ts], infolink, cat, owner, attendees, images, attachments')
+		'0' => array('showitem' => 'sys_language_uid;;;;1-1-1, l10n_parent, l10n_diffsource, hidden;;1, startdat, enddat, showtime, title;;;;2-2-2, location;;;;3-3-3, address, city, zip, teaser;;;richtext[]:rte_transform[mode=ts], bodytext;;;richtext[]:rte_transform[mode=ts], infolink, cat, owner, attendees, images, attachments, googlemap_zoom')
 	),
 	'palettes' => array (
 		'1' => array('showitem' => 'starttime, endtime, fe_group')

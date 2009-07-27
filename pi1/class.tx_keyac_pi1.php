@@ -952,6 +952,24 @@ class tx_keyac_pi1 extends tslib_pibase {
 				'backlink_icon' => $this->cObj->IMAGE($this->conf['singleview.']['backlinkIcon.']),
 			);
 			
+			// show map?
+			#if ($this->conf['showMap']) {
+			if ($row['location'] && $row['address'] && $row['zip'] && $row['city']) {
+				debug($row['googlemap_zoom'],'zoom aus db');
+				// include api file
+				require_once(dirname(__FILE__). '/../res/GoogleMapAPI.class.php');
+				$this->markerArray['map'] = $this->renderGoogleMap(
+					$this->getFieldContent('gmaps_address',$row),
+					$this->getFieldContent('gmaps_company',$row), 
+					1, 
+					$this->getFieldContent('gmaps_htmladdress',$row),
+					$row['googlemap_zoom']
+				);
+				$this->markerArray['mapJS'] = $this->gmapsJSContent;
+				
+				$GLOBALS['TSFE']->pSetup['bodyTagAdd'] = " onload=\"onLoad1();\" onunload=\"GUnload();\"";
+			}
+			
 			
 			// Hook for additional markers
 			if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['tx_keyac']['additionalSingleviewMarkers'])) {
@@ -971,10 +989,61 @@ class tx_keyac_pi1 extends tslib_pibase {
 			if (empty($row['infolink'])) $content = $this->cObj->substituteSubpart($content, '###BLOCK_INFOLINK###', '');
 			if (empty($row['images'])) $content = $this->cObj->substituteSubpart($content, '###BLOCK_IMAGES###', '');
 			if (empty($row['attachments'])) $content = $this->cObj->substituteSubpart($content, '###BLOCK_ATTACHMENTS###', '');
+			if (!$row['location'] && !$row['address'] && !$row['zip'] && !$row['city']) $content = $this->cObj->substituteSubpart($content, '###BLOCK_MAP###', '');
 		}
 		
 		return $content;
 	} 
+	
+	
+	/**
+ 	* Description:
+ 	* Author: Andreas Kiefer (kiefer@kennziffer.com)
+ 	*
+ 	*/ 
+ 	function renderGoogleMap($address,$company,$i,$htmladdress,$zoom) {
+		//Create dynamic DIV to show GoogleMaps-element in
+		$gMaps = new GoogleMapAPI('keyac_map_'.$i);
+
+		//Set API-Key(s)
+		$gMaps->setAPIKey($this->conf['gmaps.']['apiKey']);
+
+		// zoomLevel
+		debug($zoom);
+		$gmapsZoom = $zoom>0 ? $zoom : $this->conf['gmaps.']['defaultZoom'];
+		debug($gmapsZoom,'zoom');
+		
+		//GoogleMaps-Settings
+		$gMaps->setWidth($this->conf['gmaps.']['width']);
+		$gMaps->setHeight($this->conf['gmaps.']['height']);
+		$gMaps->setZoomLevel($gmapsZoom);
+		$gMaps->addMarkerByAddress($address,$company,$htmladdress,$company);
+		$gMaps->setInfoWindowTrigger('mouseover');
+		if ($this->conf['gmaps.']['disableMapControls']) $gMaps->disableMapControls();
+		if ($this->conf['gmaps.']['enableTypeControls']) $gMaps->enableTypeControls();
+		
+		//Create cacheable, dynamical js-File
+		$md5= md5($address.$i);
+		$filename="typo3temp/gmap_{$md5}.js";
+		$fh=fopen($filename,'w');
+		fputs($fh,preg_replace('/<\/?script[^>]*>/i','',$gMaps->getMapJS($i)));
+		fclose($fh);
+		
+		//Include requires JS and GoogleMap-element
+		$sidebar_dummy='<div id="sidebar_keyac_map_'.$i.'" style="display:none"></div>';
+		$content= $sidebar_dummy.$gMaps->getMap();
+		$this->gmapsJSContent .= "\n\n".$gMaps->getHeaderJS()."\n<script src='{$filename}' type='text/javascript' ></script>";
+		$GLOBALS["TSFE"]->additionalHeaderData[$this->prefixId] .= '
+			<script type="text/javascript" >
+				function keyac_popit_'.$i.'() {
+					if(isArray(marker_html_'.$i.'[0])) { markers[0].openInfoWindowTabsHtml(marker_html_'.$i.'[0]); }
+				else { markers[0].openInfoWindowHtml(marker_html_'.$i.'[0]); }
+				}
+			</script>';
+		
+		
+		return $content;
+ 	}
 
 	
 	/**
@@ -1081,9 +1150,6 @@ class tx_keyac_pi1 extends tslib_pibase {
 						'email' => $emailLink,
 						'company' => $row['company'],
 						'www'  => $wwwLink,
-						
-						
-						
 					);
 					$fieldContent = $this->cObj->substituteMarkerArray($fieldContent,$markerArray,$wrap='###|###',$uppercase=1);					
  				}
@@ -1246,6 +1312,39 @@ class tx_keyac_pi1 extends tslib_pibase {
 		
 		return $content;
 	} 
+	
+	
+	/**
+ 	* Description:
+ 	* Author: Andreas Kiefer (kiefer@kennziffer.com)
+ 	*
+ 	*/ 
+ 	function getFieldContent($fieldname, $data) {
+		
+		switch ($fieldname) {
+			
+			case 'gmaps_address':
+				$address = $data['address'].' ';
+				$address .= $data['zip'].' ';
+				$address .= $data['city'];
+				return $address;
+				break;
+			
+			case 'gmaps_company':
+				$company = $data['location'];
+				break;
+				
+			case 'gmaps_htmladdress':
+				$htmlAddress = '<b>'.$data['location'].'</b><br />';
+				$htmlAddress .= $data['address'].'<br />';
+				$htmlAddress .= $dat['zip'].' '.$data['city'].'<br />';
+				return $htmlAddress;
+				break;
+			
+		}
+		
+		return $content;    
+ 	}
 	
 	
 	

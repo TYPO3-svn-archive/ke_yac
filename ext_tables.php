@@ -71,7 +71,7 @@ t3lib_extMgm::addPlugin(array(
 ),'list_type');
 
 
-t3lib_extMgm::addStaticFile($_EXTKEY,'pi1/static/','YAC');
+t3lib_extMgm::addStaticFile($_EXTKEY,'pi1/static/','Insert YAC-Calendar');
 
 
 if (TYPO3_MODE == 'BE') {

@@ -3,7 +3,7 @@
 ########################################################################
 # Extension Manager/Repository config file for ext: "ke_yac"
 #
-# Auto generated 23-07-2009 15:10
+# Auto generated 27-07-2009 12:57
 #
 # Manual updates:
 # Only the data in the array - anything else is removed by next write.
