@@ -169,7 +169,7 @@ class tx_keyac_pi1 extends tslib_pibase {
 		}
 		
 		// Show months navigation row ?
-		$showMonthsNavigation = $this->ffdata['showMonthsNavigation'] ? $this->ffdata['showMonthsNavigation'] : $this->conf['showMonthsNavigation'];
+		$showMonthsNavigation = isset($this->ffdata['showMonthsNavigation']) ? $this->ffdata['showMonthsNavigation'] : $this->conf['showMonthsNavigation'];
 		if ($showMonthsNavigation > 0) $monthsNav = $this->getMonthsNavigation($showMonthsNavigation, $cur_month, $cur_year);
 		else $monthsNav = '';
 			
@@ -214,15 +214,12 @@ class tx_keyac_pi1 extends tslib_pibase {
 		
 		// show link "hide calendar" if set in FF or TS
 		if ($this->ffdata['showHideCalendarLink'] || $this->conf['showHideCalendar']) $hideCalendar = $this->getHideCalendarLink();
-		else $hideCalendar = '';
 		
 		// show legend if set in FF or TS
 		if ($this->ffdata['showLegend'] || $this->conf['showLegend']) $legend = $this->legend();
-		else $legend = '';
 		
 		// list events if set in FF or TS
 		if ($this->ffdata['showList'] || $this->conf['showList']) $listView = $this->listView();
-		else $listView = '';
 		
 		$markerArray = array(
 			'navigation' => $monthsNav,
@@ -236,6 +233,11 @@ class tx_keyac_pi1 extends tslib_pibase {
 		
 		$content = $this->cObj->getSubpart($this->templateCode,'###MAIN_TEMPLATE###');
 		$content = $this->cObj->substituteMarkerArray($content,$markerArray,$wrap='###|###',$uppercase=1);
+		
+		// overwrite subparts if not activated
+		if (!$this->ffdata['showHideCalendarLink'] && !$this->conf['showHideCalendar']) $content = $this->cObj->substituteSubpart ($content, '###SUB_HIDE_CALENDAR###', '');
+		if (!$this->ffdata['showLegend'] && !$this->conf['showLegend']) $content = $this->cObj->substituteSubpart ($content, '###SUB_LEGEND###', '');
+		if (!$this->ffdata['showList'] && !$this->conf['showList']) $content = $this->cObj->substituteSubpart ($content, '###SUB_LISTVIEW###', '');
 		
 		return $content;
 	}
@@ -931,8 +933,8 @@ class tx_keyac_pi1 extends tslib_pibase {
 				'category' => $row['cattitle'],
 				'label_event' => $this->pi_getLL('event'),
 				'datestring' => $datstring,
-				'label_place' => $this->pi_getLL('place'),
-				'place' => $row['place'],
+				'label_location' => $this->pi_getLL('location'),
+				'location' => $row['location'],
 				'label_teasertext' => $this->pi_getLL('teaser'),
 				'teasertext' => $this->pi_RTEcssText($row['teaser']),
 				'label_description' => $this->pi_getLL('description'),
@@ -985,12 +987,12 @@ class tx_keyac_pi1 extends tslib_pibase {
 			$content = $this->cObj->substituteMarkerArray($content,$this->markerArray,$wrap='###|###',$uppercase=1);
 			
 			// overwrite subparts if no content available
-			if (empty($row['teaser'])) $content = $this->cObj->substituteSubpart($content, '###BLOCK_TEASERTEXT###', '');
-			if (empty($row['bodytext'])) $content = $this->cObj->substituteSubpart($content, '###BLOCK_DESCRIPTION###', '');
-			if (empty($row['infolink'])) $content = $this->cObj->substituteSubpart($content, '###BLOCK_INFOLINK###', '');
-			if (empty($row['images'])) $content = $this->cObj->substituteSubpart($content, '###BLOCK_IMAGES###', '');
-			if (empty($row['attachments'])) $content = $this->cObj->substituteSubpart($content, '###BLOCK_ATTACHMENTS###', '');
-			if (!$row['location'] && !$row['address'] && !$row['zip'] && !$row['city']) $content = $this->cObj->substituteSubpart($content, '###BLOCK_MAP###', '');
+			if (empty($row['teaser'])) $content = $this->cObj->substituteSubpart($content, '###SUB_TEASERTEXT###', '');
+			if (empty($row['bodytext'])) $content = $this->cObj->substituteSubpart($content, '###SUB_DESCRIPTION###', '');
+			if (empty($row['infolink'])) $content = $this->cObj->substituteSubpart($content, '###SUB_INFOLINK###', '');
+			if (empty($row['images'])) $content = $this->cObj->substituteSubpart($content, '###SUB_IMAGES###', '');
+			if (empty($row['attachments'])) $content = $this->cObj->substituteSubpart($content, '###SUB_ATTACHMENTS###', '');
+			if (!$row['location'] && !$row['address'] && !$row['zip'] && !$row['city']) $content = $this->cObj->substituteSubpart($content, '###SUB_MAP###', '');
 		}
 		
 		return $content;
@@ -1228,16 +1230,10 @@ class tx_keyac_pi1 extends tslib_pibase {
 	function teaserView() {
 		$lcObj=t3lib_div::makeInstance('tslib_cObj');
 		
-		// get header text, pid of singleView and no. of entries in teaser; either from flexforms or from ts
-		$teaserheader = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'teaserHeader', 'TEASER') ? $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'teaserHeader', 'TEASER') : $this->conf['teaserHeader'];
-		$singlePid = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'singlePid', 'TEASER') ? $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'singlePid', 'TEASER') :$this->conf['singlePid'];
-		$limit = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'teaserLimit', 'TEASER') ? $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'teaserLimit', 'TEASER') : $this->conf['teaserLimit'];
-		$teaserlength = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'teaserLength', 'TEASER') ? $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'teaserLength', 'TEASER') : $this->conf['teaserLength'];
-		
-		// begin output pf teaser-box
-		//$content.='<div class="cal-teaser">
-		//			<div class="header">'.$teaserheader.'</div><ul>';
-		
+		// get pid of singleView and no. of entries in teaser; either from flexforms or from ts
+		$singlePid = $this->ffdata['singlePid'] ? $this->ffdata['singlePid'] : $this->conf['singlePid'];
+		$limit = $this->ffdata['teaserLimit'] ? $this->ffdata['teaserLimit'] : $this->conf['teaserLimit'];
+		$teaserlength = $this->ffdata['teaserLength'] ? $this->ffdata['teaserLength'] : $this->conf['teaserLength'];
 		
 		// get data from db
 		$table = 'tx_keyac_dates';
@@ -1287,7 +1283,7 @@ class tx_keyac_pi1 extends tslib_pibase {
 				$link = $this->cObj->typoLink_URL($linkconf);
 				
 				$temp_marker = array(
-					'place' => $row['place'],
+					'location' => $row['location'],
 					'datetime' => $timestr,
 					'title' => $title,
 					'link' => $link,
@@ -1301,7 +1297,7 @@ class tx_keyac_pi1 extends tslib_pibase {
 		} // end else
 		
 		$markerArray = array(
-			'title' => $teaserheader,
+			'title' => $this->pi_getLL('teaserheader'),
 			'teaser_entries' => $entries,
 		);
 		$content = $this->cObj->getSubpart($this->templateCode,'###TEASER_TEMPLATE###');

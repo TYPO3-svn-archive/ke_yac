@@ -6,19 +6,20 @@ plugin.tx_keyac_pi1 {
 	#-- CALENDAR --
 	rows = 2
 	columns = 4
-	showDaysRow = 1
+	showDaysRow = 0
 	showMonthsNavigation = 6
 	showHideCalendar = 0
-	showWeekNumberRow = 1
-	showLegend = 1
-	showList = 1
-	linkToSingleView = 1
+	showWeekNumberRow = 0
+	showLegend = 0
+	showList = 0
+	linkToSingleView = 0
 
 	#-- TOOLTIPS --
-	showTooltips = 1
+	showTooltips = 0
 	tooltipDuration = 3000
 
 	#-- TEASER --
+	singlePid = 
 	teaserHeader = Upcoming Events
 	teaserLimit = 5
 	teaserLength = 50

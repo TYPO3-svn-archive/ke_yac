@@ -35,7 +35,7 @@
 			<label index="ff_listFieldHeader_enddat">End date (and time)</label>
 			<label index="ff_listFieldHeader_showtime">Show time?</label>
 			<label index="ff_listFieldHeader_title">Title</label>
-			<label index="ff_listFieldHeader_place">place</label>
+			<label index="ff_listFieldHeader_location">Location</label>
 			<label index="ff_listFieldHeader_bodytext">Bodytext</label>
 			<label index="ff_listFieldHeader_infolink">Infolink</label>
 			<label index="ff_listFieldHeader_cat">Category</label>
@@ -50,7 +50,7 @@
 			
 			<label index="until"> - </label>
 			<label index="uhr"></label>
-			<label index="place">Place</label>
+			<label index="location">Location</label>
 			<label index="infolink">Infolink</label>
 			<label index="back">back</label>
 			<label index="noItemsInCategory">no items in this category</label>
@@ -67,6 +67,7 @@
 			<label index="attend">attend</label>
 			<label index="more">more...</label>
 			<label index="map">Google Map</label>
+			<label index="teaserheader">Next Events</label>
 		</languageKey>
 		
 		
@@ -100,7 +101,7 @@
 			<label index="ff_listFieldHeader_enddat">Enddatum (inkl. Zeit)</label>
 			<label index="ff_listFieldHeader_showtime">Uhrzeit anzeigen?</label>
 			<label index="ff_listFieldHeader_title">Titel</label>
-			<label index="ff_listFieldHeader_place">Ort</label>
+			<label index="ff_listFieldHeader_location">Location</label>
 			<label index="ff_listFieldHeader_bodytext">Beschreibungstext</label>
 			<label index="ff_listFieldHeader_infolink">Infolink</label>
 			<label index="ff_listFieldHeader_cat">Kategorie</label>
@@ -113,7 +114,7 @@
 			
 			<label index="until">bis</label>
 			<label index="uhr">Uhr</label>
-			<label index="place">Ort</label>
+			<label index="location">Location</label>
 			<label index="infolink">Infolink</label>
 			<label index="back">Zurück</label>
 			<label index="noItemsInCategory">Keine Termine in dieser Kategorie vorhanden</label>
@@ -130,6 +131,7 @@
 			<label index="attend">teilnehmen</label>
 			<label index="more">mehr Informationen</label>
 			<label index="map">Google Map</label>
+			<label index="teaserheader">Anstehende Termine</label>
 		</languageKey>
 		
 		

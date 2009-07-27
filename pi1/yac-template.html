@@ -10,9 +10,15 @@
 	<div id="arrow_next">###NEXT_ARROW###</div>
 	<div class="clearer">&nbsp;</div>
 	
-	<div class="calswitch">###HIDE_CALENDAR###</div>
-	<div class="legend">###LEGEND###</div>
-	<div class="listview">###LISTVIEW###</div>
+	<!-- ###SUB_HIDE_CALENDAR### start -->
+		<div class="calswitch">###HIDE_CALENDAR###</div>
+	<!-- ###SUB_HIDE_CALENDAR### end-->
+	<!-- ###SUB_LEGEND### start -->
+		<div class="legend">###LEGEND###</div>
+	<!-- ###SUB_LEGEND### end -->
+	<!-- ###SUB_LISTVIEW### start -->
+		<div class="listview">###LISTVIEW###</div>
+	<!-- ###SUB_HIDE_CALENDAR### end-->
 	
 <!-- ###MAIN_TEMPLATE### end -->
 
@@ -39,60 +45,60 @@
 	<div class="content-right datestring">###DATESTRING###</div>
 	<hr class="clearer">
 	
-	<div class="content-left"><b>###LABEL_PLACE###</b></div>
-	<div class="content-right place">###PLACE###</div>
+	<div class="content-left"><b>###LABEL_LOCATION###</b></div>
+	<div class="content-right location">###LOCATION###</div>
 	<hr class="clearer">
 	
-	<!-- ###BLOCK_TEASERTEXT### start -->
+	<!-- ###SUB_TEASERTEXT### start -->
 		<div class="content-left"><b>###LABEL_TEASERTEXT###</b></div>
 		<div class="content-right teasertext">###TEASERTEXT###</div>
 		<hr class="clearer">
-	<!-- ###BLOCK_TEASERTEXT### end -->
+	<!-- ###SUB_TEASERTEXT### end -->
 	
-	<!-- ###BLOCK_DESCRIPTION### start -->
+	<!-- ###SUB_DESCRIPTION### start -->
 		<div class="content-left"><b>###LABEL_DESCRIPTION###</b></div>
 		<div class="content-right description">###DESCRIPTION###</div>
 		<hr class="clearer">
-	<!-- ###BLOCK_DESCRIPTION### end -->
+	<!-- ###SUB_DESCRIPTION### end -->
 	
-	<!-- ###BLOCK_INFOLINK### start -->
+	<!-- ###SUB_INFOLINK### start -->
 		<div class="content-left"><b>###LABEL_INFOLINK###</b></div>
 		<div class="content-right infolink">###INFOLINK_ICON### ###INFOLINK###</div>
 		<hr class="clearer">
-	<!-- ###BLOCK_INFOLINK### end -->
+	<!-- ###SUB_INFOLINK### end -->
 	
-	<!-- ###BLOCK_IMAGES### start -->
+	<!-- ###SUB_IMAGES### start -->
 	<div class="images">
 		<div class="content-left"><b>###LABEL_IMAGES###</b></div>
 		<div class="content-right images">###IMAGES###</div>
 		<hr class="clearer">
 	</div>
-	<!-- ###BLOCK_IMAGES### end -->
+	<!-- ###SUB_IMAGES### end -->
 	
-	<!-- ###BLOCK_ATTACHMENTS### start -->
+	<!-- ###SUB_ATTACHMENTS### start -->
 		<div class="content-left"><b>###LABEL_ATTACHMENTS###</b></div>
 		<div class="content-right attachments">###ATTACHMENTS###</div>
 		<hr class="clearer">
-	<!-- ###BLOCK_ATTACHMENTS### end -->
+	<!-- ###SUB_ATTACHMENTS### end -->
 	
-	<!-- ###BLOCK_OWNER### start -->
+	<!-- ###SUB_OWNER### start -->
 		<div class="content-left"><b>###LABEL_OWNER###</b></div>
 		<div class="content-right owner">###OWNER###</div>
 		<hr class="clearer">
-	<!-- ###BLOCK_OWNER### end -->
+	<!-- ###SUB_OWNER### end -->
 	
-	<!-- ###BLOCK_ATTENDEES### start -->
+	<!-- ###SUB_ATTENDEES### start -->
 		<div class="content-left"><b>###LABEL_ATTENDEES###</b></div>
 		<div class="content-right attendees">###ATTENDEES###</div>
 		<hr class="clearer">
-	<!-- ###BLOCK_ATTENDEES### end -->
+	<!-- ###SUB_ATTENDEES### end -->
 	
-	<!-- ###BLOCK_MAP### start -->
+	<!-- ###SUB_MAP### start -->
 		###MAPJS###
 		<div class="content-left"><b>###LABEL_MAP###</b></div>
 		<div class="content-right attendees">###MAP###</div>
 		<hr class="clearer">
-	<!-- ###BLOCK_MAP### end -->
+	<!-- ###SUB_MAP### end -->
 	
 	<br />
 	<div class="content-left">&nbsp;</div>
@@ -210,7 +216,7 @@
 <!-- ###TEASER_TEMPLATE### end -->
 
 <!-- ###TEASER_SINGLE### begin -->
-	<li><a href="###LINK###">###DATETIME###<br />###PLACE###<br />###TITLE###</a></li>
+	<li><a href="###LINK###">###DATETIME###<br />###LOCATION###<br />###TITLE###</a></li>
 <!-- ###TEASER_SINGLE### end -->
 
 <!-- ###TEASER_NOENTRIES### begin -->
