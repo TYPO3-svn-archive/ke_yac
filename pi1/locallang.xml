@@ -66,6 +66,7 @@
 			<label index="attendees">Attendees</label>
 			<label index="attend">attend</label>
 			<label index="more">more...</label>
+			<label index="map">Google Map</label>
 		</languageKey>
 		
 		
@@ -126,8 +127,9 @@
 			<label index="attachments">Dateianhänge</label>
 			<label index="owner">Besitzer</label>
 			<label index="attendees">Teilnehmer</label>
-			<label index="attend">Teilnehmer</label>
+			<label index="attend">teilnehmen</label>
 			<label index="more">mehr Informationen</label>
+			<label index="map">Google Map</label>
 		</languageKey>
 		
 		

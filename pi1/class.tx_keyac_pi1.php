@@ -955,9 +955,9 @@ class tx_keyac_pi1 extends tslib_pibase {
 			// show map?
 			#if ($this->conf['showMap']) {
 			if ($row['location'] && $row['address'] && $row['zip'] && $row['city']) {
-				debug($row['googlemap_zoom'],'zoom aus db');
 				// include api file
 				require_once(dirname(__FILE__). '/../res/GoogleMapAPI.class.php');
+				// render map
 				$this->markerArray['map'] = $this->renderGoogleMap(
 					$this->getFieldContent('gmaps_address',$row),
 					$this->getFieldContent('gmaps_company',$row), 
@@ -965,11 +965,12 @@ class tx_keyac_pi1 extends tslib_pibase {
 					$this->getFieldContent('gmaps_htmladdress',$row),
 					$row['googlemap_zoom']
 				);
+				// get js content for map
 				$this->markerArray['mapJS'] = $this->gmapsJSContent;
-				
+				$this->markerArray['label_map'] = $this->pi_getLL('map');
+				// add onload and onunload functions to body tag
 				$GLOBALS['TSFE']->pSetup['bodyTagAdd'] = " onload=\"onLoad1();\" onunload=\"GUnload();\"";
 			}
-			
 			
 			// Hook for additional markers
 			if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['tx_keyac']['additionalSingleviewMarkers'])) {
@@ -1009,9 +1010,7 @@ class tx_keyac_pi1 extends tslib_pibase {
 		$gMaps->setAPIKey($this->conf['gmaps.']['apiKey']);
 
 		// zoomLevel
-		debug($zoom);
 		$gmapsZoom = $zoom>0 ? $zoom : $this->conf['gmaps.']['defaultZoom'];
-		debug($gmapsZoom,'zoom');
 		
 		//GoogleMaps-Settings
 		$gMaps->setWidth($this->conf['gmaps.']['width']);
