@@ -103,9 +103,13 @@ class tx_keyac_pi1 extends tslib_pibase {
 			
 			// TEASER-VIEW
 			case "1": 
-				$content.=$this->teaserView();
+				$content = $this->teaserView();
 				break;
-				
+			
+			case "2":
+				$content = $this->myEventsView();
+				break;
+			
 			// CALENDAR VIEW
 			case "0": 
 			default: 
@@ -119,24 +123,20 @@ class tx_keyac_pi1 extends tslib_pibase {
 						'uid_foreign' => $GLOBALS['TSFE']->fe_user->user['uid'],
 					);
 					$GLOBALS['TYPO3_DB']->exec_INSERTquery($table,$fields_values,$no_quote_fields=FALSE);
-					debug('angemeldet');
+					#debug('angemeldet');
 					
-					$TCE = t3lib_div::makeInstance('t3lib_TCEmain');
-					$TCE->admin = 1;
-					$TCE->clear_cacheCmd('pages');
-					$TCE->clear_cacheCmd($GLOBALS['TSFE']->id);
+					// clear page cache
+					$this->clearPageCache($GLOBALS['TSFE']->id);
 				}
 				// user wants to delete his attendance
 				if ($this->piVars['action'] == 'delattendance' && $GLOBALS['TSFE']->loginUser) {
 					$table = 'tx_keyac_dates_attendees_mm';
 					$where = ' uid_local="'.$this->piVars['showUid'].'" AND uid_foreign="'.$GLOBALS['TSFE']->fe_user->user['uid'].'"  ';
 					$GLOBALS['TYPO3_DB']->exec_DELETEquery($table,$where);
-					debug('abgemeldet');
+					#debug('abgemeldet');
 					
-					$TCE = t3lib_div::makeInstance('t3lib_TCEmain');
-					$TCE->admin = 1;
-					$TCE->clear_cacheCmd('pages');
-					$TCE->clear_cacheCmd($GLOBALS['TSFE']->id);
+					// clear page cache
+					$this->clearPageCache($GLOBALS['TSFE']->id);
 				}
 				
 				if ($this->piVars['showCal']=="") $this->piVars['showCal']=1;
@@ -154,7 +154,10 @@ class tx_keyac_pi1 extends tslib_pibase {
 					$this->loadJS();
 					$content.=$this->getCalendarView();
 				} 
-		
+				break;
+			
+			
+			
 		} 
 		return $this->pi_wrapInBaseClass($content);
 	}
@@ -895,7 +898,7 @@ class tx_keyac_pi1 extends tslib_pibase {
 	/**
 	 * single view of event
 	 */
-	function singleView($id)	{
+	function singleView($id) {
 		$lcObj=t3lib_div::makeInstance('tslib_cObj');
 		
 		// get event data from db
@@ -1053,6 +1056,89 @@ class tx_keyac_pi1 extends tslib_pibase {
 		
 		return $content;
 	} 
+	
+	
+	/**
+	* myEventsView
+	* 
+ 	* render view "my events"
+ 	* return string	html content
+ 	*/ 
+ 	function myEventsView() {
+		
+		$content = $this->cObj->getSubpart($this->templateCode,'###MYEVENTS###');
+		
+		// print message if no user is logged in
+		if (!$GLOBALS['TSFE']->loginUser) {
+			$content = $this->cObj->substituteSubpart ($content, '###MYEVENTS_ROW###', $this->pi_getLL('no_login'));
+			return $content;
+		}
+		
+		// singleview pid
+		$singleViewPid = $this->ffdata['myEventsSinglePid'] ? $this->ffdata['myEventsSinglePid'] : $this->conf['myEvents.']['singleViewPid'];
+		
+		// icon 
+		$myEventsIcon = $this->cObj->IMAGE($this->conf['myEvents.']['icon.']);
+		
+		$fields = '*';
+ 		$table = 'tx_keyac_dates, tx_keyac_dates_attendees_mm';
+ 		$where = 'tx_keyac_dates.uid=uid_local ';
+ 		$where .= 'AND uid_foreign="'.intval($GLOBALS['TSFE']->fe_user->user['uid']).'" ';
+ 		$where .= $this->cObj->enableFields('tx_keyac_dates');
+ 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($fields,$table,$where,$groupBy='',$orderBy='startdat desc',$limit='');
+ 		$anz = $GLOBALS['TYPO3_DB']->sql_num_rows($res);
+ 		$rowsContent = '';
+		$i=1;
+		while ($row=$GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+			
+			// get formatstring for strftime from ts
+			$startNoTime = strftime($this->formatStringWithoutTime, $row['startdat']);
+			$endNoTime = strftime($this->formatStringWithoutTime, $row['enddat']);
+			$startWithTime = strftime($this->formatStringWithTime, $row['startdat']);
+			$endWithTime = strftime($this->formatStringWithTime, $row['enddat']);
+			
+			// startdate and enddate with time
+			if ($row['startdat'] && $row['enddat'] && $row['showtime'])
+				$datestring = $startWithTime.' - '.$endWithTime;
+			// startdate and enddate without time
+			else if ($row['startdat'] && $row['enddat']) 			
+				$datestring = $startNoTime.' - '.$endNoTime;
+			// startdate with time
+			else if ($row['startdat'] && $row['showtime'])	
+				$datestring = $startWithTime;
+			// startdate without time
+			else $datestring = $startNoTime;
+			
+			
+			// generate single view url
+			$linkconf['parameter'] = $singleViewPid;
+ 			$linkconf['additionalParams'] = '&tx_keyac_pi1[showUid]='.$row['uid'];
+ 			$linkconf['useCacheHash'] = true;
+ 			$singleViewURL = $this->cObj->typoLink_URL($linkconf);
+			
+			$tempContent = $this->cObj->getSubpart($this->templateCode,'###MYEVENTS_ROW###');
+			$tempMarker = array(
+				'icon' => $myEventsIcon,
+				'link_start' => '<a href="'.$singleViewURL.'">',
+				'link_end' => '</a>',
+				'title' => $row['title'],
+				'date' => $datestring,
+				'css_class' => $i%2 ? 'odd' : 'even',
+			);
+			$tempContent = $this->cObj->substituteMarkerArray($tempContent,$tempMarker,$wrap='###|###',$uppercase=1);
+			
+			$rowsContent .= $tempContent;
+			$i++;
+ 		}
+		$content = $this->cObj->substituteSubpart ($content, '###MYEVENTS_ROW###', $rowsContent, $recursive=1);
+		$content = $this->cObj->substituteMarker($content,'###HEADER###',$this->pi_getLL('myevents_header'));
+		
+		
+		return $content;    
+ 	}
+	
+	
+	
 	
 	
 	/**
@@ -1415,9 +1501,19 @@ class tx_keyac_pi1 extends tslib_pibase {
  		$anz = $GLOBALS['TYPO3_DB']->sql_num_rows($res);
  		if ($anz) return true;
 		else return false;
-		
  	}
 	
+	/**
+ 	* Description:
+ 	* Author: Andreas Kiefer (kiefer@kennziffer.com)
+ 	*
+ 	*/ 
+ 	function clearPageCache($pid) {
+		$TCE = t3lib_div::makeInstance('t3lib_TCEmain');
+		$TCE->admin = 1;
+		$TCE->clear_cacheCmd('pages');
+		$TCE->clear_cacheCmd($pid);
+ 	}
 	
 	
 	

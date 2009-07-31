@@ -16,4 +16,8 @@ t3lib_extMgm::addTypoScript($_EXTKEY,'setup','
 	tt_content.shortcut.20.0.conf.tx_keyac_dates = < plugin.'.t3lib_extMgm::getCN($_EXTKEY).'_pi1
 	tt_content.shortcut.20.0.conf.tx_keyac_dates.CMD = singleView
 ',43);
+
+
+
+
 ?>

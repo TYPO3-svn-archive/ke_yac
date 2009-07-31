@@ -151,4 +151,12 @@ plugin.tx_keyac_pi1 {
 	gmaps.defaultZoom = 12   // 0 - 17
 	gmaps.disableMapControls = 0
 	gmaps.enableTypeControls = 1
+	
+	
+	#-- MY EVENTS LIST ICON
+	myEvents.icon = IMAGE
+	myEvents.icon.file = EXT:ke_yac/res/images/myevents-icon.gif
+	
+	#-- MY EVENTS LINK TO SINGLEVIEW PID
+	myEvents.singleViewPid = 
 }

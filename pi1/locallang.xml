@@ -6,15 +6,16 @@
 	</meta>
 	<data type="array">
 		<languageKey index="default" type="array">
-			<!-- FLEXFORMS -->
 			<label index="ff_mode_selector">Plugin-Mode</label>
 			<label index="ff_mode.I.0">Calendar</label>
 			<label index="ff_mode.I.1">Teaser</label>
+			<label index="ff_mode.I.2">My Events</label>
 			<label index="ff_templateFile">HTML-Template</label>
 			<label index="ff_main">MAIN SETTINGS</label>
 			<label index="ff_calendar">CALENDAR</label>
 			<label index="ff_tooltips">TOOLTIPS</label>
 			<label index="ff_dateFormat">DATE FORMAT</label>
+			<label index="ff_myEvents">MY EVENTS</label>
 			<label index="ff_teaser">TEASER</label>
 			<label index="ff_calendars">Number of calendars to show?</label>
 			<label index="ff_rows">Number of rows to show?</label>
@@ -43,11 +44,6 @@
 			<label index="ff_teaserHeader">Header for Teaser</label>
 			<label index="ff_teaserLimit">Limit number of entries in teaser</label>
 			<label index="ff_teaserLength">max. length of title in teaser</label>
-			
-			
-			
-			
-			
 			<label index="until"> - </label>
 			<label index="uhr"></label>
 			<label index="location">Location</label>
@@ -72,20 +68,22 @@
 			<label index="more">more...</label>
 			<label index="map">Google Map</label>
 			<label index="teaserheader">Next Events</label>
-			
+			<label index="no_login">Login is needed for viewing your events.</label>
+			<label index="myevents_header">My Events</label>
 		</languageKey>
 		
 		
 		
 		<languageKey index="de" type="array">
-			
 			<label index="ff_mode_selector">Plugin-Modus</label>
 			<label index="ff_mode.I.0">Kalender</label>
 			<label index="ff_mode.I.1">Teaser</label>
+			<label index="ff_mode.I.2">Meine Termine</label>
 			<label index="ff_templateFile">HTML-Template</label>
 			<label index="ff_main">ALLGEMEIN</label>
 			<label index="ff_calendar">KALENDER</label>
 			<label index="ff_dateFormat">DATUMSFORMAT</label>
+			<label index="ff_myEvents">MEINE TERMINE</label>
 			<label index="ff_teaser">TEASER</label>
 			<label index="ff_calendars">Wieviele Kalender sollen angezeigt werden?</label>
 			<label index="ff_rows">Wieviele Zeilen?</label>
@@ -114,9 +112,6 @@
 			<label index="ff_teaserHeader">Teaser-Titel</label>
 			<label index="ff_teaserLimit">max. Einträge in Teaser</label>
 			<label index="ff_teaserLength">max. Länge des Titels in Teaser</label>
-			
-			
-			
 			<label index="until">bis</label>
 			<label index="uhr">Uhr</label>
 			<label index="location">Location</label>
@@ -141,6 +136,8 @@
 			<label index="more">mehr Informationen</label>
 			<label index="map">Google Map</label>
 			<label index="teaserheader">Anstehende Termine</label>
+			<label index="no_login">Sie müssen sich einloggen, um Ihre Termine einsehen zu können.</label>
+			<label index="myevents_header">Meine Termine</label>
 		</languageKey>
 		
 		
