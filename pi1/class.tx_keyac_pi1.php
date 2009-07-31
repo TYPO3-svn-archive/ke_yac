@@ -1016,7 +1016,8 @@ class tx_keyac_pi1 extends tslib_pibase {
 			#if ($this->conf['showMap']) {
 			if ($row['location'] && $row['address'] && $row['zip'] && $row['city']) {
 				// include api file
-				require_once(dirname(__FILE__). '/../res/GoogleMapAPI.class.php');
+				if (!class_exists('GoogleMapAPI')) require_once(dirname(__FILE__). '/../res/GoogleMapAPI.class.php');
+				
 				// render map
 				$this->markerArray['map'] = $this->renderGoogleMap(
 					$this->getFieldContent('gmaps_address',$row),
