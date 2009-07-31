@@ -1429,6 +1429,7 @@ class tx_keyac_pi1 extends tslib_pibase {
 					'location' => $row['location'],
 					'datetime' => $timestr,
 					'title' => $title,
+					'teasertext' => $this->pi_RTEcssText($row['teaser']),
 					'link' => $link,
 				);
 				$temp_content = $this->cObj->getSubpart($this->templateCode,'###TEASER_SINGLE###');
