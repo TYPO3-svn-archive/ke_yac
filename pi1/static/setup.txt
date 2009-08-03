@@ -122,9 +122,9 @@ plugin.tx_keyac_pi1 {
 	
 	
 	#-- CATEGORY ICONS 
-	# number represents uid of category record, 0 = default
-	categoryIcon.0 = IMAGE
-	categoryIcon.0.file = EXT:ke_yac/res/images/catdefault.gif
+	# number represents uid of category record, def = default
+	categoryIcon.def = IMAGE
+	categoryIcon.def.file = EXT:ke_yac/res/images/catdefault.gif
 	categoryIcon.1 = IMAGE
 	categoryIcon.1.file = EXT:ke_yac/res/images/cat1.gif
 	categoryIcon.2 = IMAGE

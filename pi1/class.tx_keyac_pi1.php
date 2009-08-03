@@ -71,7 +71,7 @@ class tx_keyac_pi1 extends tslib_pibase {
 		}
 		
 		// DB DEBUG
- 		$GLOBALS['TYPO3_DB']->debugOutput = true;
+ 		#$GLOBALS['TYPO3_DB']->debugOutput = true;
 		
 		// starting point
 		$pages = $this->cObj->data['pages'] ? $this->cObj->data['pages'] : ( $this->conf['dataPids'] ? $this->conf['dataPids'] : $GLOBALS['TSFE']->id);
@@ -123,7 +123,6 @@ class tx_keyac_pi1 extends tslib_pibase {
 						'uid_foreign' => $GLOBALS['TSFE']->fe_user->user['uid'],
 					);
 					$GLOBALS['TYPO3_DB']->exec_INSERTquery($table,$fields_values,$no_quote_fields=FALSE);
-					#debug('angemeldet');
 					
 					// clear page cache
 					$this->clearPageCache($GLOBALS['TSFE']->id);
@@ -133,7 +132,6 @@ class tx_keyac_pi1 extends tslib_pibase {
 					$table = 'tx_keyac_dates_attendees_mm';
 					$where = ' uid_local="'.$this->piVars['showUid'].'" AND uid_foreign="'.$GLOBALS['TSFE']->fe_user->user['uid'].'"  ';
 					$GLOBALS['TYPO3_DB']->exec_DELETEquery($table,$where);
-					#debug('abgemeldet');
 					
 					// clear page cache
 					$this->clearPageCache($GLOBALS['TSFE']->id);
@@ -445,7 +443,7 @@ class tx_keyac_pi1 extends tslib_pibase {
 			
 			// set default category if activated in conf and no category set
 			if ( ($this->conf['showEventsWithoutCat'] || $this->ffdata['showEventsWithoutCat'])  && !is_array($catRow)) {
-				$catRow['uid'] = 0;
+				$catRow['uid'] = 'def';
 			}
 			
 			
@@ -585,8 +583,6 @@ class tx_keyac_pi1 extends tslib_pibase {
 	* array with events (see function getDBData)
 	************************************************************************* */
 	function showMonth($month,$year,$dates) {
-		#debug(strftime('%B'),1);
-		
 		
 		// get day of week for first day in month
 		$erster_timestamp = mktime(0,0,0,$month,1,$year);
@@ -889,9 +885,9 @@ class tx_keyac_pi1 extends tslib_pibase {
 				if ($day!=0 && $month!=0 && $year!=0) $anchor = '';
 				else $anchor = '<a name="'.$start.'" />';
 				
-				// generate category icon
+				// generate category icon - use default if no cat set
 				$catIconConf = $this->conf['categoryIcon.'][$catRow['uid'].'.'];
-				if (empty($catIconConf)) $catIconConf = $this->conf['categoryIcon.']['default.'];
+				if (empty($catIconConf)) $catIconConf = $this->conf['categoryIcon.']['def.'];
 				$catIcon = $this->cObj->IMAGE($catIconConf);
 				
 				// generate thumbnail

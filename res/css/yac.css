@@ -126,8 +126,8 @@
 }
 
 /* default for events without category */
-.tx-keyac-pi1 table.calendar td.cat0,
-.tx-keyac-pi1 table.calendar td.todaycat0 {
+.tx-keyac-pi1 table.calendar td.catdef,
+.tx-keyac-pi1 table.calendar td.todaycatdef {
 	border: 1px solid #000;
 }
 
