@@ -39,8 +39,9 @@
 	margin: 8px 0 0 40px;
 }
 .tx-keyac-pi1 .event-item .more img {
-	float: none;
+	float: left;
 	vertical-align: bottom;
+	margin-right: 10px;
 }
 .tx-keyac-pi1 .event-item .more a:link,
 .tx-keyac-pi1 .event-item .more a:visited {

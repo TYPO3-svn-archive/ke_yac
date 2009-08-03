@@ -82,7 +82,7 @@ class tx_keyac_pi1 extends tslib_pibase {
 		$this->templateCode = $this->cObj->fileResource($this->templateFile);
 		
 		// Include CSS File
-		$cssfile = $this->conf['cssfile'] ? $this->conf['cssfile'] : t3lib_extMgm::siteRelPath($this->extKey).'res/css/yac.css';
+		$cssfile = $this->conf['cssFile'] ? $this->conf['cssFile'] : t3lib_extMgm::siteRelPath($this->extKey).'res/css/yac.css';
 		$GLOBALS['TSFE']->additionalHeaderData[$this->prefixId] .= '<link rel="stylesheet" type="text/css" href="'.$cssfile.'" />';
 		
 		// get Format Strings from FF or TS
@@ -804,11 +804,7 @@ class tx_keyac_pi1 extends tslib_pibase {
 		$where = ' ( ( startdat >= '.$start_ts.' AND startdat <= '.$end_ts.' )';
 		$where.= ' OR (enddat >= '.$start_ts.' AND enddat <= '.$end_ts.' )';
 		$where.= ' OR ( startdat <= '.$start_ts.' AND enddat >= '.$end_ts.' ) )';
-		#$where.= ' AND tx_keyac_dates_cat_mm.uid_local = tx_keyac_dates.uid';
-		#$where.= ' AND tx_keyac_dates_cat_mm.uid_foreign = tx_keyac_cat.uid';
-		#$where.=$enableFields1.$enableFields2;
 		$where.=$enableFields;
-		#$where.=' and tx_keyac_dates.pid in ('.$this->pids.') and tx_keyac_cat.pid in ('.$this->pids.') ';
 		$where.=' and tx_keyac_dates.pid in ('.$this->pids.') ';
 		
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($fields,$table,$where,$groupBy='dateuid',$orderBy='startdat',$limit='');
@@ -891,10 +887,20 @@ class tx_keyac_pi1 extends tslib_pibase {
 				$catIcon = $this->cObj->IMAGE($catIconConf);
 				
 				// generate thumbnail
-				$images = explode(',',$row['images']);
-				$thumbConf = $this->conf['listview.']['thumbnail.'];
-				$thumbConf['file'] = 'uploads/tx_keyac/'.$images[0];
-				$thumbnail = $this->cObj->IMAGE($thumbConf);
+				$images = t3lib_div::trimExplode(',',$row['images'], 1);
+				unset($thumbnail);
+				if (sizeof($images)) {
+					$thumbConf = $this->conf['listview.']['thumbnail.'];
+					$thumbConf['file'] = 'uploads/tx_keyac/'.$images[0];
+					$thumbnail = $this->cObj->IMAGE($thumbConf);
+				}
+				// show default image if activated
+				else if ($this->conf['showDefaultImageInListview'] || $this->ffdata['showDefaultImageInListview']) {
+					debug('ja');
+					$thumbConf = $this->conf['listview.']['thumbnail.'];
+					$thumbConf['file'] = $this->conf['listviewDefaultImg.']['file'];
+					$thumbnail = $this->cObj->IMAGE($thumbConf);
+				}
 				
 				$markerArray = array(
 					'title' => $row['datetitle'],
@@ -906,6 +912,7 @@ class tx_keyac_pi1 extends tslib_pibase {
 					'link_start' => '<a href="'.$linkStart.'">',
 					'link_end' => '</a>',
 					'thumbnail' => $thumbnail,
+					'teasertext' => $this->pi_RTEcssText($row['teaser']),
 				);
 				
 				
@@ -1089,7 +1096,7 @@ class tx_keyac_pi1 extends tslib_pibase {
 			if (empty($row['teaser'])) $content = $this->cObj->substituteSubpart($content, '###SUB_TEASERTEXT###', '');
 			if (empty($row['bodytext'])) $content = $this->cObj->substituteSubpart($content, '###SUB_DESCRIPTION###', '');
 			if (empty($row['infolink'])) $content = $this->cObj->substituteSubpart($content, '###SUB_INFOLINK###', '');
-			if (empty($row['images'])) $content = $this->cObj->substituteSubpart($content, '###SUB_IMAGES###', '');
+			if (empty($row['images']) && !$this->conf['showDefaultImageInSingleview'] && !$this->ffdata['showDefaultImageInSingleview']) $content = $this->cObj->substituteSubpart($content, '###SUB_IMAGES###', '');
 			if (empty($row['attachments'])) $content = $this->cObj->substituteSubpart($content, '###SUB_ATTACHMENTS###', '');
 			if (!$row['location'] && !$row['address'] && !$row['zip'] && !$row['city']) $content = $this->cObj->substituteSubpart($content, '###SUB_MAP###', '');
 			if (!$GLOBALS['TSFE']->loginUser) $content = $this->cObj->substituteSubpart($content, '###SUB_ATTENDANCE###', '');
@@ -1154,6 +1161,7 @@ class tx_keyac_pi1 extends tslib_pibase {
 			// generate single view url
 			$linkconf['parameter'] = $singleViewPid;
  			$linkconf['additionalParams'] = '&tx_keyac_pi1[showUid]='.$row['uid'];
+ 			$linkconf['additionalParams'] .= '&tx_keyac_pi1[backPid]='.$GLOBALS['TSFE']->id;
  			$linkconf['useCacheHash'] = true;
  			$singleViewURL = $this->cObj->typoLink_URL($linkconf);
 			
@@ -1242,14 +1250,25 @@ class tx_keyac_pi1 extends tslib_pibase {
 			// IMAGES
 			case 'images':
 				// explode images string
-				$images = explode(',', $data);
+				$images = t3lib_div::trimExplode (',', $data, $onlyNonEmptyValues=1);
 				// run through the array and render image as set in ts
-				foreach ($images as $img) {
-					$imgConf = $this->conf['singleviewImg.'];
-					$imgConf['file'] = 'uploads/tx_keyac/'.$img;
-					$imgContent = $this->cObj->getSubpart($this->templateCode,'###IMAGE_ROW###');
-					$imgContent = $this->cObj->substituteMarker($imgContent,'###IMAGE###',$this->cObj->IMAGE($imgConf));
-					$fieldContent .= $imgContent;
+				if (sizeof($images)) {
+					foreach ($images as $img) {
+						$imgConf = $this->conf['singleviewImg.'];
+						$imgConf['file'] = 'uploads/tx_keyac/'.$img;
+						$imgContent = $this->cObj->getSubpart($this->templateCode,'###IMAGE_ROW###');
+						$imgContent = $this->cObj->substituteMarker($imgContent,'###IMAGE###',$this->cObj->IMAGE($imgConf));
+						$fieldContent .= $imgContent;
+					}
+				}
+				else {
+					// show default image
+					if ($this->conf['showDefaultImageInSingleview'] || $this->ffdata['showDefaultImageInSingleview']) {
+						$imgConf = $this->conf['singleviewDefaultImg.'];
+						$imgContent = $this->cObj->getSubpart($this->templateCode,'###IMAGE_ROW###');
+						$imgContent = $this->cObj->substituteMarker($imgContent,'###IMAGE###',$this->cObj->IMAGE($imgConf));
+						$fieldContent .= $imgContent;
+					}
 				}
 				break;
 			

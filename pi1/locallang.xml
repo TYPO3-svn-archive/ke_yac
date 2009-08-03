@@ -13,7 +13,8 @@
 			<label index="ff_templateFile">HTML-Template</label>
 			<label index="ff_main">MAIN SETTINGS</label>
 			<label index="ff_calendar">CALENDAR</label>
-			<label index="ff_tooltips">TOOLTIPS</label>
+			<label index="ff_singleview">SINGLEVIEW</label>
+			<label index="ff_listview">LISTVIEW</label>
 			<label index="ff_dateFormat">DATE FORMAT</label>
 			<label index="ff_myEvents">MY EVENTS</label>
 			<label index="ff_teaser">TEASER</label>
@@ -30,6 +31,8 @@
 			<label index="ff_showLegend">Show legend?</label>
 			<label index="ff_showTooltips">Show Tooltips?</label>
 			<label index="ff_tooltipDuration">Time until fade out (in ms)</label>
+			<label index="ff_showDefaultImageInSingleview">Show default if no image set in record?</label>
+			<label index="ff_showDefaultImageInListview">Show default if no image set in record?</label>
 			<label index="ff_strftimeFormatStringWithTime">strftime() date and time</label>
 			<label index="ff_strftimeFormatStringWithoutTime">strftime() date</label>
 			<label index="ff_strftimeFormatTime">strftime() time</label>
@@ -83,6 +86,8 @@
 			<label index="ff_templateFile">HTML-Template</label>
 			<label index="ff_main">ALLGEMEIN</label>
 			<label index="ff_calendar">KALENDER</label>
+			<label index="ff_singleview">EINZELANSICHT</label>
+			<label index="ff_listview">LISTENANSICHT</label>
 			<label index="ff_dateFormat">DATUMSFORMAT</label>
 			<label index="ff_myEvents">MEINE TERMINE</label>
 			<label index="ff_teaser">TEASER</label>
@@ -99,6 +104,8 @@
 			<label index="ff_showLegend">Legende anzeigen?</label>
 			<label index="ff_showTooltips">Zeige Tooltips?</label>
 			<label index="ff_tooltipDuration">Zeit bis zum Ausblenden (in ms)</label>
+			<label index="ff_showDefaultImageInSingleview">Zeige Default-Bild wenn kein Bild in Datensatz hinterlegt?</label>
+			<label index="ff_showDefaultImageInListview">Zeige Default-Bild wenn kein Bild in Datensatz hinterlegt?</label>
 			<label index="ff_strftimeFormatStringWithTime">strftime() Datum + Uhrzeit</label>
 			<label index="ff_strftimeFormatStringWithoutTime">strftime() Datum</label>
 			<label index="ff_strftimeFormatTime">strftime() Uhrzeit</label>

@@ -47,6 +47,17 @@
 	                </TCEforms>
 				</templateFile>
 				
+				<!-- show events without category -->
+				<showEventsWithoutCat>
+					<TCEforms>
+						<label>LLL:EXT:ke_yac/pi1/locallang.php:ff_showEventsWithoutCat</label>
+						<config>
+							<type>check</type>
+						</config>
+					</TCEforms>
+				</showEventsWithoutCat>
+				
+				
 			</el>
 		</ROOT>
 	</MAIN>
@@ -74,7 +85,6 @@
 					</TCEforms>
 				</columns>
 				
-				
 				<rows>
 					<TCEforms>
 						<label>LLL:EXT:ke_yac/pi1/locallang.php:ff_rows</label>
@@ -88,11 +98,7 @@
 							</range>
 						</config>
 					</TCEforms>
-				</rows>
-				
-				
-				
-				
+				</rows>		
 				
 				<!-- Show day of week-->
 				<showDaysRow>
@@ -160,27 +166,6 @@
 					</TCEforms>
 				</linkToSingleView>
 				
-				<!-- show events without category -->
-				<showEventsWithoutCat>
-					<TCEforms>
-						<label>LLL:EXT:ke_yac/pi1/locallang.php:ff_showEventsWithoutCat</label>
-						<config>
-							<type>check</type>
-						</config>
-					</TCEforms>
-				</showEventsWithoutCat>
-				
-			</el>
-		</ROOT>
-	</CALENDAR>
-	
-	<TOOLTIPS>
-		<ROOT>
-			<TCEforms>
-				<sheetTitle>LLL:EXT:ke_yac/pi1/locallang.php:ff_tooltips</sheetTitle>
-			</TCEforms>
-			<type>array</type>
-			<el>
 				<!-- Show tooltips -->
 				<showTooltips>
 					<TCEforms>
@@ -206,9 +191,48 @@
 						</config>
 					</TCEforms>
 				</tooltipDuration>
+				
 			</el>
 		</ROOT>
-	</TOOLTIPS>
+	</CALENDAR>
+	
+	<LISTVIEW>
+		<ROOT>
+			<TCEforms>
+				<sheetTitle>LLL:EXT:ke_yac/pi1/locallang.php:ff_listview</sheetTitle>
+			</TCEforms>
+			<type>array</type>
+			<el>
+				<showDefaultImageInListview>
+					<TCEforms>
+						<label>LLL:EXT:ke_yac/pi1/locallang.php:ff_showDefaultImageInListview</label>
+						<config>
+							<type>check</type>
+						</config>
+					</TCEforms>
+				</showDefaultImageInListview>
+			</el>
+		</ROOT>
+	</LISTVIEW>
+	
+	<SINGLEVIEW>
+		<ROOT>
+			<TCEforms>
+				<sheetTitle>LLL:EXT:ke_yac/pi1/locallang.php:ff_singleview</sheetTitle>
+			</TCEforms>
+			<type>array</type>
+			<el>
+				<showDefaultImageInSingleview>
+					<TCEforms>
+						<label>LLL:EXT:ke_yac/pi1/locallang.php:ff_showDefaultImageInSingleview</label>
+						<config>
+							<type>check</type>
+						</config>
+					</TCEforms>
+				</showDefaultImageInSingleview>
+			</el>
+		</ROOT>
+	</SINGLEVIEW>
 	
 	<TEASER>
 		<ROOT>

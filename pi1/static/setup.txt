@@ -1,9 +1,13 @@
 plugin.tx_keyac_pi1 {
-	#-- MAIN --
+	#-- MAIN -- #########################################################
 	useJS = 1
 	templateFile = EXT:ke_yac/pi1/yac-template.html
+	cssFile = 
+	dataPids =
+	showEventsWithoutCat = 0
 	
-	#-- CALENDAR --
+	
+	#-- CALENDAR -- #########################################################
 	rows = 2
 	columns = 4
 	showDaysRow = 0
@@ -13,58 +17,25 @@ plugin.tx_keyac_pi1 {
 	showLegend = 0
 	showList = 0
 	linkToSingleView = 0
-	showEventsWithoutCat = 0
-	
-	
-	#-- TOOLTIPS --
 	showTooltips = 0
 	tooltipDuration = 3000
-
-	#-- TEASER --
-	singlePid = 
-	teaserHeader = Upcoming Events
-	teaserLimit = 5
-	teaserLength = 50
-
-	#-- DATEFORMAT --
-	strftimeFormatStringWithoutTime = %d.%m.%Y
-	strftimeFormatStringWithTime = %d.%m.%Y %H:%M
-	strftimeFormatTime = %H:%M
-
-	#-- IMAGES --
+	
+	##-- CALENDAR IMAGES --
 	calendar.prevIcon = IMAGE
 	calendar.prevIcon.file = EXT:ke_yac/res/images/prev.gif
 	calendar.nextIcon = IMAGE
 	calendar.nextIcon.file = EXT:ke_yac/res/images/next.gif
 	
 	
-	#-- "MORE" ICON IN LISTVIEW
+	#-- LISTVIEW -- #########################################################
+	# Show default if no image is set in record?
+	showDefaultImageInSingleview = 0
+		
+	#-- "MORE" ICON IN LISTVIEW --
 	listview.moreIcon = IMAGE
 	listview.moreIcon.file = EXT:ke_yac/res/images/more.gif
 	
-	
-	#-- IMAGES IN SINGLEVIEW
-	singleviewImg {
-		file.maxW = 235
-		file.maxH = 123
-		imageLinkWrap = 1
-		imageLinkWrap.enable = 1
-	}
-	#-- IMAGES IN TEASERVIEW
-	teaserviewImg {
-		file.maxW = 20
-		file.maxH = 16
-	}
-	
-	#-- BACKLINK ICON
-	singleview.backlinkIcon = IMAGE
-	singleview.backlinkIcon.file = EXT:ke_yac/res/images/backlink.gif
-	
-	#-- INFOLINK ICON
-	singleview.infolinkIcon = IMAGE
-	singleview.infolinkIcon.file = EXT:ke_yac/res/images/infolink.gif
-	
-	#-- THUMBNAIL IN LISTVIEW
+	#-- THUMBNAIL IN LISTVIEW --
 	listview.thumbnail = IMAGE
 	listview.thumbnail {
 		file.maxW = 50
@@ -72,9 +43,68 @@ plugin.tx_keyac_pi1 {
 		imageLinkWrap = 1
 		imageLinkWrap.enable = 1
 	}
+	#-- DEFAULT IMAGE IN LISTVIEW --
+	listviewDefaultImg.file = EXT:ke_yac/res/images/defaultImage.gif
 	
 	
-	#-- ATTACHMENT ICONS 
+	#-- CATEGORY ICONS 
+	# number represents uid of category record, def = default
+	categoryIcon.def = IMAGE
+	categoryIcon.def.file = EXT:ke_yac/res/images/catdefault.gif
+	categoryIcon.1 = IMAGE
+	categoryIcon.1.file = EXT:ke_yac/res/images/cat1.gif
+	categoryIcon.2 = IMAGE
+	categoryIcon.2.file = EXT:ke_yac/res/images/cat2.gif
+	categoryIcon.3 = IMAGE
+	categoryIcon.3.file = EXT:ke_yac/res/images/cat3.gif
+	categoryIcon.4 = IMAGE
+	categoryIcon.4.file = EXT:ke_yac/res/images/cat4.gif
+	categoryIcon.5 = IMAGE
+	categoryIcon.5.file = EXT:ke_yac/res/images/cat5.gif
+	categoryIcon.6 = IMAGE
+	categoryIcon.6.file = EXT:ke_yac/res/images/cat6.gif
+	categoryIcon.7 = IMAGE
+	categoryIcon.7.file = EXT:ke_yac/res/images/cat7.gif
+	categoryIcon.8 = IMAGE
+	categoryIcon.8.file = EXT:ke_yac/res/images/cat8.gif
+	categoryIcon.9 = IMAGE
+	categoryIcon.9.file = EXT:ke_yac/res/images/cat9.gif
+	categoryIcon.10 = IMAGE
+	categoryIcon.10.file = EXT:ke_yac/res/images/cat10.gif
+	
+	
+	#-- SINGLEVIEW -- #########################################################
+	# Show default if no image is set in record?
+	showDefaultImageInSingleview = 0
+	
+	#-- IMAGES IN SINGLEVIEW --
+	singleviewImg = IMAGE
+	singleviewImg {
+		file.maxW = 235
+		file.maxH = 123
+		imageLinkWrap = 1
+		imageLinkWrap.enable = 1
+	}
+	
+	#-- DEFAULT IMAGE IN SINGLEVIEW --
+	singleviewDefaultImg = IMAGE
+	singleviewDefaultImg {
+		file = EXT:ke_yac/res/images/defaultImage.gif
+		file.maxW = 235
+		file.maxH = 123
+		imageLinkWrap = 1
+		imageLinkWrap.enable = 1
+	}
+	
+	#-- BACKLINK ICON --
+	singleview.backlinkIcon = IMAGE
+	singleview.backlinkIcon.file = EXT:ke_yac/res/images/backlink.gif
+	
+	#-- INFOLINK ICON --
+	singleview.infolinkIcon = IMAGE
+	singleview.infolinkIcon.file = EXT:ke_yac/res/images/infolink.gif
+	
+	#-- ATTACHMENT ICONS --
 	attachmentIcon.default = IMAGE
 	attachmentIcon.default.file = EXT:ke_yac/res/images/attachmentIcons/default.gif
 	attachmentIcon.avi = IMAGE
@@ -120,31 +150,36 @@ plugin.tx_keyac_pi1 {
 	attachmentIcon.zip = IMAGE
 	attachmentIcon.zip.file = EXT:ke_yac/res/images/attachmentIcons/zip.gif
 	
+	#-- TEASER VIEW -- #########################################################
+	singlePid = 
+	teaserHeader = Coming Events
+	teaserLimit = 5
+	teaserLength = 50
+
+	#-- IMAGES IN TEASERVIEW
+	teaserviewImg {
+		file.maxW = 20
+		file.maxH = 16
+	}
 	
-	#-- CATEGORY ICONS 
-	# number represents uid of category record, def = default
-	categoryIcon.def = IMAGE
-	categoryIcon.def.file = EXT:ke_yac/res/images/catdefault.gif
-	categoryIcon.1 = IMAGE
-	categoryIcon.1.file = EXT:ke_yac/res/images/cat1.gif
-	categoryIcon.2 = IMAGE
-	categoryIcon.2.file = EXT:ke_yac/res/images/cat2.gif
-	categoryIcon.3 = IMAGE
-	categoryIcon.3.file = EXT:ke_yac/res/images/cat3.gif
-	categoryIcon.4 = IMAGE
-	categoryIcon.4.file = EXT:ke_yac/res/images/cat4.gif
-	categoryIcon.5 = IMAGE
-	categoryIcon.5.file = EXT:ke_yac/res/images/cat5.gif
-	categoryIcon.6 = IMAGE
-	categoryIcon.6.file = EXT:ke_yac/res/images/cat6.gif
-	categoryIcon.7 = IMAGE
-	categoryIcon.7.file = EXT:ke_yac/res/images/cat7.gif
-	categoryIcon.8 = IMAGE
-	categoryIcon.8.file = EXT:ke_yac/res/images/cat8.gif
-	categoryIcon.9 = IMAGE
-	categoryIcon.9.file = EXT:ke_yac/res/images/cat9.gif
-	categoryIcon.10 = IMAGE
-	categoryIcon.10.file = EXT:ke_yac/res/images/cat10.gif
+	#-- DATEFORMAT -- #########################################################
+	strftimeFormatStringWithoutTime = %d.%m.%Y
+	strftimeFormatStringWithTime = %d.%m.%Y %H:%M
+	strftimeFormatTime = %H:%M
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	#-- GOOGLE MAPS CONFIG
@@ -159,6 +194,8 @@ plugin.tx_keyac_pi1 {
 	#-- MY EVENTS LIST ICON
 	myEvents.icon = IMAGE
 	myEvents.icon.file = EXT:ke_yac/res/images/myevents-icon.gif
+	myEvents.icon.file.maxW = 
+	myEvents.icon.file.maxH = 
 	
 	#-- MY EVENTS LINK TO SINGLEVIEW PID
 	myEvents.singleViewPid = 
