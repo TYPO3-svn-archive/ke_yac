@@ -896,7 +896,6 @@ class tx_keyac_pi1 extends tslib_pibase {
 				}
 				// show default image if activated
 				else if ($this->conf['showDefaultImageInListview'] || $this->ffdata['showDefaultImageInListview']) {
-					debug('ja');
 					$thumbConf = $this->conf['listview.']['thumbnail.'];
 					$thumbConf['file'] = $this->conf['listviewDefaultImg.']['file'];
 					$thumbnail = $this->cObj->IMAGE($thumbConf);
