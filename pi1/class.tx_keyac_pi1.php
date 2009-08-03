@@ -418,22 +418,37 @@ class tx_keyac_pi1 extends tslib_pibase {
 		$datesarray = array();
 		
 		// db query
-		$fields = '*, tx_keyac_cat.uid as catuid, tx_keyac_dates.uid as dateuid';
-		$table = 'tx_keyac_dates, tx_keyac_cat, tx_keyac_dates_cat_mm';
+		$fields = '*, tx_keyac_dates.uid as dateuid';
+		$table = 'tx_keyac_dates';
 		$enableFields1 = $lcObj->enableFields('tx_keyac_dates',$show_hidden=0);
-		$enableFields2 = $lcObj->enableFields('tx_keyac_cat',$show_hidden=0);
 		$where = ' ( ( startdat >= '.$timestamp_start.' AND startdat <= '.$timestamp_end.' )';
 		$where.= ' OR (enddat >= '.$timestamp_start.' AND enddat <= '.$timestamp_end.' )';
 		$where.= ' OR ( startdat <= '.$timestamp_start.' AND enddat >= '.$timestamp_end.' ) )';
-		$where.= ' AND tx_keyac_dates_cat_mm.uid_local = tx_keyac_dates.uid';
-		$where.= ' AND tx_keyac_dates_cat_mm.uid_foreign = tx_keyac_cat.uid';
 		$where.=$enableFields1.$enableFields2;
-		$where.=' and tx_keyac_dates.pid in ('.$this->pids.') and tx_keyac_cat.pid in ('.$this->pids.') ';
+		$where.=' and tx_keyac_dates.pid in ('.$this->pids.') ';
+		
+		
 		
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($fields,$table,$where,$groupBy='',$orderBy='',$limit='');
 		// walk through results
 		while($row=$GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-		
+			
+			// get category data from db
+			$fields = '*';
+ 			$table = 'tx_keyac_cat, tx_keyac_dates_cat_mm';
+ 			$where = 'uid_local="'.$row['dateuid'].'" ';
+ 			$where .= 'AND uid_foreign=tx_keyac_cat.uid ';
+ 			$where .= $this->cObj->enableFields('tx_keyac_cat');
+ 			$catRes = $GLOBALS['TYPO3_DB']->exec_SELECTquery($fields,$table,$where,$groupBy='',$orderBy='',$limit='');
+ 			$anz = $GLOBALS['TYPO3_DB']->sql_num_rows($catRes);
+ 			$catRow=$GLOBALS['TYPO3_DB']->sql_fetch_assoc($catRes);
+			
+			// set default category if activated in conf and no category set
+			if ( ($this->conf['showEventsWithoutCat'] || $this->ffdata['showEventsWithoutCat'])  && !is_array($catRow)) {
+				$catRow['uid'] = 0;
+			}
+			
+			
 			// get day from timestamp
 			if ($row['startdat']) {
 				$starttag = date('j',$row['startdat']);
@@ -450,14 +465,14 @@ class tx_keyac_pi1 extends tslib_pibase {
 			if (!$row['enddat']) {
 				if ($datesarray[$starttag]!='')  
 					$datesarray[$starttag] = "999s0";
-				else $datesarray[$starttag] = $row['catuid']."s0";
+				else $datesarray[$starttag] = $catRow['uid']."s0";
 			}
 			// event with end date
 			else {
 				
 				// start and end in different years
 				if ($startyear != $endyear) {
-								
+					
 					// if startmonth
 					if ($month == $startmonat && $year==$startyear) {
 						for ($i=$starttag;$i<=$days_month;$i++) {
@@ -468,7 +483,7 @@ class tx_keyac_pi1 extends tslib_pibase {
 								$datesarray[$i]="999s2";
 							else if ($datesarray[$i]!='') $datesarray[$i]=999;
 							// if there is no other event this day -> set type to category
-							else $datesarray[$i]=$row['catuid'];
+							else $datesarray[$i]=$catRow['uid'];
 							// mark start day with "s"
 							if ($i==$starttag && !strpos($datesarray[$i],"s"))
 								$datesarray[$i].="s2";
@@ -479,14 +494,14 @@ class tx_keyac_pi1 extends tslib_pibase {
 						for ($i=$endtag;$i>0;$i--) {
 							// if there is already another event this day -> set type to "999"
 							if ($datesarray[$i]!='') $datesarray[$i]=999;
-							else $datesarray[$i]=$row['catuid'];
+							else $datesarray[$i]=$catRow['uid'];
 						}	
 					}
 					// if month between startmonth and endmonth
 					else {
 						for ($i=1; $i<=$days_month; $i++) {
 							if ($datesarray[$i]!='') $datesarray[$i]=999;
-							else $datesarray[$i]=$row['catuid'];
+							else $datesarray[$i]=$catRow['uid'];
 						}
 					}
 					
@@ -502,7 +517,7 @@ class tx_keyac_pi1 extends tslib_pibase {
 							if ($datesarray[$starttag]!='') 
 								$datesarray[$starttag]="999s1";
 							// if there is no other event this day -> set type to category
-							else $datesarray[$starttag]=$row['catuid']."s1";
+							else $datesarray[$starttag]=$catRow['uid']."s1";
 						} 
 						// several days
 						else {
@@ -514,7 +529,7 @@ class tx_keyac_pi1 extends tslib_pibase {
 									$datesarray[$i]="999s2";
 								else if ($datesarray[$i]!='') $datesarray[$i]=999;
 								// if there is no other event this day -> set type to category
-								else $datesarray[$i]=$row['catuid'];
+								else $datesarray[$i]=$catRow['uid'];
 								// mark start day with "s"
 								if ($i==$starttag && !strpos($datesarray[$i],"s"))
 									$datesarray[$i].="s2";
@@ -531,7 +546,7 @@ class tx_keyac_pi1 extends tslib_pibase {
 									$datesarray[$i]="999s3";
 								else if ($datesarray[$i]!='') 
 									$datesarray[$i]=999;
-								else $datesarray[$i]=$row['catuid'];
+								else $datesarray[$i]=$catRow['uid'];
 								// mark start day with "s"
 								if ($i==$starttag && !strpos($datesarray[$i],"s")) 
 									$datesarray[$i].="s3";
@@ -542,7 +557,7 @@ class tx_keyac_pi1 extends tslib_pibase {
 							for ($i=$endtag;$i>0;$i--) {
 								// if there is already another event this day -> set type to "999"
 								if ($datesarray[$i]!='') $datesarray[$i]=999;
-								else $datesarray[$i]=$row['catuid'];
+								else $datesarray[$i]=$catRow['uid'];
 							}	
 						}
 						
@@ -551,7 +566,7 @@ class tx_keyac_pi1 extends tslib_pibase {
 						if ($month > $startmonat && $month < $endmonat) {
 							for ($i=1; $i<=$days_month; $i++) {
 								if ($datesarray[$i]!='') $datesarray[$i]=999;
-								else $datesarray[$i]=$row['catuid'];
+								else $datesarray[$i]=$catRow['uid'];
 							}
 						}
 					}
@@ -775,10 +790,10 @@ class tx_keyac_pi1 extends tslib_pibase {
 		$moreIcon=$this->cObj->IMAGE($imageConf);
 		
 		// list events 
-		$table = 'tx_keyac_dates, tx_keyac_cat, tx_keyac_dates_cat_mm';
-		$fields = '*, tx_keyac_cat.uid as catuid, tx_keyac_dates.title as datetitle, tx_keyac_dates.uid as dateuid';
-		$enableFields1 = $lcObj->enableFields('tx_keyac_dates',$show_hidden=0);
-		$enableFields2 = $lcObj->enableFields('tx_keyac_cat',$show_hidden=0);
+		$table = 'tx_keyac_dates';
+		$fields = '*, tx_keyac_dates.title as datetitle, tx_keyac_dates.uid as dateuid';
+		$enableFields = $lcObj->enableFields('tx_keyac_dates',$show_hidden=0);
+		
 		
 		// wenn modus gesetzt: Daten nur für einzelnen Tag aus DB holen
 		if ($day && $month && $year) {
@@ -793,101 +808,117 @@ class tx_keyac_pi1 extends tslib_pibase {
 		$where = ' ( ( startdat >= '.$start_ts.' AND startdat <= '.$end_ts.' )';
 		$where.= ' OR (enddat >= '.$start_ts.' AND enddat <= '.$end_ts.' )';
 		$where.= ' OR ( startdat <= '.$start_ts.' AND enddat >= '.$end_ts.' ) )';
-		$where.= ' AND tx_keyac_dates_cat_mm.uid_local = tx_keyac_dates.uid';
-		$where.= ' AND tx_keyac_dates_cat_mm.uid_foreign = tx_keyac_cat.uid';
-		$where.=$enableFields1.$enableFields2;
-		$where.=' and tx_keyac_dates.pid in ('.$this->pids.') and tx_keyac_cat.pid in ('.$this->pids.') ';
+		#$where.= ' AND tx_keyac_dates_cat_mm.uid_local = tx_keyac_dates.uid';
+		#$where.= ' AND tx_keyac_dates_cat_mm.uid_foreign = tx_keyac_cat.uid';
+		#$where.=$enableFields1.$enableFields2;
+		$where.=$enableFields;
+		#$where.=' and tx_keyac_dates.pid in ('.$this->pids.') and tx_keyac_cat.pid in ('.$this->pids.') ';
+		$where.=' and tx_keyac_dates.pid in ('.$this->pids.') ';
 		
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($fields,$table,$where,$groupBy='dateuid',$orderBy='startdat',$limit='');
 		$content = '';
 		while($row=$GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 			
-			$start = strftime('%d.%m.%Y',$row['startdat']);
-			$ende = strftime('%d.%m.%Y',$row['enddat']);
-			 
-			$startday = strftime('%d', $row['startdat']);
-			$startmonth = strftime('%m', $row['startdat']);
-			$startyear = strftime('%Y', $row['startdat']);
-			$endday = strftime('%d', $row['enddat']);
-			$endmonth = strftime('%m', $row['enddat']);
-			$endyear = strftime('%Y', $row['enddat']);
+			// get category data from db
+			$fields = '*';
+ 			$table = 'tx_keyac_cat, tx_keyac_dates_cat_mm';
+ 			$where = 'uid_local="'.$row['dateuid'].'" ';
+ 			$where .= 'AND uid_foreign=tx_keyac_cat.uid ';
+ 			$where .= $this->cObj->enableFields('tx_keyac_cat');
+ 			$catRes = $GLOBALS['TYPO3_DB']->exec_SELECTquery($fields,$table,$where,$groupBy='',$orderBy='',$limit='');
+ 			$anz = $GLOBALS['TYPO3_DB']->sql_num_rows($catRes);
+ 			$catRow=$GLOBALS['TYPO3_DB']->sql_fetch_assoc($catRes);
 			
-			// no end date set
-			if (!$row['enddat']) $ende_uhrzeit =0;
+			// show Record if category is set or displaying of records without category is activated
+			if (is_array($catRow) ||  ($this->conf['showEventsWithoutCat'] || $this->ffdata['showEventsWithoutCat'])  ) {
 			
-			// date and time
-			strftime('%H:%M',$row['startdat']) != '00:00' ? $beginn = strftime($this->formatStringWithTime,$row['startdat']) : $beginn = strftime($this->formatStringWithoutTime,$row['startdat']);
-			// begin date
-			$beginn_datum = strftime($this->formatStringWithoutTime,$row['startdat']);
-			// begin time
-			$beginn_uhrzeit = strftime($this->formatTime,$row['startdat']);
-			// end date
-			$ende_datum = strftime($this->formatStringWithoutTime,$row['enddat']);
-			// end time
-			$ende_uhrzeit = strftime($this->formatTime,$row['enddat']);
-			$dat = array(	
-				'start datum' => $beginn_datum,
-				'ende datum' => $ende_datum,
-				'start zeit' => $beginn_uhrzeit,
-				'ende zeit' => $ende_uhrzeit 
-			);
-			
-			// no start date set
-			if (!$row['startdat'])
-				$datstring = $this->pi_getLL('nodate');
-			// don't show time - just date
-			else if ($row['showtime'] == 0) {
-				// begin and end at one day 
-				if ($ende_datum==$beginn_datum || !$row['enddat'])  	$datstring = $beginn_datum;
-				// begin and end at different days
-				else $datstring = $beginn_datum.' '.$this->pi_getLL('until').' '.$ende_datum;
+				$start = strftime('%d.%m.%Y',$row['startdat']);
+				$ende = strftime('%d.%m.%Y',$row['enddat']);
+				 
+				$startday = strftime('%d', $row['startdat']);
+				$startmonth = strftime('%m', $row['startdat']);
+				$startyear = strftime('%Y', $row['startdat']);
+				$endday = strftime('%d', $row['enddat']);
+				$endmonth = strftime('%m', $row['enddat']);
+				$endyear = strftime('%Y', $row['enddat']);
+				
+				// no end date set
+				if (!$row['enddat']) $ende_uhrzeit =0;
+				
+				// date and time
+				strftime('%H:%M',$row['startdat']) != '00:00' ? $beginn = strftime($this->formatStringWithTime,$row['startdat']) : $beginn = strftime($this->formatStringWithoutTime,$row['startdat']);
+				// begin date
+				$beginn_datum = strftime($this->formatStringWithoutTime,$row['startdat']);
+				// begin time
+				$beginn_uhrzeit = strftime($this->formatTime,$row['startdat']);
+				// end date
+				$ende_datum = strftime($this->formatStringWithoutTime,$row['enddat']);
+				// end time
+				$ende_uhrzeit = strftime($this->formatTime,$row['enddat']);
+				$dat = array(	
+					'start datum' => $beginn_datum,
+					'ende datum' => $ende_datum,
+					'start zeit' => $beginn_uhrzeit,
+					'ende zeit' => $ende_uhrzeit 
+				);
+				
+				// no start date set
+				if (!$row['startdat'])
+					$datstring = $this->pi_getLL('nodate');
+				// don't show time - just date
+				else if ($row['showtime'] == 0) {
+					// begin and end at one day 
+					if ($ende_datum==$beginn_datum || !$row['enddat'])  	$datstring = $beginn_datum;
+					// begin and end at different days
+					else $datstring = $beginn_datum.' '.$this->pi_getLL('until').' '.$ende_datum;
+				}
+				// show time
+				else {
+					// no end date
+					if (!$row['enddat']) $datstring = $beginn_datum.', '.$beginn_uhrzeit;
+					// begin and end on the same day
+					else if ($ende_datum==$beginn_datum ) $datstring = $beginn_datum.' '.$beginn_uhrzeit.' '.$this->pi_getLL('until').' '.$ende_uhrzeit;
+					// begin and end at different days
+					else $datstring = $beginn_datum .', '.$beginn_uhrzeit.' '.$this->pi_getLL('until').' '.$ende_datum.', '.$ende_uhrzeit;
+				}
+				// generate link 
+				$overrulePIvars = array('showUid' => $row['dateuid']);
+				$linkStart = $this->pi_linkTP_keepPIvars_url ($overrulePIvars, $cache=1, $clearAnyway=0);
+				
+				// generate anchor tag
+				if ($day!=0 && $month!=0 && $year!=0) $anchor = '';
+				else $anchor = '<a name="'.$start.'" />';
+				
+				// generate category icon
+				$catIconConf = $this->conf['categoryIcon.'][$catRow['uid'].'.'];
+				if (empty($catIconConf)) $catIconConf = $this->conf['categoryIcon.']['default.'];
+				$catIcon = $this->cObj->IMAGE($catIconConf);
+				
+				// generate thumbnail
+				$images = explode(',',$row['images']);
+				$thumbConf = $this->conf['listview.']['thumbnail.'];
+				$thumbConf['file'] = 'uploads/tx_keyac/'.$images[0];
+				$thumbnail = $this->cObj->IMAGE($thumbConf);
+				
+				$markerArray = array(
+					'title' => $row['datetitle'],
+					'date' => $datstring,
+					'anchor' => $anchor,
+					'caticon' => $catIcon,
+					'more_icon' => $moreIcon,
+					'more_text' => $this->pi_getLL('more'),
+					'link_start' => '<a href="'.$linkStart.'">',
+					'link_end' => '</a>',
+					'thumbnail' => $thumbnail,
+				);
+				
+				
+				// use listview or special tooltip subpart for rendering?
+				$subpart = $tooltip ? '###TOOLTIP_ROW###' : '###LISTVIEW_SINGLE###';
+				$temp_content = $this->cObj->getSubpart($this->templateCode,$subpart);
+				$temp_content = $this->cObj->substituteMarkerArray($temp_content,$markerArray,$wrap='###|###',$uppercase=1);
+				$content .= $temp_content;
 			}
-			// show time
-			else {
-				// no end date
-				if (!$row['enddat']) $datstring = $beginn_datum.', '.$beginn_uhrzeit;
-				// begin and end on the same day
-				else if ($ende_datum==$beginn_datum ) $datstring = $beginn_datum.' '.$beginn_uhrzeit.' '.$this->pi_getLL('until').' '.$ende_uhrzeit;
-				// begin and end at different days
-				else $datstring = $beginn_datum .', '.$beginn_uhrzeit.' '.$this->pi_getLL('until').' '.$ende_datum.', '.$ende_uhrzeit;
-			}
-			// generate link 
-			$overrulePIvars = array('showUid' => $row['dateuid']);
-			$linkStart = $this->pi_linkTP_keepPIvars_url ($overrulePIvars, $cache=1, $clearAnyway=0);
-			
-			// generate anchor tag
-			if ($day!=0 && $month!=0 && $year!=0) $anchor = '';
-			else $anchor = '<a name="'.$start.'" />';
-			
-			// generate category icon
-			$catIconConf = $this->conf['categoryIcon.'][$row['catuid'].'.'];
-			if (empty($catIconConf)) $catIconConf = $this->conf['categoryIcon.']['default.'];
-			$catIcon = $this->cObj->IMAGE($catIconConf);
-			
-			// generate thumbnail
-			$images = explode(',',$row['images']);
-			$thumbConf = $this->conf['listview.']['thumbnail.'];
-			$thumbConf['file'] = 'uploads/tx_keyac/'.$images[0];
-			$thumbnail = $this->cObj->IMAGE($thumbConf);
-			
-			$markerArray = array(
-				'title' => $row['datetitle'],
-				'date' => $datstring,
-				'anchor' => $anchor,
-				'caticon' => $catIcon,
-				'more_icon' => $moreIcon,
-				'more_text' => $this->pi_getLL('more'),
-				'link_start' => '<a href="'.$linkStart.'">',
-				'link_end' => '</a>',
-				'thumbnail' => $thumbnail,
-			);
-			
-			
-			// use listview or special tooltip subpart for rendering?
-			$subpart = $tooltip ? '###TOOLTIP_ROW###' : '###LISTVIEW_SINGLE###';
-			$temp_content = $this->cObj->getSubpart($this->templateCode,$subpart);
-			$temp_content = $this->cObj->substituteMarkerArray($temp_content,$markerArray,$wrap='###|###',$uppercase=1);
-			$content .= $temp_content;
 		}
 		return $content;
 	}
@@ -902,13 +933,26 @@ class tx_keyac_pi1 extends tslib_pibase {
 		$lcObj=t3lib_div::makeInstance('tslib_cObj');
 		
 		// get event data from db
-		$table = 'tx_keyac_dates, tx_keyac_cat, tx_keyac_dates_cat_mm';
-		$fields = '*, tx_keyac_dates.uid as dateuid, tx_keyac_dates.title as datetitle, tx_keyac_cat.title as cattitle  ';
+		$table = 'tx_keyac_dates';
+		$fields = '*, tx_keyac_dates.uid as dateuid, tx_keyac_dates.title as datetitle';
 		$enableFields = $lcObj->enableFields('tx_keyac_dates',$show_hidden=0);
-		$where=' tx_keyac_dates.uid="'.$id.' " and tx_keyac_dates.uid=tx_keyac_dates_cat_mm.uid_local and tx_keyac_cat.uid=tx_keyac_dates_cat_mm.uid_foreign ';
+		$where=' tx_keyac_dates.uid="'.$id.' " ';
 		$where.=$enableFields;
+		
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($fields,$table,$where,$groupBy='',$orderBy='',$limit='');
 		while($row=$GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+			
+			
+			// get category data from db
+			$fields = '*';
+ 			$table = 'tx_keyac_cat, tx_keyac_dates_cat_mm';
+ 			$where = 'uid_local="'.$row['dateuid'].'" ';
+ 			$where .= 'AND uid_foreign=tx_keyac_cat.uid ';
+ 			$where .= $this->cObj->enableFields('tx_keyac_cat');
+ 			$catRes = $GLOBALS['TYPO3_DB']->exec_SELECTquery($fields,$table,$where,$groupBy='',$orderBy='',$limit='');
+ 			$anz = $GLOBALS['TYPO3_DB']->sql_num_rows($catRes);
+ 			$catRow=$GLOBALS['TYPO3_DB']->sql_fetch_assoc($catRes);
+			
 			
 			// no end date set
 			if (!$row['enddat']) $ende_uhrzeit =0;
@@ -985,7 +1029,7 @@ class tx_keyac_pi1 extends tslib_pibase {
 			// fill markers
 			$this->markerArray = array(
 				'title' => $row['datetitle'],
-				'category' => $row['cattitle'],
+				'category' => $catRow['title'],
 				'label_event' => $this->pi_getLL('event'),
 				'datestring' => $datstring,
 				'label_location' => $this->pi_getLL('location'),
@@ -1297,11 +1341,7 @@ class tx_keyac_pi1 extends tslib_pibase {
 					);
 					$fieldContent = $this->cObj->substituteMarkerArray($fieldContent,$markerArray,$wrap='###|###',$uppercase=1);					
  				}
-				
-				
 				break;
-				
-						
 		}
 		
 		return $fieldContent;    

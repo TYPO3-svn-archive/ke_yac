@@ -26,6 +26,7 @@
 			<label index="ff_showHideCalendarLink">Show "Hide calendar" link?</label>
 			<label index="ff_showList">Show Listview?</label>
 			<label index="ff_linkToSingleView">Link to Singleview? (otherwise link to Listview)</label>
+			<label index="ff_showEventsWithoutCat">Show events without category?</label>
 			<label index="ff_showLegend">Show legend?</label>
 			<label index="ff_showTooltips">Show Tooltips?</label>
 			<label index="ff_tooltipDuration">Time until fade out (in ms)</label>
@@ -94,6 +95,7 @@
 			<label index="ff_showHideCalendarLink">Zeige "Kalender verstecken"-Link?</label>
 			<label index="ff_showList">Zeige Listenansicht?</label>
 			<label index="ff_linkToSingleView">Verlinkung auf Single-View? (ansonsten Verlinkung auf List-View)</label>
+			<label index="ff_showEventsWithoutCat">Termine ohne zugewiesene Kategorie anzeigen?</label>
 			<label index="ff_showLegend">Legende anzeigen?</label>
 			<label index="ff_showTooltips">Zeige Tooltips?</label>
 			<label index="ff_tooltipDuration">Zeit bis zum Ausblenden (in ms)</label>

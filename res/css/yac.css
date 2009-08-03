@@ -124,6 +124,14 @@
 .tx-keyac-pi1 table.calendar td.today {
 	background: #CCC; 
 }
+
+/* default for events without category */
+.tx-keyac-pi1 table.calendar td.cat0,
+.tx-keyac-pi1 table.calendar td.todaycat0 {
+	border: 1px solid #000;
+}
+
+/* border colors for each category - the number in classname represents the uid of the category record */
 .tx-keyac-pi1 table.calendar td.cat1,
 .tx-keyac-pi1 table.calendar td.todaycat1 {
 	border: 1px solid #32b135;
@@ -175,6 +183,9 @@
 	border-right-color:#111a9c;
 	border-bottom-color:#b325c4;
 }
+
+/* set background color for events that are on current date */
+.tx-keyac-pi1 table.calendar td.todaycat0,
 .tx-keyac-pi1 table.calendar td.todaycat1,
 .tx-keyac-pi1 table.calendar td.todaycat2,
 .tx-keyac-pi1 table.calendar td.todaycat3,

@@ -160,6 +160,16 @@
 					</TCEforms>
 				</linkToSingleView>
 				
+				<!-- show events without category -->
+				<showEventsWithoutCat>
+					<TCEforms>
+						<label>LLL:EXT:ke_yac/pi1/locallang.php:ff_showEventsWithoutCat</label>
+						<config>
+							<type>check</type>
+						</config>
+					</TCEforms>
+				</showEventsWithoutCat>
+				
 			</el>
 		</ROOT>
 	</CALENDAR>
