@@ -1486,6 +1486,7 @@ class tx_keyac_pi1 extends tslib_pibase {
 					'title' => $title,
 					'teasertext' => $this->pi_RTEcssText($row['teaser']),
 					'link' => $link,
+					'city' => $row['city'],
 				);
 				$temp_content = $this->cObj->getSubpart($this->templateCode,'###TEASER_SINGLE###');
 				$temp_content = $this->cObj->substituteMarkerArray($temp_content,$temp_marker,$wrap='###|###',$uppercase=1);
