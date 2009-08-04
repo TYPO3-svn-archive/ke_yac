@@ -1097,8 +1097,8 @@ class tx_keyac_pi1 extends tslib_pibase {
 			if (empty($row['infolink'])) $content = $this->cObj->substituteSubpart($content, '###SUB_INFOLINK###', '');
 			if (empty($row['images']) && !$this->conf['showDefaultImageInSingleview'] && !$this->ffdata['showDefaultImageInSingleview']) $content = $this->cObj->substituteSubpart($content, '###SUB_IMAGES###', '');
 			if (empty($row['attachments'])) $content = $this->cObj->substituteSubpart($content, '###SUB_ATTACHMENTS###', '');
-			if (!$row['location'] && !$row['address'] && !$row['zip'] && !$row['city']) $content = $this->cObj->substituteSubpart($content, '###SUB_MAP###', '');
-			if (!$GLOBALS['TSFE']->loginUser) $content = $this->cObj->substituteSubpart($content, '###SUB_ATTENDANCE###', '');
+			if (!$row['location'] || !$row['address'] || !$row['zip'] || !$row['city']) $content = $this->cObj->substituteSubpart($content, '###SUB_MAP###', '');
+			if (!$GLOBALS['TSFE']->loginUser) $content = $this->cObj->substituteSubpart($content, '###SUB_ATTENDANCE###', '');			
 		}
 		
 		return $content;
