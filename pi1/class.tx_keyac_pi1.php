@@ -1491,7 +1491,7 @@ class tx_keyac_pi1 extends tslib_pibase {
 					'location' => $row['location'],
 					'datetime' => $timestr,
 					'title' => $title,
-					'teasertext' => $this->pi_RTEcssText($row['teaser']),
+					'teasertext' => strip_tags($row['teaser']),
 					'link' => $link,
 					'city' => $row['city'],
 				);
