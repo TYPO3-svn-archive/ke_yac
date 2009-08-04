@@ -110,9 +110,16 @@ class tx_keyac_pi1 extends tslib_pibase {
 				$content = $this->myEventsView();
 				break;
 			
-			// CALENDAR VIEW
+			// CALENDAR / LIST / SINGLE
 			case "0": 
+			// CALENDAR / LIST (no singleview - e.g. for calendar view as teaser - ignores "showUid")
+			case "3":
 			default: 
+				
+				// unset showUid if this mode was selected
+				if ($mode_selector == '3') {
+					unset($this->piVars['showUid']);
+				}
 				
 				// action handling
 				// user wants to attend

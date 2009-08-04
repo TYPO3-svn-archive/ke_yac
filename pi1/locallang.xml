@@ -7,9 +7,10 @@
 	<data type="array">
 		<languageKey index="default" type="array">
 			<label index="ff_mode_selector">Plugin-Mode</label>
-			<label index="ff_mode.I.0">Calendar</label>
+			<label index="ff_mode.I.0">Calendar / List / Detail</label>
 			<label index="ff_mode.I.1">Teaser</label>
 			<label index="ff_mode.I.2">My Events</label>
+			<label index="ff_mode.I.3">Calendar / Listview (ignores "showUid")</label>
 			<label index="ff_templateFile">HTML-Template</label>
 			<label index="ff_main">MAIN SETTINGS</label>
 			<label index="ff_calendar">CALENDAR</label>
@@ -80,9 +81,10 @@
 		
 		<languageKey index="de" type="array">
 			<label index="ff_mode_selector">Plugin-Modus</label>
-			<label index="ff_mode.I.0">Kalender</label>
+			<label index="ff_mode.I.0">Kalender / Liste / Detail</label>
 			<label index="ff_mode.I.1">Teaser</label>
 			<label index="ff_mode.I.2">Meine Termine</label>
+			<label index="ff_mode.I.3">Kalender / Liste (ignoriert "showUid")</label>
 			<label index="ff_templateFile">HTML-Template</label>
 			<label index="ff_main">ALLGEMEIN</label>
 			<label index="ff_calendar">KALENDER</label>
