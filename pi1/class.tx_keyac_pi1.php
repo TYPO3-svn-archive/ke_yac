@@ -309,7 +309,11 @@ class tx_keyac_pi1 extends tslib_pibase {
 		$image = $mode == 'prev' ? $prevIcon : $nextIcon;
 		$overrulePIVars=array('month' => $target_month, 'year' => $target_year);
 		$link = $this->pi_linkTP_keepPIVars($image, $overrulePIVars,$cache=1,0);
-		return $link;
+		$linkUrl = $this->pi_linkTP_keepPIVars_url($overrulePIVars,$cache=1,0);
+		
+		$linkNew = '<a href="'.$linkUrl.'" rel="nofollow">'.$image.'</a>';
+		#return $link;
+		return $linkNew;
 	}
 	
 	
@@ -370,8 +374,11 @@ class tx_keyac_pi1 extends tslib_pibase {
 			// print text
 			$overrulePIVars=array('month' => $var_month, 'year' => $var_year);
 			$link = $this->pi_linkTP_keepPIVars($text,$overrulePIVars,$cache=1);
+			$linkUrl = $this->pi_linkTP_keepPIVars_url($overrulePIVars,$cache=1);
+			$newLink = '<a href="'.$linkUrl.'" rel="nofollow">'.$text.'</a>';
 			$temp_content = $this->cObj->getSubpart($this->templateCode,'###NAVIGATION_PRE_SINGLE###');
-			$temp_content = $this->cObj->substituteMarker($temp_content,'###LINK###',$link);
+			#$temp_content = $this->cObj->substituteMarker($temp_content,'###LINK###',$link);
+			$temp_content = $this->cObj->substituteMarker($temp_content,'###LINK###',$newLink);
 			$pre_content .= $temp_content;
 		}
 		
@@ -389,8 +396,11 @@ class tx_keyac_pi1 extends tslib_pibase {
 			// print text
 			$overrulePIVars=array('month' => $var_month, 'year' => $var_year);
 			$link = $this->pi_linkTP_keepPIVars($text,$overrulePIVars,$cache=1);
+			$linkUrl = $this->pi_linkTP_keepPIVars_url($overrulePIVars,$cache=1);
+			$newLink = '<a href="'.$linkUrl.'" rel="nofollow">'.$text.'</a>';
 			$temp_content = $this->cObj->getSubpart($this->templateCode,'###NAVIGATION_POST_SINGLE###');
-			$temp_content = $this->cObj->substituteMarker($temp_content,'###LINK###',$link);
+			#$temp_content = $this->cObj->substituteMarker($temp_content,'###LINK###',$link);
+			$temp_content = $this->cObj->substituteMarker($temp_content,'###LINK###',$newLink);
 			$post_content .= $temp_content;
 		}
 		
