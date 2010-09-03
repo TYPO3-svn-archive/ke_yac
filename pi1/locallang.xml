@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+
+<T3locallang>
+	<meta type="array">
+		<type>module</type>
+		<description>Language labels for plugin &quot;tx_keyac_pi1&quot;</description>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index="ff_mode_selector">Plugin-Mode</label>
+			<label index="ff_mode.I.0">Calendar / List / Detail</label>
+			<label index="ff_mode.I.1">Teaser</label>
+			<label index="ff_mode.I.2">My Events</label>
+			<label index="ff_mode.I.3">Calendar / Listview (ignores "showUid")</label>
+			<label index="ff_mode.I.4">Detail view</label>
+			<label index="ff_templateFile">HTML-Template</label>
+			<label index="ff_main">MAIN SETTINGS</label>
+			<label index="ff_calendar">CALENDAR</label>
+			<label index="ff_singleview">SINGLEVIEW</label>
+			<label index="ff_listview">LISTVIEW</label>
+			<label index="ff_dateFormat">DATE FORMAT</label>
+			<label index="ff_myEvents">MY EVENTS</label>
+			<label index="ff_detailView">DETAIL VIEW</label>
+			<label index="ff_teaser">TEASER</label>
+			<label index="ff_calendars">Number of calendars to show?</label>
+			<label index="ff_rows">Number of rows to show?</label>
+			<label index="ff_columns">Number of columns to show?</label>
+			<label index="ff_showDaysRow">Show row with weekday?</label>
+			<label index="ff_showWeekNumberRow">Show row with number of week?</label>
+			<label index="ff_showMonthsNavigation">Show navigation bar? (0 hides bar) </label>
+			<label index="ff_showHideCalendarLink">Show "Hide calendar" link?</label>
+			<label index="ff_showList">Show Listview?</label>
+			<label index="ff_linkToSingleView">Link to Singleview? (otherwise link to Listview)</label>
+			<label index="ff_showEventsWithoutCat">Show events without category?</label>
+			<label index="ff_showLegend">Show legend?</label>
+			<label index="ff_showTooltips">Show Tooltips?</label>
+			<label index="ff_tooltipDuration">Time until fade out (in ms)</label>
+			<label index="ff_showDefaultImageInSingleview">Show default if no image set in record?</label>
+			<label index="ff_showDefaultImageInListview">Show default if no image set in record?</label>
+			<label index="ff_strftimeFormatStringWithTime">strftime() date and time</label>
+			<label index="ff_strftimeFormatStringWithoutTime">strftime() date</label>
+			<label index="ff_strftimeFormatTime">strftime() time</label>
+			<label index="ff_listFieldHeader_startdat">Start date (and time)</label>
+			<label index="ff_listFieldHeader_enddat">End date (and time)</label>
+			<label index="ff_listFieldHeader_showtime">Show time?</label>
+			<label index="ff_listFieldHeader_title">Title</label>
+			<label index="ff_listFieldHeader_location">Location</label>
+			<label index="ff_listFieldHeader_bodytext">Bodytext</label>
+			<label index="ff_listFieldHeader_infolink">Infolink</label>
+			<label index="ff_listFieldHeader_cat">Category</label>
+			<label index="ff_singlePid">page for single view</label>
+			<label index="ff_teaserHeader">Header for Teaser</label>
+			<label index="ff_teaserLimit">Limit number of entries in teaser</label>
+			<label index="ff_teaserLength">max. length of title in teaser</label>
+			<label index="ff_singleDateUid">Date for single view</label>
+			<label index="ff_singleCat">Show entries from this category</label>
+			<label index="ff_singleviewPid">Singleview Page</label>
+			<label index="ff_usergroup">User group</label>
+			<label index="ff_enableFrontendEditing">Enable Frontend Editing</label>
+			<label index="until"> - </label>
+			<label index="uhr"></label>
+			<label index="location">Location</label>
+			<label index="infolink">Infolink</label>
+			<label index="back">back</label>
+			<label index="noItemsInCategory">no items in this category</label>
+			<label index="noResults">No results found</label>
+			<label index="showCalendar">show calendar</label>
+			<label index="hideCalendar">hide calendar</label>
+			<label index="event">Event</label>
+			<label index="description">Description</label>
+			<label index="nodate">No date set</label>
+			<label index="teaser">Teaser Text</label>
+			<label index="images">Images</label>
+			<label index="attachments">File Attachments</label>
+			<label index="owner">Owner</label>
+			<label index="attendees">Attendees</label>
+			<label index="attend">attend</label>
+			<label index="delete_attendance">delete attendance</label>
+			<label index="attendance">Attendance</label>
+			<label index="user_is_attendee">You are an attendee.</label>
+			<label index="user_is_no_attendee">You are not an attendee.</label>
+			<label index="more">more...</label>
+			<label index="map">Google Map</label>
+			<label index="teaserheader">Next Events</label>
+			<label index="no_login">Login is needed for viewing your events.</label>
+			<label index="myevents_header">My Events</label>
+			<label index="label_button_attend">Attend</label>
+			<label index="label_button_delete_attendance">Delete attendance</label>
+			<label index="label_button_invite">Invite</label>
+			<label index="label_button_move">Move</label>
+			<label index="label_button_delete">Delete</label>
+			<label index="label_button_submit_invitation">Submit</label>
+			<label index="text_invitation">Please select the persons you want to invite</label>
+			<label index="create_event_link">Create event</label>
+			<label index="form_title_create">Create new event</label>
+			<label index="label_show_passed_events">Show passed events?</label>
+			<label index="label_owner_attend">Do you want to attend?</label>
+
+			<!-- FORM FIELD LABELS -->
+			<label index="label_startdat">Start Date</label>
+			<label index="label_enddat">End Date</label>
+			<label index="label_showtime">Show time?</label>
+			<label index="label_title">Title</label>
+			<label index="label_location">Location</label>
+			<label index="label_teaser">Teaser</label>
+			<label index="label_bodytext">Description</label>
+			
+			
+		</languageKey>
+		<languageKey index="de" type="array">
+			<label index="ff_mode_selector">Plugin-Modus</label>
+			<label index="ff_mode.I.0">Kalender / Liste / Detail</label>
+			<label index="ff_mode.I.1">Teaser</label>
+			<label index="ff_mode.I.2">Meine Termine</label>
+			<label index="ff_mode.I.3">Kalender / Liste (ignoriert "showUid")</label>
+			<label index="ff_mode.I.4">Detailansicht</label>
+			<label index="ff_templateFile">HTML-Template</label>
+			<label index="ff_main">ALLGEMEIN</label>
+			<label index="ff_calendar">KALENDER</label>
+			<label index="ff_singleview">EINZELANSICHT</label>
+			<label index="ff_listview">LISTENANSICHT</label>
+			<label index="ff_dateFormat">DATUMSFORMAT</label>
+			<label index="ff_myEvents">MEINE TERMINE</label>
+			<label index="ff_detailView">DETAILANSICHT</label>
+			<label index="ff_teaser">TEASER</label>
+			<label index="ff_calendars">Wieviele Kalender sollen angezeigt werden?</label>
+			<label index="ff_rows">Wieviele Zeilen?</label>
+			<label index="ff_columns">Wieviele Spalten?</label>
+			<label index="ff_showDaysRow">Zeige Name des Wochentags?</label>
+			<label index="ff_showWeekNumberRow">Zeige Kalenderwoche?</label>
+			<label index="ff_showMonthsNavigation">Zeige Monats-Navigation? (0 deaktiviert die Navigation)</label>
+			<label index="ff_showHideCalendarLink">Zeige "Kalender verstecken"-Link?</label>
+			<label index="ff_showList">Zeige Listenansicht?</label>
+			<label index="ff_linkToSingleView">Verlinkung auf Single-View? (ansonsten Verlinkung auf List-View)</label>
+			<label index="ff_showEventsWithoutCat">Termine ohne zugewiesene Kategorie anzeigen?</label>
+			<label index="ff_showLegend">Legende anzeigen?</label>
+			<label index="ff_showTooltips">Zeige Tooltips?</label>
+			<label index="ff_tooltipDuration">Zeit bis zum Ausblenden (in ms)</label>
+			<label index="ff_showDefaultImageInSingleview">Zeige Default-Bild wenn kein Bild in Datensatz hinterlegt?</label>
+			<label index="ff_showDefaultImageInListview">Zeige Default-Bild wenn kein Bild in Datensatz hinterlegt?</label>
+			<label index="ff_strftimeFormatStringWithTime">strftime() Datum + Uhrzeit</label>
+			<label index="ff_strftimeFormatStringWithoutTime">strftime() Datum</label>
+			<label index="ff_strftimeFormatTime">strftime() Uhrzeit</label>
+			<label index="ff_listFieldHeader_startdat">Startdatum (inkl. Zeit)</label>
+			<label index="ff_listFieldHeader_enddat">Enddatum (inkl. Zeit)</label>
+			<label index="ff_listFieldHeader_showtime">Uhrzeit anzeigen?</label>
+			<label index="ff_listFieldHeader_title">Titel</label>
+			<label index="ff_listFieldHeader_location">Location</label>
+			<label index="ff_listFieldHeader_bodytext">Beschreibungstext</label>
+			<label index="ff_listFieldHeader_infolink">Infolink</label>
+			<label index="ff_listFieldHeader_cat">Kategorie</label>
+			<label index="ff_singlePid">Einzelansicht-Seite</label>
+			<label index="ff_teaserHeader">Teaser-Titel</label>
+			<label index="ff_teaserLimit">max. Einträge in Teaser</label>
+			<label index="ff_teaserLength">max. Länge des Titels in Teaser</label>
+			<label index="ff_singleDateUid">Termin für Detailansicht</label>
+			<label index="ff_singleCat">Anzeige auf Kategorie beschränken</label>
+			<label index="ff_singleviewPid">Seite mit Einzelansicht</label>
+			<label index="ff_usergroup">Benutzergruppe</label>
+			<label index="ff_enableFrontendEditing">Frontend Editing aktivieren</label>
+			<label index="until">bis</label>
+			<label index="uhr">Uhr</label>
+			<label index="location">Location</label>
+			<label index="infolink">Infolink</label>
+			<label index="back">Zurück</label>
+			<label index="noItemsInCategory">Keine Termine in dieser Kategorie vorhanden</label>
+			<label index="noResults">Keine Ergebnisse gefunden</label>
+			<label index="showCalendar">Kalender anzeigen</label>
+			<label index="hideCalendar">Kalender verstecken</label>
+			<label index="event">Termin</label>
+			<label index="description">Beschreibung</label>
+			<label index="nodate">Kein Datum angegeben</label>
+			<label index="teaser">Kurzbeschreibung</label>
+			<label index="images">Bilder</label>
+			<label index="attachments">Dateianhänge</label>
+			<label index="owner">Besitzer</label>
+			<label index="attendees">Teilnehmer</label>
+			<label index="attend">teilnehmen</label>
+			<label index="delete_attendance">Teilnahme stornieren</label>
+			<label index="attendance">Teilnahme</label>
+			<label index="user_is_attendee">Sie nehmen an diesem Termin teil.</label>
+			<label index="user_is_no_attendee">Sie nehmen nicht an diesem Termin teil.</label>
+			<label index="more">mehr Informationen</label>
+			<label index="map">Google Map</label>
+			<label index="teaserheader">Anstehende Termine</label>
+			<label index="no_login">Sie müssen sich einloggen, um Ihre Termine einsehen zu können.</label>
+			<label index="myevents_header">Meine Termine</label>
+			<label index="label_button_attend">an Termin teilnehmen</label>
+			<label index="label_button_delete_attendance">nicht teilnehmen</label>
+			<label index="label_button_invite">Teilnehmer einladen</label>
+			<label index="label_button_edit">Termin bearbeiten</label>
+			<label index="label_button_move">Termin verschieben</label>
+			<label index="label_button_delete">Termin löschen</label>
+			<label index="label_button_submit_invitation">Abschicken</label>
+			<label index="text_invitation">Teilnehmer</label>
+			<label index="create_event_link">Termin erstellen</label>
+			<label index="form_title_create">Neuen Termin erstellen</label>
+			<label index="create_successful">Der Termin wurde erfolgreich angelegt.</label>
+			<label index="create_error">Der Termin konnte nicht angelegt werden.</label>
+			<label index="form_title_edit">Termin bearbeiten</label>
+			<label index="invite_success">Die gewählten Personen wurden per E-Mail zur Teilnahme eingeladen.</label>
+			<label index="invite_success_set">Die gewählten Personen wurden als Teilnehmer hinzugefügt.</label>
+			<label index="invite_no_selection">Es wurden keine Personen ausgewählt.</label>
+			<label index="text_move">Bitte wählen Sie die neuen Zeitangaben für diesen Termin</label>
+			<label index="success_move">Der Termin wurde erfolgreich verschoben</label>
+			<label index="edit_successful">Ihre Änderungen wurden gespeichert.</label>
+			<label index="edit_error">Ihre Änderungen konnten nicht gespeichert werden.</label>
+			<label index="delete_question">Möchten Sie den Termin "%s" wirklich löschen?</label>
+			<label index="yes">Ja</label>
+			<label index="no">Nein</label>
+			<label index="delete_success">Der Termin "%s" wurde erfolgreich gelöscht.</label>
+			<label index="delete_error">Der Termin "%s" konnte nicht gelöscht werden.</label>
+			<label index="create_event">Termin erstellen</label>
+			<label index="required_mark"><![CDATA[<span class="required_mark">*</span>]]></label>
+			<label index="no_suggestions_found">Es konnten keine Terminvorschläge gefunden werden</label>
+			<label index="event_not_found">Dieser Termin konnte nicht gefunden werden. Wurde er vielleicht gelöscht?</label>
+			<label index="no_authorization">Sie sind nicht berechtigt diesen Termin einzusehen</label>
+			<label index="private_event">Privat</label>
+			<label index="more_files">weitere Datei</label>
+			<label index="label_show_passed_events">Bereits vergangene Termine anzeigen?</label>
+			<label index="label_owner_attend">Möchten Sie am Termin teilnehmen?</label>
+			
+			<label index="label_invitation_mode_invite">einladen</label>
+			<label index="label_invitation_mode_set">festlegen</label>
+			
+			
+			<!-- FORM FIELD LABELS -->
+			<label index="label_startdat">Startdatum</label>
+			<label index="label_enddat">Enddatum</label>
+			<label index="label_showtime">Uhrzeit anzeigen?</label>
+			<label index="label_private">Privater Termin?</label>
+			<label index="label_title">Titel</label>
+			<label index="label_location">Veranstaltungsort</label>
+			<label index="label_teaser">Kurzbeschreibung</label>
+			<label index="label_bodytext">Beschreibungstext</label>
+			<label index="label_cat">Kategorie</label>
+			<label index="label_address">Straße</label>
+			<label index="label_zip">Postleitzahl</label>
+			<label index="label_city">Ort</label>
+			<label index="label_reason">Begründung für Verschiebung</label>
+			<label index="label_zip_city">PLZ / Ort</label>
+			<label index="label_attachments">Dateianhänge</label>
+
+			<!-- FORM ERRORS -->
+			<label index="error_startdat_not_set">Es wurde kein Startdatum angegeben</label>
+			<label index="error_enddat_not_set">Es wurde kein Enddatum angegeben</label>
+			<label index="error_title_not_set">Es wurde kein Titel angegeben</label>
+			<label index="error_invalid_date">Das Datum ist ungültig</label>
+			<label index="error_enddat_before_startdat">Das Enddatum darf nicht vor dem Startdatum liegen</label>
+
+			<!-- NOTIFICATIONS -->
+			<label index="salutation_male">Sehr geehrter</label>
+			<label index="salutation_female">Sehr geehrte</label>
+			<label index="salutation_general">Sehr geehrte(r)</label>
+			<label index="invitation_subject">Einladung zum Termin "%s"</label>
+			<label index="invitation_subject_set">Teilnahme am Termin "%s"</label>
+			<label index="event_link_title">direkt zum Termin</label>
+			<label index="attendance_notification_subject">%s nimmt am Termin "%s" teil</label>
+			<label index="attendance_delete_notification_subject">%s hat seine Teilnahme am Termin "%s" abgesagt</label>
+			<label index="edit_notification_subject">%s hat den Termin "%s" bearbeitet</label>
+			<label index="delete_notification_subject">%s hat den Termin "%s" gelöscht</label>
+
+			<label index="invitation_text_label">Bitte geben Sie einen Text für die Einladung an:</label>
+		</languageKey>
+	</data>
+</T3locallang>

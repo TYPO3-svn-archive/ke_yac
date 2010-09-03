@@ -1,0 +1,813 @@
+﻿<!-- ################### -->
+<!-- ####### MAIN ###### -->
+<!-- ################### -->
+
+
+<!-- ###MAIN_TEMPLATE### begin -->
+	<div id="navigation">###NAVIGATION###</div>
+	<div id="yac_three_tables">
+		<div id="arrow_prev">###PREV_ARROW###</div>
+		<div class="calendars">###CALENDARS###</div>
+		<div id="arrow_next">###NEXT_ARROW###</div>
+		<div class="clearer">&nbsp;</div>
+	</div>
+	<!-- ###SUB_HIDE_CALENDAR### start -->
+		<div class="calswitch">###HIDE_CALENDAR###</div>
+	<!-- ###SUB_HIDE_CALENDAR### end-->
+
+	<!-- ###SUB_LEGEND### start -->
+		<div class="legend">###LEGEND###</div>
+	<!-- ###SUB_LEGEND### end -->
+	
+	<!-- ###SUB_CREATE_LINK### start -->
+	    <div class="create-link">
+		###CREATE_EVENT_ICON### ###CREATE_EVENT_LINK###
+	    </div>
+	<!-- ###SUB_CREATE_LINK### end -->
+	
+	<div class="show_passed">
+		<form method="post">
+			<input type="hidden" name="tx_keyac_pi1[showpassedchange]" value="1" />
+			<input type="checkbox" name="tx_keyac_pi1[showpassed]" ###SHOWPASSED_CHECKED###  onchange="this.form.submit();" /> ###LABEL_SHOW_PASSED###
+		</form>
+	</div>
+	
+	<!-- ###SUB_LISTVIEW### start -->
+		<div class="listview">###LISTVIEW###</div>
+		<!-- <div id="listview_spacer">&nbsp;</div> -->
+	<!-- ###SUB_LISTVIEW### end-->
+
+<!-- ###MAIN_TEMPLATE### end -->
+
+
+<!-- ##################### -->
+<!-- ####### CLEARER ##### -->
+<!-- ##################### -->
+<!-- ###CALENDARS_CLEARER### begin -->
+	<!--<div class="yac_clearer">&nbsp;</div>-->
+<!-- ###CALENDARS_CLEARER### end -->
+
+<!-- ##################### -->
+<!-- #### SINGLEVIEW ##### -->
+<!-- ##################### -->
+
+<!-- ###SINGLEVIEW_TEMPLATE### start -->
+
+	<div id="keyac-singleview-header-container">
+
+		<div class="content-left">
+			<div class="title">###TITLE###</div>
+			<!-- ###SUB_IMAGES### start -->
+				<div class="images">###IMAGES###</div><!-- ###SUB_IMAGES### end -->
+					<div class="datestring">###DATESTRING### ###LOCATION###<br />
+						###ADDRESS### ###ZIP### ###CITY###<br />
+						Besitzer: ###OWNER_FIRST_NAME### ###OWNER_LAST_NAME###<br />
+						Erstellt: ###CREATION_DATE###<br />
+						Zuletzt bearbeitet: ###EDIT_DATE###<br />
+						<!-- ###SUB_ADDRESS### start -->
+
+						<!-- ###SUB_ADDRESS### end -->
+					</div>
+				
+				<!-- ###SUB_TEASERTEXT### start -->
+				###TEASERTEXT###
+				<!-- ###SUB_TEASERTEXT### end -->
+
+			</div>
+			<div class="clearer">&nbsp;</div>
+	</div>
+	<div id="keyac-singleview-body-container">
+		<!-- ###SUB_DESCRIPTION### start -->
+			<div class="description">###DESCRIPTION###</div>
+			<div class="clearer"></div>
+		<!-- ###SUB_DESCRIPTION### end -->
+	</div>
+	<!--- ###SUB_ATTACHMENTS### start -->
+		<div class="content-left"><b>###LABEL_ATTACHMENTS###</b></div>
+		<div class="content-right attachments">###ATTACHMENTS###</div>
+		<div class="clearer">&nbsp;</div>
+	<!-- ###SUB_ATTACHMENTS### end -->
+
+	<!-- ###SUB_MAP### start -->
+	<div id="keyac-singleview-map-container">
+		<div id="keyac-singleview-map">
+			###MAPJS###
+			<div class="map">###MAP###</div>
+		</div>
+	</div>
+	<!-- ###SUB_MAP### end -->
+	
+	
+	
+	<!-- ###SUB_ATTENDEES### start -->
+	<div id="keyac-singleview-attendees-container">
+		<div class="attendees-headerrow">
+			<div class="content-left attendees-empty">&nbsp;</div>
+			<div class="content-right attendees-label"><b>###LABEL_ATTENDEES###</b></div>
+			<div class="clearer">&nbsp;</div>
+		</div>
+		###ATTENDEES###
+		<span class="clearer">&nbsp;</span>
+	</div>
+	<!-- ###SUB_ATTENDEES### end -->
+	
+	
+	<!-- ###SUB_UNIVERSAL_KEWORKS_BROWSER### start -->
+		<div class="content-left"><b>###LABEL_UKB###</b></div>
+		<div class="content-right">
+			###UKB_CONTENT###
+			###UKB_FORM###
+		</div>
+		<hr class="clearer">
+	<!-- ###SUB_UNIVERSAL_KEWORKS_BROWSER### start -->
+
+
+	<!-- ###SUB_FOOTER_MENU### start -->
+	<div id="keyac-singleview-footer-container">
+		<!-- ###SUB_ATTEND### start --><div class="keyac-singleview-button first">###LINK###</div><!-- ###SUB_ATTEND### end -->
+		<!-- ###SUB_INVITE### start --><div class="keyac-singleview-button">###LINK###</div><!-- ###SUB_INVITE### end -->
+		<!-- ###SUB_EDIT### start --><div class="keyac-singleview-button">###LINK###</div><!-- ###SUB_EDIT### end -->
+		<!-- ###SUB_DELETE### start --><div class="keyac-singleview-button last">###LINK###</div><!-- ###SUB_DELETE### end -->
+	</div>
+	<!-- ###SUB_FOOTER_MENU### end -->
+	<div class="clearer">&nbsp;</div>
+	<div class="backlink">###BACKLINK_ICON### ###BACKLINK###</div>
+
+	<!--<div class="content-left"><b>###LABEL_DESCRIPTION###</b></div>-->
+
+	<!--<div class="content-left"><b>###LABEL_EVENT###</b></div>-->
+
+	<!-- ###SUB_INFOLINK### start -->
+		<!--<div class="content-left"><b>###LABEL_INFOLINK###</b></div>
+		<div class="content-right infolink">###INFOLINK_ICON### ###INFOLINK###</div>
+		<hr class="clearer">-->
+	<!-- ###SUB_INFOLINK### end -->
+
+	<!-- ###SUB_ATTENDANCE### start -->
+		<!--
+		<div class="content-left"><b>###LABEL_ATTENDANCE###</b></div>
+		<div class="content-right attend">###ATTENDANCE_STATUS###<br />###ATTENDANCE_ACTION###</div>
+		<hr class="clearer">
+		-->
+	<!-- ###SUB_ATTENDANCE### end -->
+
+	<!--###OWNER_USERNAME### ###OWNER_EMAIL### -->
+
+<!-- ###SINGLEVIEW_TEMPLATE### end -->
+
+
+
+
+<!-- ###IMAGE_ROW### start -->
+	###IMAGE###<br />
+<!-- ###IMAGE_ROW### end -->
+
+<!-- ###ATTACHMENT_ROW### start -->
+	###ATTACHMENT_ICON### ###ATTACHMENT_LINK###<br />
+<!-- ###ATTACHMENT_ROW### end -->
+
+<!-- ###ATTENDEE_ROW### start -->
+		<div class="attendees-row ###CSS_ROW###">
+				<div class="content-left attendees-icon">###ATTENDEE_ICON###</div>
+				<div class="content-right attendees">###NAME###<br /></div>
+		</div>
+<!-- ###ATTENDEE_ROW### end -->
+
+
+
+<!-- ###################### -->
+<!-- ##### NAVIGATION ##### -->
+<!-- ###################### -->
+
+<!-- ###NAVIGATION_TEMPLATE### begin -->
+	###PRE### ... ###POST###
+<!-- ###NAVIGATION_TEMPLATE### end -->
+
+<!-- ###NAVIGATION_PRE_SINGLE### begin -->
+	###LINK### |
+<!-- ###NAVIGATION_PRE_SINGLE### end -->
+
+<!-- ###NAVIGATION_POST_SINGLE### begin -->
+	| ###LINK###
+<!-- ###NAVIGATION_POST_SINGLE### end -->
+
+
+
+<!-- ################### -->
+<!-- #### HIDE CALENDAR #### -->
+<!-- ################### -->
+
+<!-- ###HIDE_CALENDAR_TEMPLATE### begin -->
+	###LINK###
+<!-- ###HIDE_CALENDAR_TEMPLATE### end -->
+
+
+
+<!-- ################### -->
+<!-- ##### LISTVIEW   ###### -->
+<!-- ################### -->
+
+<!-- ###LISTVIEW_SINGLE### begin -->
+	<div class="event-item ###CSS_ROW###">
+		###ANCHOR###
+		<div class="caticon">###CATICON###</div>
+		###LINK_START### ###DATE### ###TITLE### ###LINK_END###
+		<br />
+		<div class="more">
+			<div class="thumbnail">###THUMBNAIL###</div>
+			<div class="teasertext">
+				###TEASERTEXT###
+				<i><!-- ###LABEL_ATTENDEES###:   -->  ###ATTENDEES###</i>
+			</div>
+			<hr class="clearer" />
+			<!--###LINK_START### ###MORE_ICON### ###MORE_TEXT### ###LINK_END###-->
+		</div>
+	</div>
+<!-- ###LISTVIEW_SINGLE### end -->
+
+
+<!-- ################### -->
+<!-- ##### TOOLTIP   ###### -->
+<!-- ################### -->
+
+<!-- ###TOOLTIP_ROW### begin -->
+	<div class="tooltip-row">###CATICON### ###DATE### ###TITLE###</div>
+<!-- ###TOOLTIP_ROW### end -->
+
+
+
+<!-- ################### -->
+<!-- ###### LEGEND     ###### -->
+<!-- ################### -->
+
+<!-- ###LEGEND_TEMPLATE### begin -->
+	###CAT_ENTRIES###
+<!-- ###LEGEND_TEMPLATE### end -->
+
+<!-- ###LEGEND_SINGLE### begin -->
+	<span class="cat-entry"><nobr>###CATICON### ###CATTEXT###</nobr></span>
+<!-- ###LEGEND_SINGLE### end -->
+
+
+
+<!-- ################### -->
+<!-- ###### TEASER    ###### -->
+<!-- ################### -->
+
+<!-- ###TEASER_TEMPLATE### begin -->
+	<div class="yac-teaser">
+		<!--Anstehende Termine-->
+		<div class="yac-teaser-header">###TITLE###</div>
+		<div class="yac-teaser-body">
+			###TEASER_ENTRIES###
+		</div>
+	</div>
+<!-- ###TEASER_TEMPLATE### end -->
+
+<!-- ###TEASER_SINGLE### begin -->
+	<span class="date">###DATETIME###</span><br />
+	###TITLE###<br />
+	<i>###ATTENDANTS###</i><br />
+	<img class="hrLine" src="typo3conf/ext/ke_yac/pi1/images/horizontal_line.gif" alt="Horizontale Trennlinie" />
+<!-- ###TEASER_SINGLE### end -->
+
+<!-- ###TEASER_NOENTRIES### begin -->
+	<li>###NOENTRIES###</li>
+<!-- ###TEASER_NOENTRIES### end -->
+
+
+
+<!-- ###################### -->
+<!-- ##### MY EVENTS  ##### -->
+<!-- ###################### -->
+
+<!-- ###MYEVENTS### start -->
+	<div class="yac-teaser">
+		<!-- Meine Termine-->
+		<div class="yac-teaser-header">###HEADER###</div>
+			<!-- ###MYEVENTS_ROW### start -->
+				 <!-- ###ICON### -->
+				    <div class="yac-teaser-body">
+				     <span class="date">###DATE###</span> <br />
+				    ###LINK_START### ###TITLE### ###LINK_END###
+				    <img class="hrLine" src="typo3conf/ext/ke_yac/pi1/images/horizontal_line.gif" alt="Horizontale Trennlinie" />
+				    </div>
+			<!-- ###MYEVENTS_ROW### end -->
+	</div>
+<!-- ###MYEVENTS### end -->
+
+<!-- ###MYEVENTS_ERROR### start -->
+	###MESSAGE###
+<!-- ###MYEVENTS_ERROR### start -->
+
+<!-- ###SUB_INVITATION### start -->
+	<div class="yac-invitations">
+		<form action="###ACTION###" method="post">
+			<p class="invitation-text">###TEXT###</p>
+			###INPUT_INVITATION_MODE###<br />
+			<!-- ###INVITATION_ROW### start -->
+			<div class="invitation-row">###CHECKBOX### ###NAME###</div>
+			<!-- ###INVITATION_ROW### end -->
+			<br />
+			###INVITATION_TEXT_LABEL###<br />
+			###INVITATION_TEXT_INPUT###<br /><br />
+			###HIDDENFIELDS###
+			###BACK### ###SUBMIT###
+		</form>
+	</div>
+<!-- ###SUB_INVITATION### end -->
+
+<!-- ###SUB_INVITATION_INCLUDE### start -->
+	<div class="yac-invitations">
+		<p class="invitation-text">###TEXT###</p>
+		###INPUT_INVITATION_MODE###<br />
+		<!-- ###INVITATION_ROW### start -->
+		<div class="invitation-row">###CHECKBOX### ###NAME###</div>
+		<!-- ###INVITATION_ROW### end -->
+		<br />
+		###INVITATION_TEXT_LABEL###<br />
+		###INVITATION_TEXT_INPUT###<br /><br />
+		###HIDDENFIELDS###
+	</div>
+<!-- ###SUB_INVITATION_INCLUDE### end -->
+
+
+
+<!-- ###CREATE_FORM### start -->
+
+	<h1>###FORM_TITLE###</h1>
+
+	<form method="post" action="###ACTION###" enctype="multipart/form-data">
+
+		 <!-- ###SUB_CONFLICTS_CREATE### start -->
+		    <p><span class="conflict">F&uuml;r den gew&uuml;nschten Zeitraum existieren Konflikte bei folgenden eingeladenen Benutzern:</span></p>
+		    <table>
+			<tr>
+			    <th>Benutzer</th>
+			    <th>Termin</th>
+			    <th>von</th>
+			    <th>bis</th>
+			</tr>
+		    <!-- ###SUB_CONFLICT_ROW_CREATE### start -->
+			<tr>
+			    <td>###USER_FIRST_NAME### ###USER_LAST_NAME###</td>
+			    <td>###EVENT_TITLE###</td>
+			    <td>###EVENT_STARTDAT###</td>
+			    <td>###EVENT_ENDDAT###</td>
+			</tr>
+		    <!-- ###SUB_CONFLICT_ROW_CREATE### end -->
+		    </table>
+		    <p>Konflikte ignorieren und Termin trotzdem verwenden? <input type="submit" name="tx_keyac_pi1[submitcreateignore]"></p>
+		    <p>Anderen Termin finden? <input type="submit" name="tx_keyac_pi1[submitcreatefind]" ></p>
+		    <br /><br />
+		<!-- ###SUB_CONFLICTS_CREATE### end -->
+
+
+		<div class="fieldset">
+			<span class="label">###LABEL_TITLE###</span>
+			<span class="field">###FIELD_TITLE###</span>
+			<span class="fielderror">###ERROR_TITLE###</span>
+			<div class="clearer">&nbsp;</div>
+		</div>
+
+		<div class="fieldset">
+			<span class="label">###LABEL_STARTDAT###</span>
+			<span class="field">###FIELD_STARTDAT###</span>
+			<span class="fielderror">###ERROR_STARTDAT###</span>
+			<div class="clearer">&nbsp;</div>
+		</div>
+
+		<div class="fieldset">
+			<span class="label">###LABEL_ENDDAT###</span>
+			<span class="field">###FIELD_ENDDAT###</span>
+			<span class="fielderror">###ERROR_ENDDAT###</span>
+			<div class="clearer">&nbsp;</div>
+		</div>
+
+		<div class="fieldset">
+			<span class="label">###LABEL_SHOWTIME###</span>
+			<span class="field">###FIELD_SHOWTIME###</span>
+			<span class="fielderror">###ERROR_SHOWTIME###</span>
+			<div class="clearer">&nbsp;</div>
+		</div>
+
+		<div class="fieldset">
+			<span class="label">###LABEL_PRIVATE###</span>
+			<span class="field">###FIELD_PRIVATE###</span>
+			<span class="fielderror">###ERROR_PRIVATE###</span>
+			<div class="clearer">&nbsp;</div>
+		</div>
+
+		<div class="fieldset">
+			<span class="label">###LABEL_TEASER###</span>
+			<span class="field">###FIELD_TEASER###</span>
+			<span class="fielderror">###ERROR_TEASER###</span>
+			<div class="clearer">&nbsp;</div>
+		</div>
+
+		<div class="fieldset">
+			<span class="label">###LABEL_BODYTEXT###</span>
+			<span class="field">###FIELD_BODYTEXT###</span>
+			<span class="fielderror">###ERROR_BODYTEXT###</span>
+			<div class="clearer">&nbsp;</div>
+		</div>
+
+		<div class="fieldset">
+			<span class="label">###LABEL_CAT###</span>
+			<span class="field">###FIELD_CAT###</span>
+			<span class="fielderror">###ERROR_CAT###</span>
+			<div class="clearer">&nbsp;</div>
+		</div>
+
+		<div class="fieldset">
+			<span class="label">###LABEL_LOCATION###</span>
+			<span class="field">###FIELD_LOCATION###</span>
+			<span class="fielderror">###ERROR_LOCATION###</span>
+			<div class="clearer">&nbsp;</div>
+		</div>
+
+		<div class="fieldset">
+			<span class="label">###LABEL_ADDRESS###</span>
+			<span class="field">###FIELD_ADDRESS###</span>
+			<span class="fielderror">###ERROR_ADDRESS###</span>
+			<div class="clearer">&nbsp;</div>
+		</div>
+
+		<div class="fieldset">
+			<span class="label">###LABEL_ZIP###</span>
+			<span class="field">###FIELD_ZIP###</span>
+			<span class="fielderror">###ERROR_ZIP###</span>
+			<div class="clearer">&nbsp;</div>
+		</div>
+
+		<div class="fieldset">
+			<span class="label">###LABEL_CITY###</span>
+			<span class="field">###FIELD_CITY###</span>
+			<span class="fielderror">###ERROR_CITY###</span>
+			<div class="clearer">&nbsp;</div>
+		</div>
+
+		<div class="fieldset">
+			<span class="label">###LABEL_ATTACHMENTS###</span>
+			<span class="field">###FIELD_ATTACHMENTS###</span>
+			<span class="fielderror">###ERROR_ATTACHMENTS###</span>
+			<div class="clearer">&nbsp;</div>
+		</div>
+		
+		<div class="fieldset">
+			<span class="label">###LABEL_OWNER_ATTEND###</span>
+			<span class="field">###FIELD_OWNER_ATTEND###</span>
+			<div class="clearer">&nbsp;</div>
+		</div>
+		
+		<br />
+		
+		<p class="invitations">
+			###INVITATIONS###
+		</p>
+
+		###CANCEL### ###SUBMIT###
+
+	</form>
+
+<!-- ###CREATE_FORM### end -->
+
+
+
+<!-- ###EDIT_FORM### start -->
+
+	<h1>###FORM_TITLE###</h1>
+
+	<form method="post" action="###ACTION###" enctype="multipart/form-data">
+
+	    <!-- ###SUB_CONFLICTS_EDIT### start -->
+		<p><span class="conflict">F&uuml;r den gew&uuml;nschten Zeitraum existieren Konflikte bei folgenden Teilnehmern:</span></p>
+		<table>
+		    <tr>
+			<th>Benutzer</th>
+			<th>Termin</th>
+			<th>von</th>
+			<th>bis</th>
+		    </tr>
+		<!-- ###SUB_CONFLICT_ROW_EDIT### start -->
+		    <tr>
+			<td>###USER_FIRST_NAME### ###USER_LAST_NAME###</td>
+			<td>###EVENT_TITLE###</td>
+			<td>###EVENT_STARTDAT###</td>
+			<td>###EVENT_ENDDAT###</td>
+		    </tr>
+		<!-- ###SUB_CONFLICT_ROW_EDIT### end -->
+		</table>
+		<p>Konflikte ignorieren und Termin trotzdem verwenden? <input type="submit" name="tx_keyac_pi1[submiteditignore]"></p>
+		<p>Anderen Termin finden? <input type="submit" name="tx_keyac_pi1[submiteditfind]" ></p>
+		<hr />
+		<br />
+	    <!-- ###SUB_CONFLICTS_EDIT### end -->
+
+
+
+
+	    <div class="fieldset">
+		    <span class="label">###LABEL_TITLE###</span>
+		    <span class="field">###FIELD_TITLE###</span>
+		    <span class="fielderror">###ERROR_TITLE###</span>
+		    <div class="clearer">&nbsp;</div>
+	    </div>
+
+	    <div class="fieldset">
+		    <span class="label">###LABEL_STARTDAT###</span>
+		    <span class="field">###FIELD_STARTDAT###</span>
+		    <span class="fielderror">###ERROR_STARTDAT###</span>
+		    <div class="clearer">&nbsp;</div>
+	    </div>
+
+	    <div class="fieldset">
+		    <span class="label">###LABEL_ENDDAT###</span>
+		    <span class="field">###FIELD_ENDDAT###</span>
+		    <span class="fielderror">###ERROR_ENDDAT###</span>
+		    <div class="clearer">&nbsp;</div>
+	    </div>
+
+	    <div class="fieldset">
+		    <span class="label">###LABEL_SHOWTIME###</span>
+		    <span class="field">###FIELD_SHOWTIME###</span>
+		    <span class="fielderror">###ERROR_SHOWTIME###</span>
+		    <div class="clearer">&nbsp;</div>
+	    </div>
+
+	    <div class="fieldset">
+		    <span class="label">###LABEL_PRIVATE###</span>
+		    <span class="field">###FIELD_PRIVATE###</span>
+		    <span class="fielderror">###ERROR_PRIVATE###</span>
+		    <div class="clearer">&nbsp;</div>
+	    </div>
+
+
+
+	    <div class="fieldset">
+		    <span class="label">###LABEL_TEASER###</span>
+		    <span class="field">###FIELD_TEASER###</span>
+		    <span class="fielderror">###ERROR_TEASER###</span>
+		    <div class="clearer">&nbsp;</div>
+	    </div>
+
+	    <div class="fieldset">
+		    <span class="label">###LABEL_BODYTEXT###</span>
+		    <span class="field">###FIELD_BODYTEXT###</span>
+		    <span class="fielderror">###ERROR_BODYTEXT###</span>
+		    <div class="clearer">&nbsp;</div>
+	    </div>
+
+	    <div class="fieldset">
+		    <span class="label">###LABEL_CAT###</span>
+		    <span class="field">###FIELD_CAT###</span>
+		    <span class="fielderror">###ERROR_CAT###</span>
+		    <div class="clearer">&nbsp;</div>
+	    </div>
+
+	     <div class="fieldset">
+		    <span class="label">###LABEL_LOCATION###</span>
+		    <span class="field">###FIELD_LOCATION###</span>
+		    <span class="fielderror">###ERROR_LOCATION###</span>
+		    <div class="clearer">&nbsp;</div>
+	    </div>
+
+	    <div class="fieldset">
+		    <span class="label">###LABEL_ADDRESS###</span>
+		    <span class="field">###FIELD_ADDRESS###</span>
+		    <span class="fielderror">###ERROR_ADDRESS###</span>
+		    <div class="clearer">&nbsp;</div>
+	    </div>
+
+	    <div class="fieldset">
+		    <span class="label">###LABEL_ZIP###</span>
+		    <span class="field">###FIELD_ZIP###</span>
+		    <span class="fielderror">###ERROR_ZIP###</span>
+		    <div class="clearer">&nbsp;</div>
+	    </div>
+
+	    <div class="fieldset">
+		    <span class="label">###LABEL_CITY###</span>
+		    <span class="field">###FIELD_CITY###</span>
+		    <span class="fielderror">###ERROR_CITY###</span>
+		    <div class="clearer">&nbsp;</div>
+	    </div>
+
+	    <div class="fieldset">
+			<span class="label">###LABEL_ATTACHMENTS###</span>
+			<span class="field">###FIELD_ATTACHMENTS###</span>
+			<span class="fielderror">###ERROR_ATTACHMENTS###</span>
+			<div class="clearer">&nbsp;</div>
+		</div>
+
+	    ###CANCEL### ###SUBMIT###
+
+	</form>
+
+<!-- ###EDIT_FORM### end -->
+
+
+
+
+<!-- ###GENERAL_MESSAGE### start -->
+	<div>
+	    <p class="###CSSCLASS###">###TEXT###</p>
+	    <p>###BACKLINK_ICON### ###BACKLINK###</p>
+	</div>
+<!-- ###GENERAL_MESSAGE### end -->
+
+<!-- ###GENERAL_MAIL_FOOTER### start -->
+<!-- ###GENERAL_MAIL_FOOTER### end -->
+
+
+
+
+
+
+
+
+<!-- ################### -->
+<!-- ### DELETE FORM ### -->
+<!-- ################### -->
+
+<!-- ###DELETE_FORM### begin -->
+    <form method="post" action="###ACTION###">
+	<p class="delete-question">###DELETE_QUESTION###</p>
+	<p><b>Bitte geben Sie eine Begr&uuml;ndung f&uuml;r die Absage ein:</b><br />
+	<textarea name="tx_keyac_pi1[delete_reason]" class="reason"></textarea>
+	</p>
+	<input type="submit" name="tx_keyac_pi1[submitdeleteyes]" value="###YES###" class="yes-button">
+	&nbsp;&nbsp;
+	<input type="submit" name="tx_keyac_pi1[submitdeleteno]" value="###NO###" class="no-button">
+    </form>
+<!-- ###DELETE_FORM### end -->
+
+
+
+
+
+
+<!-- Mail that is sent as invitation to join an event -->
+<!-- ###INVITATION_MAIL### begin -->
+	###SALUTATION### ###FIRST_NAME### ###LAST_NAME###,<br /><br />
+	Sie wurden von ###USER_FIRST_NAME### ###USER_LAST_NAME### zur Teilnahme am Termin "###EVENT_TITLE###" eingeladen.<br />
+	<br />
+	<!-- ###SUB_INVITATION_TEXT### start -->
+		Der Benutzer hat folgenden Einladungstext angegeben: <br />
+		###INVITATION_TEXT###<br /><br />
+	<!-- ###SUB_INVITATION_TEXT### end -->
+
+	<table>
+	    <tr><td><b>###LABEL_TITLE###</b></td><td>###EVENT_TITLE###</td></tr>
+	    <tr><td><b>###LABEL_STARTDAT###</b></td><td>###EVENT_STARTDAT###</td></tr>
+	    <tr><td><b>###LABEL_ENDDAT###</b></td><td>###EVENT_ENDDAT###</td></tr>
+	    <tr><td><b>###LABEL_LOCATION###</b></td><td>###EVENT_LOCATION###</td></tr>
+	    <tr><td><b>###LABEL_ADDRESS###</b></td><td>###EVENT_ADDRESS###</td></tr>
+	    <tr><td><b>###LABEL_ZIP_CITY###</b></td><td>###EVENT_ZIP### ###EVENT_CITY###</td></tr>
+	    <tr><td><b>###LABEL_TEASER###</b></td><td>###EVENT_TEASER###</td></tr>
+	<table>
+	<br />
+	<p>Klicken Sie auf folgenden Link um den Termin einzusehen.</p>
+	<a href="###EVENT_LINK###">###EVENT_LINK###</a>
+	<br />
+	<br />
+	###MAIL_FOOTER###
+<!-- ###INVITATION_MAIL### end -->
+
+
+<!-- Mail that is sent if user was set as attendee by date owner -->
+<!-- ###INVITATION_SET_MAIL### begin -->
+	###SALUTATION### ###FIRST_NAME### ###LAST_NAME###,<br /><br />
+	Sie wurden von ###USER_FIRST_NAME### ###USER_LAST_NAME### als Teilnehmer zum Termin "###EVENT_TITLE###" hinzugef&uuml;gt.<br />
+	<br />
+	<!-- ###SUB_INVITATION_TEXT### start -->
+		Der Benutzer hat folgenden Einladungstext angegeben: <br />
+		###INVITATION_TEXT###<br /><br />
+	<!-- ###SUB_INVITATION_TEXT### end -->
+
+	<table>
+	    <tr><td><b>###LABEL_TITLE###</b></td><td>###EVENT_TITLE###</td></tr>
+	    <tr><td><b>###LABEL_STARTDAT###</b></td><td>###EVENT_STARTDAT###</td></tr>
+	    <tr><td><b>###LABEL_ENDDAT###</b></td><td>###EVENT_ENDDAT###</td></tr>
+	    <tr><td><b>###LABEL_LOCATION###</b></td><td>###EVENT_LOCATION###</td></tr>
+	    <tr><td><b>###LABEL_ADDRESS###</b></td><td>###EVENT_ADDRESS###</td></tr>
+	    <tr><td><b>###LABEL_ZIP_CITY###</b></td><td>###EVENT_ZIP### ###EVENT_CITY###</td></tr>
+	    <tr><td><b>###LABEL_TEASER###</b></td><td>###EVENT_TEASER###</td></tr>
+	<table>
+	<br />
+	<p>Klicken Sie auf folgenden Link um den Termin einzusehen.</p>
+	<a href="###EVENT_LINK###">###EVENT_LINK###</a>
+	<br />
+	<br />
+	###MAIL_FOOTER###
+<!-- ###INVITATION_SET_MAIL### end -->
+
+
+
+<!-- Mail that is sent to owner and attendees when a user joins an event -->
+<!-- ###ATTEND_MAIL### start -->
+	###SALUTATION### ###FIRST_NAME### ###LAST_NAME###, <br /><br />
+	###ATTENDEE_NAME### nimmt am Termin "###EVENT_TITLE###" teil.<br />
+	<br />
+	<table>
+		<tr><td><b>###LABEL_TITLE###</b></td><td>###EVENT_TITLE###</td></tr>
+		<tr><td><b>###LABEL_STARTDAT###</b></td><td>###EVENT_STARTDAT###</td></tr>
+		<tr><td><b>###LABEL_ENDDAT###</b></td><td>###EVENT_ENDDAT###</td></tr>
+		<tr><td><b>###LABEL_LOCATION###</b></td><td>###EVENT_LOCATION###</td></tr>
+		<tr><td><b>###LABEL_ADDRESS###</b></td><td>###EVENT_ADDRESS###</td></tr>
+		<tr><td><b>###LABEL_ZIP_CITY###</b></td><td>###EVENT_ZIP### ###EVENT_CITY###</td></tr>
+		<tr><td><b>###LABEL_TEASER###</b></td><td>###EVENT_TEASER###</td></tr>
+	<table>
+	<br />
+	<p>Klicken Sie auf folgenden Link um den vollst&auml;ndigen Termin einzusehen.</p>
+	<a href="###EVENT_LINK###">###EVENT_LINK###</a>
+	<br />
+	<br />
+	###MAIL_FOOTER###
+<!-- ###ATTEND_MAIL### end -->
+
+
+<!-- Mail that is sent to owner and attendees when a user deletes his attendance -->
+<!-- ###ATTEND_DELETE_MAIL### start -->
+	###SALUTATION### ###FIRST_NAME### ###LAST_NAME###, <br /><br />
+	###ATTENDEE_NAME### hat seine Teilnahme am Termin "###EVENT_TITLE###" abgesagt.<br />
+	<br />
+	<table>
+		<tr><td><b>###LABEL_TITLE###</b></td><td>###EVENT_TITLE###</td></tr>
+		<tr><td><b>###LABEL_STARTDAT###</b></td><td>###EVENT_STARTDAT###</td></tr>
+		<tr><td><b>###LABEL_ENDDAT###</b></td><td>###EVENT_ENDDAT###</td></tr>
+		<tr><td><b>###LABEL_LOCATION###</b></td><td>###EVENT_LOCATION###</td></tr>
+		<tr><td><b>###LABEL_ADDRESS###</b></td><td>###EVENT_ADDRESS###</td></tr>
+		<tr><td><b>###LABEL_ZIP_CITY###</b></td><td>###EVENT_ZIP### ###EVENT_CITY###</td></tr>
+		<tr><td><b>###LABEL_TEASER###</b></td><td>###EVENT_TEASER###</td></tr>
+	<table>
+	<br />
+	<p>Klicken Sie auf folgenden Link um den vollst&auml;ndigen Termin einzusehen.</p>
+	<a href="###EVENT_LINK###">###EVENT_LINK###</a>
+	<br />
+	<br />
+	###MAIL_FOOTER###
+<!-- ###ATTEND_DELETE_MAIL### end -->
+
+
+
+<!-- Mail that is sent to owner and attendees when a user has edited an event -->
+<!-- ###EDIT_NOTIFICATION_MAIL### start -->
+    <p>###SALUTATION### ###FIRST_NAME### ###LAST_NAME###, <br /><br />
+    ###EDITOR_NAME### hat den Termin "###EVENT_TITLE###" bearbeitet. </p>
+    <br />
+    <!-- ###CHANGED_FIELDS### start  -->
+	<b>ge&auml;nderte Daten:</b><br /><br />
+	<table>
+	    <!-- ###CHANGED_FIELD_ROW### start -->
+		<tr><td><b>###FIELD###:&nbsp;&nbsp;</b></td><td>###VALUE###</td></tr>
+	    <!-- ###CHANGED_FIELD_ROW### end -->
+	</table>
+    <!-- ###CHANGED_FIELDS### end  -->
+    <br />
+    <p>Klicken Sie auf folgenden Link um den vollst&auml;ndigen Termin einzusehen.</p>
+    <a href="###EVENT_LINK###">###EVENT_LINK###</a>
+    <br />
+    <br />
+    ###MAIL_FOOTER###
+<!-- ###EDIT_NOTIFICATION_MAIL### end -->
+
+
+
+<!-- Mail that is sent to owner and attendees when a user deletes an event -->
+<!-- ###DELETE_MAIL### start -->
+	###SALUTATION### ###FIRST_NAME### ###LAST_NAME###, <br /><br />
+	###USER_NAME### hat den Termin "###EVENT_TITLE###" gelÃ¶scht.<br />
+	<br />
+	<table>
+		<tr><td><b>###LABEL_TITLE###</b></td><td>###EVENT_TITLE###</td></tr>
+		<tr><td><b>###LABEL_STARTDAT###</b></td><td>###EVENT_STARTDAT###</td></tr>
+		<tr><td><b>###LABEL_ENDDAT###</b></td><td>###EVENT_ENDDAT###</td></tr>
+		<tr><td><b>###LABEL_LOCATION###</b></td><td>###EVENT_LOCATION###</td></tr>
+		<tr><td><b>###LABEL_ADDRESS###</b></td><td>###EVENT_ADDRESS###</td></tr>
+		<tr><td><b>###LABEL_ZIP_CITY###</b></td><td>###EVENT_ZIP### ###EVENT_CITY###</td></tr>
+		<tr><td><b>###LABEL_TEASER###</b></td><td>###EVENT_TEASER###</td></tr>
+	<table>
+	<br />
+    <!-- ###SUB_DELETE_REASON### start -->
+	<p>Der Benutzer hat folgende Begr&uuml;ndung f&uuml;r die Absage angegeben:<br />
+	###TEXT###</p>
+    <!-- ###SUB_DELETE_REASON### end -->
+    <br />
+    <br />
+    ###MAIL_FOOTER###
+<!-- ###DELETE_MAIL### end -->
+
+
+
+<!-- ###SUB_SUGGESTIONS### start -->
+    <form method="post">
+	<p><b>Folgende Terminvorschl&auml;ge wurden ermittelt:</b></p>
+        <!-- ###SUGGESTION_ROW### start -->
+	    <input type="radio" name="tx_keyac_pi1[suggestion]" value="###VALUE###"> ###STARTDAT### - ###ENDDAT###<br />
+	<!-- ###SUGGESTION_ROW### end -->
+	<br />
+	<input type="submit" name="tx_keyac_pi1[submitsuggestion]">
+	###HIDDENFIELDS###
+    </form>
+<!-- ###SUB_SUGGESTIONS### end -->

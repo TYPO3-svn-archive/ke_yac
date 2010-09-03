@@ -1,0 +1,207 @@
+plugin.tx_keyac_pi1 {
+	#-- MAIN -- #########################################################
+	useJS = 1
+	templateFile = EXT:ke_yac/pi1/yac-template.html
+	cssFile =
+	dataPids =
+	showEventsWithoutCat = 0
+	
+	
+	#-- CALENDAR -- #########################################################
+	rows = 2
+	columns = 4
+	showDaysRow = 0
+	showMonthsNavigation = 6
+	showHideCalendar = 0
+	showWeekNumberRow = 0
+	showLegend = 0
+	showList = 0
+	linkToSingleView = 0
+	showTooltips = 0
+	tooltipDuration = 3000
+
+	##-- CALENDAR IMAGES --
+	calendar.prevIcon = IMAGE
+	calendar.prevIcon.file = EXT:ke_yac/res/images/prev.gif
+	calendar.nextIcon = IMAGE
+	calendar.nextIcon.file = EXT:ke_yac/res/images/next.gif
+	
+	
+	#-- DATEFORMAT -- #########################################################
+	strftimeFormatStringWithoutTime = %d.%m.%Y
+	strftimeFormatStringWithTime = %d.%m.%Y %H:%M
+	strftimeFormatTime = %H:%M
+		
+		
+	# -- SET CREATOR AS ATTENDEE -- ###########################################
+	# creator is automatically set as attendee, deactivate?
+	doNotSetOwnerAsAttendee = 0
+
+	#-- LISTVIEW -- #########################################################
+	# Show default if no image is set in record?
+	showDefaultImageInSingleview = 0
+
+	#-- "MORE" ICON IN LISTVIEW --
+	listview.moreIcon = IMAGE
+	listview.moreIcon.file = EXT:ke_yac/res/images/more.gif
+
+	#-- THUMBNAIL IN LISTVIEW --
+	listview.thumbnail = IMAGE
+	listview.thumbnail {
+		file.maxW = 50
+		file.maxH = 50
+		imageLinkWrap = 1
+		imageLinkWrap.enable = 1
+	}
+
+	#-- DEFAULT IMAGE IN LISTVIEW --
+	listviewDefaultImg.file = EXT:ke_yac/res/images/defaultImage.gif
+
+	#-- CATEGORY ICONS
+	# number represents uid of category record, def = default
+	categoryIcon.def = IMAGE
+	categoryIcon.def.file = EXT:ke_yac/res/images/catdefault.gif
+	categoryIcon.1 = IMAGE
+	categoryIcon.1.file = EXT:ke_yac/res/images/cat1.gif
+	categoryIcon.2 = IMAGE
+	categoryIcon.2.file = EXT:ke_yac/res/images/cat2.gif
+	categoryIcon.3 = IMAGE
+	categoryIcon.3.file = EXT:ke_yac/res/images/cat3.gif
+	categoryIcon.4 = IMAGE
+	categoryIcon.4.file = EXT:ke_yac/res/images/cat4.gif
+	categoryIcon.5 = IMAGE
+	categoryIcon.5.file = EXT:ke_yac/res/images/cat5.gif
+	categoryIcon.6 = IMAGE
+	categoryIcon.6.file = EXT:ke_yac/res/images/cat6.gif
+	categoryIcon.7 = IMAGE
+	categoryIcon.7.file = EXT:ke_yac/res/images/cat7.gif
+	categoryIcon.8 = IMAGE
+	categoryIcon.8.file = EXT:ke_yac/res/images/cat8.gif
+	categoryIcon.9 = IMAGE
+	categoryIcon.9.file = EXT:ke_yac/res/images/cat9.gif
+	categoryIcon.10 = IMAGE
+	categoryIcon.10.file = EXT:ke_yac/res/images/cat10.gif
+	
+	
+	#-- SINGLEVIEW -- #########################################################
+	# Show default if no image is set in record?
+	showDefaultImageInSingleview = 0
+
+	#-- IMAGES IN SINGLEVIEW --
+	singleviewImg = IMAGE
+	singleviewImg {
+		file.maxW = 235
+		file.maxH = 123
+		imageLinkWrap = 1
+		imageLinkWrap.enable = 1
+	}
+
+	#-- DEFAULT IMAGE IN SINGLEVIEW --
+	singleviewDefaultImg = IMAGE
+	singleviewDefaultImg {
+		file = EXT:ke_yac/res/images/defaultImage.gif
+		file.maxW = 235
+		file.maxH = 123
+		#imageLinkWrap = 1
+		#imageLinkWrap.enable = 1
+	}
+
+	#-- BACKLINK ICON --
+	singleview.backlinkIcon = IMAGE
+	singleview.backlinkIcon.file = EXT:ke_yac/res/images/backlink.gif
+
+	#-- INFOLINK ICON --
+	singleview.infolinkIcon = IMAGE
+	singleview.infolinkIcon.file = EXT:ke_yac/res/images/infolink.gif
+
+	#-- ATTACHMENT ICONS --
+	attachmentIcon.default = IMAGE
+	attachmentIcon.default.file = EXT:ke_yac/res/images/attachmentIcons/default.gif
+	attachmentIcon.avi = IMAGE
+	attachmentIcon.avi.file = EXT:ke_yac/res/images/attachmentIcons/avi.gif
+	attachmentIcon.css = IMAGE
+	attachmentIcon.css.file = EXT:ke_yac/res/images/attachmentIcons/css.gif
+	attachmentIcon.csv = IMAGE
+	attachmentIcon.csv.file = EXT:ke_yac/res/images/attachmentIcons/csv.gif
+	attachmentIcon.doc = IMAGE
+	attachmentIcon.doc.file = EXT:ke_yac/res/images/attachmentIcons/doc.gif
+	attachmentIcon.htm = IMAGE
+	attachmentIcon.htm.file = EXT:ke_yac/res/images/attachmentIcons/htm.gif
+	attachmentIcon.html = IMAGE
+	attachmentIcon.html.file = EXT:ke_yac/res/images/attachmentIcons/html.gif
+	attachmentIcon.js = IMAGE
+	attachmentIcon.js.file = EXT:ke_yac/res/images/attachmentIcons/js.gif
+	attachmentIcon.mov = IMAGE
+	attachmentIcon.mov.file = EXT:ke_yac/res/images/attachmentIcons/mov.gif
+	attachmentIcon.mp3 = IMAGE
+	attachmentIcon.mp3.file = EXT:ke_yac/res/images/attachmentIcons/mp3.gif
+	attachmentIcon.mpeg = IMAGE
+	attachmentIcon.mpeg.file = EXT:ke_yac/res/images/attachmentIcons/mpeg.gif
+	attachmentIcon.mpg = IMAGE
+	attachmentIcon.mpg.file = EXT:ke_yac/res/images/attachmentIcons/mpg.gif
+	attachmentIcon.pdf = IMAGE
+	attachmentIcon.pdf.file = EXT:ke_yac/res/images/attachmentIcons/pdf.gif
+	attachmentIcon.psd = IMAGE
+	attachmentIcon.psd.file = EXT:ke_yac/res/images/attachmentIcons/psd.gif
+	attachmentIcon.rtf = IMAGE
+	attachmentIcon.rtf.file = EXT:ke_yac/res/images/attachmentIcons/rtf.gif
+	attachmentIcon.tmpl = IMAGE
+	attachmentIcon.tmpl.file = EXT:ke_yac/res/images/attachmentIcons/tmpl.gif
+	attachmentIcon.ttf = IMAGE
+	attachmentIcon.ttf.file = EXT:ke_yac/res/images/attachmentIcons/ttf.gif
+	attachmentIcon.txt = IMAGE
+	attachmentIcon.txt.file = EXT:ke_yac/res/images/attachmentIcons/txt.gif
+	attachmentIcon.wav = IMAGE
+	attachmentIcon.wav.file = EXT:ke_yac/res/images/attachmentIcons/wav.gif
+	attachmentIcon.xls = IMAGE
+	attachmentIcon.xls.file = EXT:ke_yac/res/images/attachmentIcons/xls.gif
+	attachmentIcon.xml = IMAGE
+	attachmentIcon.xml.file = EXT:ke_yac/res/images/attachmentIcons/xml.gif
+	attachmentIcon.zip = IMAGE
+	attachmentIcon.zip.file = EXT:ke_yac/res/images/attachmentIcons/zip.gif
+	
+	
+	#-- TEASER VIEW -- ########################################################
+	singlePid =
+	teaserHeader = Coming Events
+	teaserLimit = 5
+	teaserLength = 50
+
+	#-- IMAGES IN TEASERVIEW
+	teaserviewImg {
+		file.maxW = 20
+		file.maxH = 16
+	}
+	
+	#-- TIME FORMATSTRINGS FOR TEASERVIEW
+	teaser.strftimeFormatStringWithoutTime = %d.%m.
+	teaser.strftimeFormatStringWithTime = %d.%m. %H:%M
+	teaser.strftimeFormatTime = %H:%M
+	
+	
+	#-- GOOGLE MAPS CONFIG -- #################################################
+	gmaps.apiKey = ABQIAAAA-P19PqIIhkHgP8NEHF0iTRRCxjkX2BiJaB1OdquZ-QnqJVFA_xSWGisZwYFgOlgROLkJbX9ihV441A
+	gmaps.width =
+	gmaps.height = 300
+	gmaps.defaultZoom = 12   // 0 - 17
+	gmaps.disableMapControls = 0
+	gmaps.enableTypeControls = 1
+	
+	
+	#-- MY EVENTS -- ##########################################################
+	#-- LIST ICON
+	myEvents.icon = IMAGE
+	myEvents.icon.file = EXT:ke_yac/res/images/myevents-icon.gif
+	myEvents.icon.file.maxW =
+	myEvents.icon.file.maxH =
+
+	#-- MY EVENTS LINK TO SINGLEVIEW PID
+	myEvents.singleViewPid =
+
+	#-- TIME FORMATSTRINGS FOR "MY EVENTS"
+	myevents.strftimeFormatStringWithoutTime = %d.%m.
+	myevents.strftimeFormatStringWithTime = %d.%m. %H:%M
+	myevents.strftimeFormatTime = %H:%M
+	
+	
+}
