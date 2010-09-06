@@ -12,12 +12,12 @@
 
 $EM_CONF[$_EXTKEY] = array(
 	'title' => 'YAC - Yet Another Calendar',
-	'description' => 'Calendar',
+	'description' => 'Calendar Plugin with frontend editing, notifications for attendants and more...',
 	'category' => 'plugin',
-	'author' => 'Andreas Kiefer [kennziffer.com]',
+	'author' => 'Andreas Kiefer (kennziffer.com)',
 	'author_email' => 'kiefer@kennziffer.com',
 	'shy' => '',
-	'dependencies' => 'cms',
+	'dependencies' => 'cms,date2cal',
 	'conflicts' => '',
 	'priority' => '',
 	'module' => '',
@@ -33,6 +33,7 @@ $EM_CONF[$_EXTKEY] = array(
 	'constraints' => array(
 		'depends' => array(
 			'cms' => '',
+			'date2cal' => '',
 		),
 		'conflicts' => array(
 		),

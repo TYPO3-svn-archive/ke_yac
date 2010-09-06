@@ -121,7 +121,10 @@
 			<label index="label_show_passed_events">Show passed events?</label>
 			<label index="label_owner_attend">Do you want to attend?</label>
 			<label index="label_invitation_mode_invite">invite</label>
-			<label index="label_invitation_mode_set">set at attendant</label>
+			<label index="label_invitation_mode_set">set as attendant</label>
+			<label index="label_creation_date">Created</label>
+			<label index="label_edit_date">Edited</label>
+			<label index="reason_cancellation">Reason for the cancellation</label>
 			
 			<!-- FORM FIELD LABELS -->
 			<label index="label_startdat">Start Date</label>
@@ -277,6 +280,9 @@
 			<label index="label_owner_attend">Möchten Sie am Termin teilnehmen?</label>
 			<label index="label_invitation_mode_invite">einladen</label>
 			<label index="label_invitation_mode_set">festlegen</label>
+			<label index="label_creation_date">Erstellt</label>
+			<label index="label_edit_date">Zuletzt bearbeitet</label>
+			<label index="reason_cancellation">Bitte geben Sie eine Begründung für die Absage an</label>
 			
 			<!-- FORM FIELD LABELS -->
 			<label index="label_startdat">Startdatum</label>

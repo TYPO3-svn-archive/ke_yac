@@ -22,9 +22,6 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-
-
-
 require_once(PATH_tslib.'class.tslib_pibase.php');
 
 // needed for checking filenames when uploading files
@@ -42,9 +39,10 @@ class tx_keyac_pi1 extends tslib_pibase {
 	var $prefixId = 'tx_keyac_pi1';		// Same as class name
 	var $scriptRelPath = 'pi1/class.tx_keyac_pi1.php';	// Path to this script relative to the extension dir.
 	var $extKey = 'ke_yac';	// The extension key.
-	var $pi_checkCHash = TRUE;
+	// var $pi_checkCHash = TRUE;
 	var $uploadFolder = "uploads/tx_keyac/";
 	var $maxFiles = 3;
+
 
 	/**
 	 * Main method of your PlugIn
@@ -60,7 +58,7 @@ class tx_keyac_pi1 extends tslib_pibase {
 		$this->pi_initPIflexform(); // Init and get the flexform data of the plugin
 		$this->lcObj=t3lib_div::makeInstance('tslib_cObj');
 		$this->internal['results_at_a_time'] = 100;
-
+		
 		// GET FLEXFORM DATA
 		$this->pi_initPIflexForm();
 		$piFlexForm = $this->cObj->data['pi_flexform'];
@@ -73,7 +71,19 @@ class tx_keyac_pi1 extends tslib_pibase {
 				}
 			}
 		}
-
+		
+		// set user_int if fe editing is enabled
+		/*
+		if ($this->ffdata['enableFrontendEditing']) {
+			$this->pi_checkCHash = false;
+			$this->pi_USER_INT_obj = 1;
+		} else {
+			$this->pi_checkCHash = true;
+			$this->pi_USER_INT_obj = 0;
+		}
+		t3lib_div::debug($this->pi_USER_INT_obj,'user_int???');
+		*/
+		
 		// DB DEBUG
  		//$GLOBALS['TYPO3_DB']->debugOutput = true;
 
@@ -104,7 +114,7 @@ class tx_keyac_pi1 extends tslib_pibase {
 		// Singleview PID
 		$this->singleviewPid = $this->ffdata['singleviewPid'] ? $this->ffdata['singleviewPid'] : $this->conf['singleviewPid'];
 		if (!$this->singleviewPid) $this->singleviewPid = $GLOBALS['TSFE']->page['uid'];
-
+		
 		// get the plugin-mode from flexforms
 		$mode_selector = $this->ffdata['mode_selector'];
 		// Overwrite Mode if teaser is set in TS
@@ -143,16 +153,15 @@ class tx_keyac_pi1 extends tslib_pibase {
 			case "3":
 			default:
 				
-				
 				// unset showUid if this mode was selected
 				if ($mode_selector == '3') {
 					unset($this->piVars['showUid']);
 				}
-
+				
 				// =========================
 				// -------- action handling --------------
 				// =========================
-
+				
 				// create new record
 				if ($this->piVars['action'] == 'create') {
 					$this->initDate2Cal();
@@ -162,9 +171,10 @@ class tx_keyac_pi1 extends tslib_pibase {
 					else $content = $this->showForm();
 					return $this->pi_wrapInBaseClass($content);
 				}
-
+				
 				// edit event
 				if ($this->piVars['action'] == 'edit' && $GLOBALS['TSFE']->loginUser) {
+					
 					$this->initDate2Cal();
 					// find new startdat and enddat for event
 					if ($this->piVars['submiteditfind']) $content = $this->findEventTime();
@@ -172,14 +182,14 @@ class tx_keyac_pi1 extends tslib_pibase {
 					else $content = $this->showForm($this->piVars['showUid']);
 					return $this->pi_wrapInBaseClass($content);
 				}
-
+				
 				// attend
 				if ($this->piVars['action'] == 'attend' && $GLOBALS['TSFE']->loginUser) {
 					$this->setUserAsAttendant($this->piVars['showUid'], $GLOBALS['TSFE']->fe_user->user['uid']);
 					// clear page cache
 					$this->clearPageCache($GLOBALS['TSFE']->id);
 				}
-
+				
 				// delete attendance
 				if ($this->piVars['action'] == 'delattendance' && $GLOBALS['TSFE']->loginUser) {
 					$this->deleteUserAsAttendant($this->piVars['showUid'],$GLOBALS['TSFE']->fe_user->user['uid']);
@@ -245,24 +255,27 @@ class tx_keyac_pi1 extends tslib_pibase {
 		
 	function initDate2Cal() {
 		
-		// include jscalendar api
-		include_once(t3lib_extMgm::siteRelPath('date2cal') . '/src/class.jscalendar.php');
+		// process only if date2cal is loaded
+		if (t3lib_extMgm::isLoaded('date2cal')) {
 		
-		// init jscalendar class
-		$this->JSCalendar = JSCalendar::getInstance();
-		
-		// datetime format (default: time)
-		$format = '%d.%m.%Y';
-		$this->JSCalendar->setDateFormat(true, $format);
-		
-		
-		// set options
-		$this->JSCalendar->setConfigOption('firstDay', true);
-		$this->JSCalendar->setLanguage($this->extConfig['lang']);
-		
-		// get initialisation code of the calendar
-		if (($jsCode = $this->JSCalendar->getMainJS()) != '') {
-			$GLOBALS['TSFE']->additionalHeaderData['date2cal'] = $jsCode;
+			// include jscalendar api
+			include_once(t3lib_extMgm::siteRelPath('date2cal') . '/src/class.jscalendar.php');
+			
+			// init jscalendar class
+			$this->JSCalendar = JSCalendar::getInstance();
+			
+			// datetime format (default: time)
+			$format = '%d.%m.%Y';
+			$this->JSCalendar->setDateFormat(true, $format);
+			
+			// set options
+			$this->JSCalendar->setConfigOption('firstDay', true);
+			$this->JSCalendar->setLanguage($this->extConfig['lang']);
+			
+			// get initialisation code of the calendar
+			if (($jsCode = $this->JSCalendar->getMainJS()) != '') {
+				$GLOBALS['TSFE']->additionalHeaderData['date2cal'] = $jsCode;
+			}
 		}
 		
 	}
@@ -1429,8 +1442,8 @@ class tx_keyac_pi1 extends tslib_pibase {
 	 			$linkconf['additionalParams'] .= '&'.$this->prefixId.'[action]=delattendance';
 	 			$linkconf['useCacheHash'] = true;
 	 			$attendanceAction = $this->cObj->typoLink($this->pi_getLL('delete_attendance'),$linkconf);
-			}
-			else {
+			} else {
+				// user is no attendant
 				$attendanceStatus = $this->pi_getLL('user_is_no_attendee');
 				unset($linkconf);
 				$linkconf['parameter'] = $GLOBALS['TSFE']->id;
@@ -1490,14 +1503,15 @@ class tx_keyac_pi1 extends tslib_pibase {
 				'city' => $row['city'],
 				'singleview_url' => $singleview_url,
 				'to_form' => $this->pi_getLL('to_form','zur Anmeldung'),
+				'label_creation_date' => $this->pi_getLL('label_creation_date'),
+				'label_edit_date' => $this->pi_getLL('label_edit_date'),
 			);
 
 			// show map?
-			#if ($this->conf['showMap']) {
 			if ($row['location'] && $row['address'] && $row['zip'] && $row['city']) {
 				// include api file
 				if (!class_exists('GoogleMapAPI')) require_once(dirname(__FILE__). '/../res/GoogleMapAPI.class.php');
-
+				
 				// render map
 				$this->markerArray['map'] = $this->renderGoogleMap(
 					$this->getFieldContent('gmaps_address',$row),
@@ -2421,6 +2435,7 @@ class tx_keyac_pi1 extends tslib_pibase {
 			'delete_question' => sprintf($this->pi_getLL('delete_question'),$this->getEventRecord($this->piVars['showUid'],'title')),
 			'yes' => $this->pi_getLL('yes'),
 			'no' => $this->pi_getLL('no'),
+			'reason_cancellation' => $this->pi_getLL('reason_cancellation'),
 		);
 
 		$content = $this->cObj->substituteMarkerArray($content,$markerArray,$wrap='###|###',$uppercase=1);

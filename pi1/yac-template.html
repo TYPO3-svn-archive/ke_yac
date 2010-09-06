@@ -61,12 +61,9 @@
 				<div class="images">###IMAGES###</div><!-- ###SUB_IMAGES### end -->
 					<div class="datestring">###DATESTRING### ###LOCATION###<br />
 						###ADDRESS### ###ZIP### ###CITY###<br />
-						Besitzer: ###OWNER_FIRST_NAME### ###OWNER_LAST_NAME###<br />
-						Erstellt: ###CREATION_DATE###<br />
-						Zuletzt bearbeitet: ###EDIT_DATE###<br />
-						<!-- ###SUB_ADDRESS### start -->
-
-						<!-- ###SUB_ADDRESS### end -->
+						###LABEL_OWNER###: ###OWNER_FIRST_NAME### ###OWNER_LAST_NAME###<br />
+						###LABEL_CREATION_DATE###: ###CREATION_DATE###<br />
+						###LABEL_EDIT_DATE###: ###EDIT_DATE###<br />
 					</div>
 				
 				<!-- ###SUB_TEASERTEXT### start -->
@@ -633,7 +630,7 @@
 <!-- ###DELETE_FORM### begin -->
     <form method="post" action="###ACTION###">
 	<p class="delete-question">###DELETE_QUESTION###</p>
-	<p><b>Bitte geben Sie eine Begr&uuml;ndung f&uuml;r die Absage ein:</b><br />
+	<p><b>###REASON_CANCELLATION###:</b><br />
 	<textarea name="tx_keyac_pi1[delete_reason]" class="reason"></textarea>
 	</p>
 	<input type="submit" name="tx_keyac_pi1[submitdeleteyes]" value="###YES###" class="yes-button">

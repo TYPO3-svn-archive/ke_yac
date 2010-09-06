@@ -1,9 +1,9 @@
 plugin.tx_keyac_pi1 {
 	#-- MAIN -- #########################################################
-	useJS = 1
 	templateFile = EXT:ke_yac/pi1/yac-template.html
 	cssFile =
 	dataPids =
+	useJS = 1
 	showEventsWithoutCat = 0
 	
 	
@@ -15,9 +15,9 @@ plugin.tx_keyac_pi1 {
 	showHideCalendar = 0
 	showWeekNumberRow = 0
 	showLegend = 0
-	showList = 0
+	showList = 1
 	linkToSingleView = 0
-	showTooltips = 0
+	showTooltips = 1
 	tooltipDuration = 3000
 
 	##-- CALENDAR IMAGES --
@@ -31,11 +31,6 @@ plugin.tx_keyac_pi1 {
 	strftimeFormatStringWithoutTime = %d.%m.%Y
 	strftimeFormatStringWithTime = %d.%m.%Y %H:%M
 	strftimeFormatTime = %H:%M
-		
-		
-	# -- SET CREATOR AS ATTENDEE -- ###########################################
-	# creator is automatically set as attendee, deactivate?
-	doNotSetOwnerAsAttendee = 0
 
 	#-- LISTVIEW -- #########################################################
 	# Show default if no image is set in record?
@@ -180,9 +175,9 @@ plugin.tx_keyac_pi1 {
 	
 	
 	#-- GOOGLE MAPS CONFIG -- #################################################
-	gmaps.apiKey = ABQIAAAA-P19PqIIhkHgP8NEHF0iTRRCxjkX2BiJaB1OdquZ-QnqJVFA_xSWGisZwYFgOlgROLkJbX9ihV441A
-	gmaps.width =
-	gmaps.height = 300
+	gmaps.apiKey = 
+	gmaps.width = 400
+	gmaps.height = 200
 	gmaps.defaultZoom = 12   // 0 - 17
 	gmaps.disableMapControls = 0
 	gmaps.enableTypeControls = 1
@@ -202,6 +197,11 @@ plugin.tx_keyac_pi1 {
 	myevents.strftimeFormatStringWithoutTime = %d.%m.
 	myevents.strftimeFormatStringWithTime = %d.%m. %H:%M
 	myevents.strftimeFormatTime = %H:%M
+	
+	
+	# -- SET CREATOR AS ATTENDEE -- ###########################################
+	# creator is automatically set as attendee, deactivate?
+	doNotSetOwnerAsAttendee = 0
 	
 	
 }

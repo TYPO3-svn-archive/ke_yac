@@ -105,15 +105,14 @@ a{
 
 /* NAVIGATION */
 .tx-keyac-pi1 #navigation {
-	height:20px;
-	width: 550px;
-	position:relative;
+	/* width: 550px; */
+	position:relative; 
 	top:10px;
-	margin:auto;
 	margin-bottom:20px;
-	padding-top: 5px;
-	padding-left: 45px;
-	text-align:left;
+	margin-left: 35px;
+	margin-right: 39px;
+	padding: 5px;
+	text-align:center;
 	background-color: #dbdbdb;
 	border: 1px solid white;
 }
@@ -442,7 +441,7 @@ a{
 }
 .tx-keyac-pi1 .attendees{
 	border-left:1px solid white;
-	line-height:250%;
+	/* line-height:250%; */
 	text-align:center;
 	/*width:75% !important;*/
 }
