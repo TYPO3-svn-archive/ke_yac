@@ -6,6 +6,8 @@
 		<description>Language labels for plugin &quot;tx_keyac_pi1&quot;</description>
 	</meta>
 	<data type="array">
+		
+		<!-- ENGLISH -->
 		<languageKey index="default" type="array">
 			<label index="ff_mode_selector">Plugin-Mode</label>
 			<label index="ff_mode.I.0">Calendar / List / Detail</label>
@@ -87,26 +89,80 @@
 			<label index="label_button_attend">Attend</label>
 			<label index="label_button_delete_attendance">Delete attendance</label>
 			<label index="label_button_invite">Invite</label>
+			<label index="label_button_edit">Edit</label>
 			<label index="label_button_move">Move</label>
 			<label index="label_button_delete">Delete</label>
 			<label index="label_button_submit_invitation">Submit</label>
 			<label index="text_invitation">Please select the persons you want to invite</label>
 			<label index="create_event_link">Create event</label>
 			<label index="form_title_create">Create new event</label>
+			<label index="create_successful">The event has been created.</label>
+			<label index="create_error">The event was not created.</label>
+			<label index="form_title_edit">Edit event</label>
+			<label index="invite_success">The selected persons have been invited by E-Mail.</label>
+			<label index="invite_success_set">The selected persons habe been set as attendants.</label>
+			<label index="invite_no_selection">No persons selected.</label>
+			<label index="text_move">Please select the new time for this event</label>
+			<label index="success_move">The event has been moved</label>
+			<label index="edit_successful">Your changes have been stored.</label>
+			<label index="edit_error">Your changes have not been stored.</label>
+			<label index="delete_question">Do you really want to delete the event "%s"?</label>
+			<label index="yes">Yes</label>
+			<label index="no">No</label>
+			<label index="delete_success">The event "%s" has been deleted.</label>
+			<label index="delete_error">The event "%s" has not been deleted.</label>
+			<label index="create_event">Termin erstellen</label>
+			<label index="required_mark"><![CDATA[<span class="required_mark">*</span>]]></label>
+			<label index="no_suggestions_found">No proposal possible</label>
+			<label index="event_not_found">This event could not be found. Probably it has been deleted?</label>
+			<label index="no_authorization">You are not authorized to view this event</label>
+			<label index="private_event">private</label>
+			<label index="more_files">additional file</label>
 			<label index="label_show_passed_events">Show passed events?</label>
 			<label index="label_owner_attend">Do you want to attend?</label>
-
+			<label index="label_invitation_mode_invite">invite</label>
+			<label index="label_invitation_mode_set">set at attendant</label>
+			
 			<!-- FORM FIELD LABELS -->
 			<label index="label_startdat">Start Date</label>
 			<label index="label_enddat">End Date</label>
 			<label index="label_showtime">Show time?</label>
+			<label index="label_private">Private event?</label>
 			<label index="label_title">Title</label>
 			<label index="label_location">Location</label>
 			<label index="label_teaser">Teaser</label>
 			<label index="label_bodytext">Description</label>
+			<label index="label_cat">Category</label>
+			<label index="label_address">Street</label>
+			<label index="label_zip">Postal code</label>
+			<label index="label_city">City</label>
+			<label index="label_reason">Reason</label>
+			<label index="label_zip_city">ZIP / City</label>
+			<label index="label_attachments">File attachments</label>
 			
+			<!-- FORM ERRORS -->
+			<label index="error_startdat_not_set">No startdate set</label>
+			<label index="error_enddat_not_set">No enddate set</label>
+			<label index="error_title_not_set">No title set</label>
+			<label index="error_invalid_date">Invalid date</label>
+			<label index="error_enddat_before_startdat">Enddate is earlier than startdate</label>
 			
+			<!-- NOTIFICATIONS -->
+			<label index="salutation_male">Dear</label>
+			<label index="salutation_female">Dear</label>
+			<label index="salutation_general">Dear</label>
+			<label index="invitation_subject">Invitation for event "%s"</label>
+			<label index="invitation_subject_set">Attending event "%s"</label>
+			<label index="event_link_title">to the event</label>
+			<label index="attendance_notification_subject">%s attends on event "%s"</label>
+			<label index="attendance_delete_notification_subject">%s has cancelled his attendance on event "%s"</label>
+			<label index="edit_notification_subject">%s has edited the event "%s"</label>
+			<label index="delete_notification_subject">%s has deleted the event "%s"</label>
+			<label index="invitation_text_label">Please enter a text for the invitation mail:</label>
 		</languageKey>
+		
+		
+		<!-- GERMAN -->
 		<languageKey index="de" type="array">
 			<label index="ff_mode_selector">Plugin-Modus</label>
 			<label index="ff_mode.I.0">Kalender / Liste / Detail</label>
@@ -219,10 +275,8 @@
 			<label index="more_files">weitere Datei</label>
 			<label index="label_show_passed_events">Bereits vergangene Termine anzeigen?</label>
 			<label index="label_owner_attend">Möchten Sie am Termin teilnehmen?</label>
-			
 			<label index="label_invitation_mode_invite">einladen</label>
 			<label index="label_invitation_mode_set">festlegen</label>
-			
 			
 			<!-- FORM FIELD LABELS -->
 			<label index="label_startdat">Startdatum</label>
@@ -240,14 +294,14 @@
 			<label index="label_reason">Begründung für Verschiebung</label>
 			<label index="label_zip_city">PLZ / Ort</label>
 			<label index="label_attachments">Dateianhänge</label>
-
+			
 			<!-- FORM ERRORS -->
 			<label index="error_startdat_not_set">Es wurde kein Startdatum angegeben</label>
 			<label index="error_enddat_not_set">Es wurde kein Enddatum angegeben</label>
 			<label index="error_title_not_set">Es wurde kein Titel angegeben</label>
 			<label index="error_invalid_date">Das Datum ist ungültig</label>
 			<label index="error_enddat_before_startdat">Das Enddatum darf nicht vor dem Startdatum liegen</label>
-
+			
 			<!-- NOTIFICATIONS -->
 			<label index="salutation_male">Sehr geehrter</label>
 			<label index="salutation_female">Sehr geehrte</label>
@@ -259,7 +313,6 @@
 			<label index="attendance_delete_notification_subject">%s hat seine Teilnahme am Termin "%s" abgesagt</label>
 			<label index="edit_notification_subject">%s hat den Termin "%s" bearbeitet</label>
 			<label index="delete_notification_subject">%s hat den Termin "%s" gelöscht</label>
-
 			<label index="invitation_text_label">Bitte geben Sie einen Text für die Einladung an:</label>
 		</languageKey>
 	</data>
