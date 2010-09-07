@@ -178,21 +178,21 @@ class tx_keyac_pi1 extends tslib_pibase {
 					$this->initDate2Cal();
 					// find new startdat and enddat for event
 					if ($this->piVars['submiteditfind']) $content = $this->findEventTime();
-					else if ($this->piVars['submitedit'] || $this->piVars['submiteditignore']) $content = $this->evaluateEditData($this->piVars['showUid']);
-					else $content = $this->showForm($this->piVars['showUid']);
+					else if ($this->piVars['submitedit'] || $this->piVars['submiteditignore']) $content = $this->evaluateEditData(intval($this->piVars['showUid']));
+					else $content = $this->showForm(intval($this->piVars['showUid']));
 					return $this->pi_wrapInBaseClass($content);
 				}
 				
 				// attend
 				if ($this->piVars['action'] == 'attend' && $GLOBALS['TSFE']->loginUser) {
-					$this->setUserAsAttendant($this->piVars['showUid'], $GLOBALS['TSFE']->fe_user->user['uid']);
+					$this->setUserAsAttendant(intval($this->piVars['showUid']), $GLOBALS['TSFE']->fe_user->user['uid']);
 					// clear page cache
 					$this->clearPageCache($GLOBALS['TSFE']->id);
 				}
 				
 				// delete attendance
 				if ($this->piVars['action'] == 'delattendance' && $GLOBALS['TSFE']->loginUser) {
-					$this->deleteUserAsAttendant($this->piVars['showUid'],$GLOBALS['TSFE']->fe_user->user['uid']);
+					$this->deleteUserAsAttendant(intval($this->piVars['showUid']),$GLOBALS['TSFE']->fe_user->user['uid']);
 					// clear page cache
 					$this->clearPageCache($GLOBALS['TSFE']->id);
 				}
@@ -203,7 +203,7 @@ class tx_keyac_pi1 extends tslib_pibase {
 						// automatically set invited persons as attendee 
 						if ($this->piVars['invitation_mode'] == 'set') {
 							foreach ($this->piVars['user'] as $invUser => $value) {
-								$this->setUserAsAttendant($this->piVars['showUid'], $invUser, false);
+								$this->setUserAsAttendant(intval($this->piVars['showUid']), $invUser, false);
 							}
 						}
 						$content = $this->processInviteData();
@@ -222,12 +222,12 @@ class tx_keyac_pi1 extends tslib_pibase {
 
 				// delete the event
 				if ($this->piVars['action'] == 'delete' && $GLOBALS['TSFE']->loginUser) {
-					if ($this->piVars['submitdeleteyes']) $content = $this->processDelete($this->piVars['showUid']);
+					if ($this->piVars['submitdeleteyes']) $content = $this->processDelete(intval($this->piVars['showUid']));
 					else if ($this->piVars['submitdeleteno']) {
 						$this->loadJS();
 						$content.=$this->getCalendarView();
 					}
-					else $content = $this->showDeleteForm($this->piVars['showUid']);
+					else $content = $this->showDeleteForm(intval($this->piVars['showUid']));
 					return $this->pi_wrapInBaseClass($content);
 				}
 
@@ -235,13 +235,13 @@ class tx_keyac_pi1 extends tslib_pibase {
 
 				// single view if event is chosen
 				if ($this->piVars['showUid']) {
-					$content.=$this->singleView($this->piVars['showUid']);
+					$content.=$this->singleView(intval($this->piVars['showUid']));
 				}
 
 				// if month and year for viewing the cal are chosen
 				else if ($this->piVars['month'] && $this->piVars['year']) {
 					$this->loadJS();
-					$content.=$this->getCalendarView($this->piVars['month'],$this->piVars['year']);
+					$content.=$this->getCalendarView(intval($this->piVars['month']),intval($this->piVars['year']));
 				} else {
 					// show current month if nothing is set
 					$this->loadJS();
