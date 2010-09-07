@@ -337,13 +337,13 @@
 	<form method="post" action="###ACTION###" enctype="multipart/form-data">
 
 		 <!-- ###SUB_CONFLICTS_CREATE### start -->
-		    <p><span class="conflict">F&uuml;r den gew&uuml;nschten Zeitraum existieren Konflikte bei folgenden eingeladenen Benutzern:</span></p>
+		    <p><span class="conflict">###CONFLICTS_FOUND###</span></p>
 		    <table>
 			<tr>
-			    <th>Benutzer</th>
-			    <th>Termin</th>
-			    <th>von</th>
-			    <th>bis</th>
+			    <th>###LABEL_USER###</th>
+			    <th>###LABEL_EVENT###</th>
+			    <th>###LABEL_FROM###</th>
+			    <th>###LABEL_UNTIL###</th>
 			</tr>
 		    <!-- ###SUB_CONFLICT_ROW_CREATE### start -->
 			<tr>
@@ -354,8 +354,8 @@
 			</tr>
 		    <!-- ###SUB_CONFLICT_ROW_CREATE### end -->
 		    </table>
-		    <p>Konflikte ignorieren und Termin trotzdem verwenden? <input type="submit" name="tx_keyac_pi1[submitcreateignore]"></p>
-		    <p>Anderen Termin finden? <input type="submit" name="tx_keyac_pi1[submitcreatefind]" ></p>
+		    <p>###IGNORE_CONFLICTS### <input type="submit" name="tx_keyac_pi1[submitcreateignore]"></p>
+		    <p>###SEARCH_DATE### <input type="submit" name="tx_keyac_pi1[submitcreatefind]" ></p>
 		    <br /><br />
 		<!-- ###SUB_CONFLICTS_CREATE### end -->
 
@@ -478,13 +478,13 @@
 	<form method="post" action="###ACTION###" enctype="multipart/form-data">
 
 	    <!-- ###SUB_CONFLICTS_EDIT### start -->
-		<p><span class="conflict">F&uuml;r den gew&uuml;nschten Zeitraum existieren Konflikte bei folgenden Teilnehmern:</span></p>
+		<p><span class="conflict">###CONFLICTS_FOUND###:</span></p>
 		<table>
 		    <tr>
-			<th>Benutzer</th>
-			<th>Termin</th>
-			<th>von</th>
-			<th>bis</th>
+			<th>###LABEL_USER###</th>
+			<th>###LABEL_EVENT###</th>
+			<th>###LABEL_FROM###</th>
+			<th>###LABEL_UNTIL###</th>
 		    </tr>
 		<!-- ###SUB_CONFLICT_ROW_EDIT### start -->
 		    <tr>
@@ -495,14 +495,11 @@
 		    </tr>
 		<!-- ###SUB_CONFLICT_ROW_EDIT### end -->
 		</table>
-		<p>Konflikte ignorieren und Termin trotzdem verwenden? <input type="submit" name="tx_keyac_pi1[submiteditignore]"></p>
-		<p>Anderen Termin finden? <input type="submit" name="tx_keyac_pi1[submiteditfind]" ></p>
+		<p>###IGNORE_CONFLICTS### <input type="submit" name="tx_keyac_pi1[submiteditignore]"></p>
+		<p>###SEARCH_DATE###<input type="submit" name="tx_keyac_pi1[submiteditfind]" ></p>
 		<hr />
 		<br />
 	    <!-- ###SUB_CONFLICTS_EDIT### end -->
-
-
-
 
 	    <div class="fieldset">
 		    <span class="label">###LABEL_TITLE###</span>
@@ -538,9 +535,7 @@
 		    <span class="fielderror">###ERROR_PRIVATE###</span>
 		    <div class="clearer">&nbsp;</div>
 	    </div>
-
-
-
+		
 	    <div class="fieldset">
 		    <span class="label">###LABEL_TEASER###</span>
 		    <span class="field">###FIELD_TEASER###</span>
@@ -647,10 +642,11 @@
 <!-- Mail that is sent as invitation to join an event -->
 <!-- ###INVITATION_MAIL### begin -->
 	###SALUTATION### ###FIRST_NAME### ###LAST_NAME###,<br /><br />
-	Sie wurden von ###USER_FIRST_NAME### ###USER_LAST_NAME### zur Teilnahme am Termin "###EVENT_TITLE###" eingeladen.<br />
+	###YOU_HAVE_BEEN_INVITED###<br />
 	<br />
 	<!-- ###SUB_INVITATION_TEXT### start -->
-		Der Benutzer hat folgenden Einladungstext angegeben: <br />
+		###INVITATION_TEXT_HEADLINE###: <br />
+		<!-- Der Benutzer hat folgenden Einladungstext angegeben: <br /> -->
 		###INVITATION_TEXT###<br /><br />
 	<!-- ###SUB_INVITATION_TEXT### end -->
 
@@ -664,7 +660,7 @@
 	    <tr><td><b>###LABEL_TEASER###</b></td><td>###EVENT_TEASER###</td></tr>
 	<table>
 	<br />
-	<p>Klicken Sie auf folgenden Link um den Termin einzusehen.</p>
+	<p>###USE_FOLLOWING_LINK###</p>
 	<a href="###EVENT_LINK###">###EVENT_LINK###</a>
 	<br />
 	<br />
@@ -675,10 +671,10 @@
 <!-- Mail that is sent if user was set as attendee by date owner -->
 <!-- ###INVITATION_SET_MAIL### begin -->
 	###SALUTATION### ###FIRST_NAME### ###LAST_NAME###,<br /><br />
-	Sie wurden von ###USER_FIRST_NAME### ###USER_LAST_NAME### als Teilnehmer zum Termin "###EVENT_TITLE###" hinzugef&uuml;gt.<br />
+	###YOU_HAVE_BEEN_SET###<br />
 	<br />
 	<!-- ###SUB_INVITATION_TEXT### start -->
-		Der Benutzer hat folgenden Einladungstext angegeben: <br />
+		###INVITATION_TEXT_HEADLINE###<br />
 		###INVITATION_TEXT###<br /><br />
 	<!-- ###SUB_INVITATION_TEXT### end -->
 
@@ -692,7 +688,7 @@
 	    <tr><td><b>###LABEL_TEASER###</b></td><td>###EVENT_TEASER###</td></tr>
 	<table>
 	<br />
-	<p>Klicken Sie auf folgenden Link um den Termin einzusehen.</p>
+	<p>###USE_FOLLOWING_LINK###</p>
 	<a href="###EVENT_LINK###">###EVENT_LINK###</a>
 	<br />
 	<br />
@@ -704,7 +700,7 @@
 <!-- Mail that is sent to owner and attendees when a user joins an event -->
 <!-- ###ATTEND_MAIL### start -->
 	###SALUTATION### ###FIRST_NAME### ###LAST_NAME###, <br /><br />
-	###ATTENDEE_NAME### nimmt am Termin "###EVENT_TITLE###" teil.<br />
+	###ATTENDANCE_NOTIFICATION_TEXT###<br />
 	<br />
 	<table>
 		<tr><td><b>###LABEL_TITLE###</b></td><td>###EVENT_TITLE###</td></tr>
@@ -716,7 +712,7 @@
 		<tr><td><b>###LABEL_TEASER###</b></td><td>###EVENT_TEASER###</td></tr>
 	<table>
 	<br />
-	<p>Klicken Sie auf folgenden Link um den vollst&auml;ndigen Termin einzusehen.</p>
+	<p>###USE_FOLLOWING_LINK###</p>
 	<a href="###EVENT_LINK###">###EVENT_LINK###</a>
 	<br />
 	<br />
@@ -727,7 +723,8 @@
 <!-- Mail that is sent to owner and attendees when a user deletes his attendance -->
 <!-- ###ATTEND_DELETE_MAIL### start -->
 	###SALUTATION### ###FIRST_NAME### ###LAST_NAME###, <br /><br />
-	###ATTENDEE_NAME### hat seine Teilnahme am Termin "###EVENT_TITLE###" abgesagt.<br />
+	<!-- ###ATTENDEE_NAME### hat seine Teilnahme am Termin "###EVENT_TITLE###" abgesagt.<br />-->
+	###ATTENDANCE_DELETE_NOTIFICATION_TEXT###<br />
 	<br />
 	<table>
 		<tr><td><b>###LABEL_TITLE###</b></td><td>###EVENT_TITLE###</td></tr>
@@ -739,7 +736,7 @@
 		<tr><td><b>###LABEL_TEASER###</b></td><td>###EVENT_TEASER###</td></tr>
 	<table>
 	<br />
-	<p>Klicken Sie auf folgenden Link um den vollst&auml;ndigen Termin einzusehen.</p>
+	<p>###USE_FOLLOWING_LINK###</p>
 	<a href="###EVENT_LINK###">###EVENT_LINK###</a>
 	<br />
 	<br />
@@ -751,7 +748,7 @@
 <!-- Mail that is sent to owner and attendees when a user has edited an event -->
 <!-- ###EDIT_NOTIFICATION_MAIL### start -->
     <p>###SALUTATION### ###FIRST_NAME### ###LAST_NAME###, <br /><br />
-    ###EDITOR_NAME### hat den Termin "###EVENT_TITLE###" bearbeitet. </p>
+    ###EDIT_NOTIFICATION_SUBJECT###</p>
     <br />
     <!-- ###CHANGED_FIELDS### start  -->
 	<b>ge&auml;nderte Daten:</b><br /><br />
@@ -762,7 +759,7 @@
 	</table>
     <!-- ###CHANGED_FIELDS### end  -->
     <br />
-    <p>Klicken Sie auf folgenden Link um den vollst&auml;ndigen Termin einzusehen.</p>
+    <p>###USE_FOLLOWING_LINK###</p>
     <a href="###EVENT_LINK###">###EVENT_LINK###</a>
     <br />
     <br />
@@ -774,7 +771,7 @@
 <!-- Mail that is sent to owner and attendees when a user deletes an event -->
 <!-- ###DELETE_MAIL### start -->
 	###SALUTATION### ###FIRST_NAME### ###LAST_NAME###, <br /><br />
-	###USER_NAME### hat den Termin "###EVENT_TITLE###" gelÃ¶scht.<br />
+	###DELETE_NOTIFICATION_SUBJECT###<br />
 	<br />
 	<table>
 		<tr><td><b>###LABEL_TITLE###</b></td><td>###EVENT_TITLE###</td></tr>
@@ -787,7 +784,7 @@
 	<table>
 	<br />
     <!-- ###SUB_DELETE_REASON### start -->
-	<p>Der Benutzer hat folgende Begr&uuml;ndung f&uuml;r die Absage angegeben:<br />
+	<p>###CANCELLATION_TEXT_HEADLINE###:<br />
 	###TEXT###</p>
     <!-- ###SUB_DELETE_REASON### end -->
     <br />
@@ -799,7 +796,7 @@
 
 <!-- ###SUB_SUGGESTIONS### start -->
     <form method="post">
-	<p><b>Folgende Terminvorschl&auml;ge wurden ermittelt:</b></p>
+	<p><b>###DATE_SUGGESTIONS###:</b></p>
         <!-- ###SUGGESTION_ROW### start -->
 	    <input type="radio" name="tx_keyac_pi1[suggestion]" value="###VALUE###"> ###STARTDAT### - ###ENDDAT###<br />
 	<!-- ###SUGGESTION_ROW### end -->

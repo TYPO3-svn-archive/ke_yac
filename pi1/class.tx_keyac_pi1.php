@@ -2333,11 +2333,13 @@ class tx_keyac_pi1 extends tslib_pibase {
 					// the last_name.
 					'user_first_name' => '',
 					'user_last_name' => $this->getUserNameFromUserId($GLOBALS['TSFE']->fe_user->user['uid']),
-
+					'you_have_been_invited' => sprintf($this->pi_getLL('you_have_been_invited'), $this->getUserNameFromUserId($GLOBALS['TSFE']->fe_user->user['uid']), $eventRow['title']),
+					'invitation_text_headline' => $this->pi_getLL('invitation_text_headline'),
+					'use_following_link' => $this->pi_getLL('use_following_link'),
 				);
-
+				
 				$mailContent = $this->cObj->substituteMarkerArray($mailContent,$markerArray,$wrap='###|###',$uppercase=1);
-
+				
 				// show invitation text?
 				$invText  = trim(t3lib_div::removeXSS($this->piVars['invitation_text']));
 				if (!empty($invText)) {
@@ -2513,13 +2515,18 @@ class tx_keyac_pi1 extends tslib_pibase {
 						'event_city' => $eventRecrod['city'],
 						'label_teaser' => $this->pi_getLL('label_teaser'),
 						'event_teaser' => $eventRecord['teaser'],
+						'delete_notification_subject' => sprintf($this->pi_getLL('delete_notification_subject'), $this->getUserNameFromUserId($GLOBALS['TSFE']->fe_user->user['uid']),$eventRecord['title'] ),
+						'cancellation_text_headline' => $this->pi_getLL('cancellation_text_headline'),
 					);
 
 					$mailContent = $this->cObj->substituteMarkerArray($mailContent,$markerArray,$wrap='###|###',$uppercase=1);
 
 					// fill reason subpart
 					$reason = t3lib_div::removeXSS($this->piVars['delete_reason']);
-					if (!empty($reason)) $mailContent = $this->cObj->substituteSubpart ($mailContent, '###SUB_DELETE_REASON###', $reasonContent, $recursive=1);
+					if (!empty($reason)) {
+						$mailContent = $this->cObj->substituteSubpart ($mailContent, '###SUB_DELETE_REASON###', $reasonContent, $recursive=1);
+						$mailContent = $this->cObj->substituteMarker($mailContent,'###CANCELLATION_TEXT_HEADLINE###', $this->pi_getLL('cancellation_text_headline'));
+					}
 					else $mailContent = $this->cObj->substituteSubpart ($mailContent, '###SUB_DELETE_REASON###', '', $recursive=1);
 
 					// set subject
@@ -2567,13 +2574,17 @@ class tx_keyac_pi1 extends tslib_pibase {
 				'event_city' => $eventRecrod['city'],
 				'label_teaser' => $this->pi_getLL('label_teaser'),
 				'event_teaser' => $eventRecord['teaser'],
+				'delete_notification_subject' => sprintf($this->pi_getLL('delete_notification_subject'), $this->getUserNameFromUserId($GLOBALS['TSFE']->fe_user->user['uid']),$eventRecord['title'] ),
 			);
 
 			$mailContent = $this->cObj->substituteMarkerArray($mailContent,$markerArray,$wrap='###|###',$uppercase=1);
 
 			// fill reason subpart
 			$reason = t3lib_div::removeXSS($this->piVars['delete_reason']);
-			if (!empty($reason)) $mailContent = $this->cObj->substituteSubpart ($mailContent, '###SUB_DELETE_REASON###', $reasonContent, $recursive=1);
+			if (!empty($reason)) {
+				$mailContent = $this->cObj->substituteSubpart ($mailContent, '###SUB_DELETE_REASON###', $reasonContent, $recursive=1);
+				$mailContent = $this->cObj->substituteMarker($mailContent,'###CANCELLATION_TEXT_HEADLINE###', $this->pi_getLL('cancellation_text_headline'));
+			}
 			else $mailContent = $this->cObj->substituteSubpart ($mailContent, '###SUB_DELETE_REASON###', '', $recursive=1);
 
 			// set subject
@@ -2656,9 +2667,12 @@ class tx_keyac_pi1 extends tslib_pibase {
 							'event_city' => $recordData['city'],
 							'label_teaser' => $this->pi_getLL('label_teaser'),
 							'event_teaser' => $recordData['teaser'],
+							'use_following_link' => $this->pi_getLL('use_following_link'),
+							'attendance_notification_text' => sprintf($this->pi_getLL('attendance_notification_subject'),$this->getUserNameFromUserId($GLOBALS['TSFE']->fe_user->user['uid']) ,$recordData['title']),
 						);
-
+						
 						$mailContent = $this->cObj->substituteMarkerArray($mailContent,$markerArray,$wrap='###|###',$uppercase=1);
+						
 						#debug($mailContent, 'mailContentAttendant' );
 						$subject = sprintf($this->pi_getLL('attendance_notification_subject'), $this->getUserNameFromUserId($GLOBALS['TSFE']->fe_user->user['uid']), $recordData['title']);
 						$this->sendNotificationMail($attendee['email'], $subject, $mailContent, $userRecord['email'], $this->getUserNameFromUserId($GLOBALS['TSFE']->fe_user->user['uid']));
@@ -2689,7 +2703,6 @@ class tx_keyac_pi1 extends tslib_pibase {
 						'event_title' => $recordData['title'],
 						'event_link' => t3lib_div::getIndpEnv('TYPO3_SITE_URL').$this->getSingleviewLink(intval($this->piVars['showUid'])),
 						'mail_footer' => $this->cObj->getSubpart($this->templateCode,'###GENERAL_MAIL_FOOTER###'),
-
 						'label_title' => $this->pi_getLL('label_title'),
 						'label_startdat' => $this->pi_getLL('label_startdat'),
 						'event_startdat' => strftime('%d.%m.%Y %H:%M',$recordData['startdat']),
@@ -2704,7 +2717,8 @@ class tx_keyac_pi1 extends tslib_pibase {
 						'event_city' => $recordData['city'],
 						'label_teaser' => $this->pi_getLL('label_teaser'),
 						'event_teaser' => $recordData['teaser'],
-
+						'use_following_link' => $this->pi_getLL('use_following_link'),
+						'attendance_notification_text' => sprintf($this->pi_getLL('attendance_notification_subject'),$this->getUserNameFromUserId($GLOBALS['TSFE']->fe_user->user['uid']) ,$recordData['title']),
 					);
 					$mailContent = $this->cObj->substituteMarkerArray($mailContent,$markerArray,$wrap='###|###',$uppercase=1);
 					#debug($mailContent, 'mailContentOwner' );
@@ -2748,30 +2762,29 @@ class tx_keyac_pi1 extends tslib_pibase {
 			    // generate mail content
 			    $mailContent = $this->cObj->getSubpart($this->templateCode,'###ATTEND_DELETE_MAIL###');
 			    $markerArray = array(
-				'salutation' => $this->pi_getLL($salutationText),
-				'first_name' => '',
-				'last_name' => $this->getUserNameFromUserId($attendee['uid']),
-				'attendee_name' => $this->getUserNameFromUserId($userRecord['uid']),
-				'event_title' => $recordData['title'],
-				'event_link' => t3lib_div::getIndpEnv('TYPO3_SITE_URL').$this->getSingleviewLink(intval($this->piVars['showUid'])),
-				'mail_footer' => $this->cObj->getSubpart($this->templateCode,'###GENERAL_MAIL_FOOTER###'),
-
-
-				'label_title' => $this->pi_getLL('label_title'),
-				'label_startdat' => $this->pi_getLL('label_startdat'),
-				'event_startdat' => strftime('%d.%m.%Y %H:%M',$recordData['startdat']),
-				'label_enddat' => $this->pi_getLL('label_enddat'),
-				'event_enddat' => strftime('%d.%m.%Y %H:%M',$recordData['enddat']),
-				'label_location' => $this->pi_getLL('label_location'),
-				'event_location' => $recordData['location'],
-				'label_address' => $this->pi_getLL('label_address'),
-				'event_address' => $recordData['address'],
-				'label_zip_city' => $this->pi_getLL('label_zip_city'),
-				'event_zip' => $recordData['zip'],
-				'event_city' => $recordData['city'],
-				'label_teaser' => $this->pi_getLL('label_teaser'),
-				'event_teaser' => $recordData['teaser'],
-
+					'salutation' => $this->pi_getLL($salutationText),
+					'first_name' => '',
+					'last_name' => $this->getUserNameFromUserId($attendee['uid']),
+					'attendee_name' => $this->getUserNameFromUserId($userRecord['uid']),
+					'event_title' => $recordData['title'],
+					'event_link' => t3lib_div::getIndpEnv('TYPO3_SITE_URL').$this->getSingleviewLink(intval($this->piVars['showUid'])),
+					'mail_footer' => $this->cObj->getSubpart($this->templateCode,'###GENERAL_MAIL_FOOTER###'),
+					'label_title' => $this->pi_getLL('label_title'),
+					'label_startdat' => $this->pi_getLL('label_startdat'),
+					'event_startdat' => strftime('%d.%m.%Y %H:%M',$recordData['startdat']),
+					'label_enddat' => $this->pi_getLL('label_enddat'),
+					'event_enddat' => strftime('%d.%m.%Y %H:%M',$recordData['enddat']),
+					'label_location' => $this->pi_getLL('label_location'),
+					'event_location' => $recordData['location'],
+					'label_address' => $this->pi_getLL('label_address'),
+					'event_address' => $recordData['address'],
+					'label_zip_city' => $this->pi_getLL('label_zip_city'),
+					'event_zip' => $recordData['zip'],
+					'event_city' => $recordData['city'],
+					'label_teaser' => $this->pi_getLL('label_teaser'),
+					'event_teaser' => $recordData['teaser'],
+					'attendance_delete_notification_text' => sprintf($this->pi_getLL('attendance_delete_notification_subject'), $this->getUserNameFromUserId($userRecord['uid']), $recordData['title']),
+					'use_following_link' => $this->pi_getLL('use_following_link'),
 			    );
 			    $mailContent = $this->cObj->substituteMarkerArray($mailContent,$markerArray,$wrap='###|###',$uppercase=1);
 			    #debug($mailContent, 'mailContentAttendant' );
@@ -2797,29 +2810,29 @@ class tx_keyac_pi1 extends tslib_pibase {
 		    // generate mail content
 		    $mailContent = $this->cObj->getSubpart($this->templateCode,'###ATTEND_DELETE_MAIL###');
 		    $markerArray = array(
-			'salutation' => $this->pi_getLL($salutationText),
-			'first_name' => '',
-			'last_name' => $this->getUserNameFromUserId($ownerRecord['uid']),
-			'attendee_name' => $this->getUserNameFromUserId($userRecord['uid']),
-			'event_title' => $recordData['title'],
-			'event_link' => t3lib_div::getIndpEnv('TYPO3_SITE_URL').$this->getSingleviewLink(intval($this->piVars['showUid'])),
-			'mail_footer' => $this->cObj->getSubpart($this->templateCode,'###GENERAL_MAIL_FOOTER###'),
-
-			'label_title' => $this->pi_getLL('label_title'),
-			'label_startdat' => $this->pi_getLL('label_startdat'),
-			'event_startdat' => strftime('%d.%m.%Y %H:%M',$recordData['startdat']),
-			'label_enddat' => $this->pi_getLL('label_enddat'),
-			'event_enddat' => strftime('%d.%m.%Y %H:%M',$recordData['enddat']),
-			'label_location' => $this->pi_getLL('label_location'),
-			'event_location' => $recordData['location'],
-			'label_address' => $this->pi_getLL('label_address'),
-			'event_address' => $recordData['address'],
-			'label_zip_city' => $this->pi_getLL('label_zip_city'),
-			'event_zip' => $recordData['zip'],
-			'event_city' => $recordData['city'],
-			'label_teaser' => $this->pi_getLL('label_teaser'),
-			'event_teaser' => $recordData['teaser'],
-
+				'salutation' => $this->pi_getLL($salutationText),
+				'first_name' => '',
+				'last_name' => $this->getUserNameFromUserId($ownerRecord['uid']),
+				'attendee_name' => $this->getUserNameFromUserId($userRecord['uid']),
+				'event_title' => $recordData['title'],
+				'event_link' => t3lib_div::getIndpEnv('TYPO3_SITE_URL').$this->getSingleviewLink(intval($this->piVars['showUid'])),
+				'mail_footer' => $this->cObj->getSubpart($this->templateCode,'###GENERAL_MAIL_FOOTER###'),
+				'label_title' => $this->pi_getLL('label_title'),
+				'label_startdat' => $this->pi_getLL('label_startdat'),
+				'event_startdat' => strftime('%d.%m.%Y %H:%M',$recordData['startdat']),
+				'label_enddat' => $this->pi_getLL('label_enddat'),
+				'event_enddat' => strftime('%d.%m.%Y %H:%M',$recordData['enddat']),
+				'label_location' => $this->pi_getLL('label_location'),
+				'event_location' => $recordData['location'],
+				'label_address' => $this->pi_getLL('label_address'),
+				'event_address' => $recordData['address'],
+				'label_zip_city' => $this->pi_getLL('label_zip_city'),
+				'event_zip' => $recordData['zip'],
+				'event_city' => $recordData['city'],
+				'label_teaser' => $this->pi_getLL('label_teaser'),
+				'event_teaser' => $recordData['teaser'],
+				'attendance_delete_notification_text' => sprintf($this->pi_getLL('attendance_delete_notification_subject'), $this->getUserNameFromUserId($userRecord['uid']), $recordData['title']),
+				'use_following_link' => $this->pi_getLL('use_following_link'),
 		    );
 		    $mailContent = $this->cObj->substituteMarkerArray($mailContent,$markerArray,$wrap='###|###',$uppercase=1);
 		    #debug($mailContent, 'mailContentOwner' );
@@ -2922,6 +2935,14 @@ class tx_keyac_pi1 extends tslib_pibase {
 					'event_title' => !$conflictData['private'] ? $conflictData['title'] : $this->pi_getLL('private_event'),
 					'event_startdat' => strftime('%d.%m.%Y %H:%M Uhr',$conflictData['startdat']),
 					'event_enddat' => strftime('%d.%m.%Y %H:%M Uhr',$conflictData['enddat']),
+					'label_user' => $this->pi_getLL('label_user'),
+					'label_event' => $this->pi_getLL('event'),
+					'label_from' => $this->pi_getLL('label_from'),
+					'label_until' => $this->pi_getLL('label_until'),
+					'conflicts_found' => $this->pi_getLL('conflicts_found'),
+					'ignore_conflicts' => $this->pi_getLL('ignore_conflicts'),
+					'search_date' => $this->pi_getLL('search_date'),
+					
 				);
 				$tempRowContent = $this->cObj->substituteMarkerArray($tempRowContent, $tempMarkerArray, $wrap='###|###',$uppercase=1);
 				$conflictsRows .= $tempRowContent;
@@ -3595,16 +3616,18 @@ class tx_keyac_pi1 extends tslib_pibase {
 						// generate mail content
 						$mailContent = $this->cObj->getSubpart($this->templateCode,'###EDIT_NOTIFICATION_MAIL###');
 						$markerArray = array(
-						'salutation' => $this->pi_getLL($salutationText),
-						// TODO: fill marker first_name and last_name
-						// correctly, if first_name and last_name
-						// are not set
-						'first_name' => '',
-						'last_name' => $this->getUserNameFromUserId($attendee['uid']),
-						'editor_name' => $this->getUserNameFromUserId($GLOBALS['TSFE']->fe_user->user['uid']),
-						'event_title' => $recordData['title'],
-						'event_link' => t3lib_div::getIndpEnv('TYPO3_SITE_URL').$this->getSingleviewLink($editUid),
-						'mail_footer' => $this->cObj->getSubpart($this->templateCode,'###GENERAL_MAIL_FOOTER###'),
+							'salutation' => $this->pi_getLL($salutationText),
+							// TODO: fill marker first_name and last_name
+							// correctly, if first_name and last_name
+							// are not set
+							'first_name' => '',
+							'last_name' => $this->getUserNameFromUserId($attendee['uid']),
+							'editor_name' => $this->getUserNameFromUserId($GLOBALS['TSFE']->fe_user->user['uid']),
+							'event_title' => $recordData['title'],
+							'event_link' => t3lib_div::getIndpEnv('TYPO3_SITE_URL').$this->getSingleviewLink($editUid),
+							'mail_footer' => $this->cObj->getSubpart($this->templateCode,'###GENERAL_MAIL_FOOTER###'),
+							'edit_notification_subject' => sprintf($this->pi_getLL('edit_notification_subject'), $this->getUserNameFromUserId($GLOBALS['TSFE']->fe_user->user['uid']), $recordData['title']),
+							'use_following_link' => $this->pi_getLL('use_following_link'),
 						);
 						$mailContent = $this->cObj->substituteMarkerArray($mailContent,$markerArray,$wrap='###|###',$uppercase=1);
 						$mailContent = $this->cObj->substituteSubpart ($mailContent, '###CHANGED_FIELDS###', $changedFieldsContent, $recursive=1);
@@ -3634,6 +3657,8 @@ class tx_keyac_pi1 extends tslib_pibase {
 			    'event_title' => $recordData['title'],
 			    'event_link' => t3lib_div::getIndpEnv('TYPO3_SITE_URL').$this->getSingleviewLink($editUid),
 			    'mail_footer' => $this->cObj->getSubpart($this->templateCode,'###GENERAL_MAIL_FOOTER###'),
+				'edit_notification_subject' => sprintf($this->pi_getLL('edit_notification_subject'), $this->getUserNameFromUserId($GLOBALS['TSFE']->fe_user->user['uid']), $recordData['title']),
+				'use_following_link' => $this->pi_getLL('use_following_link'),
 			);
 			$mailContent = $this->cObj->substituteMarkerArray($mailContent,$markerArray,$wrap='###|###',$uppercase=1);
 			$mailContent = $this->cObj->substituteSubpart ($mailContent, '###CHANGED_FIELDS###', $changedFieldsContent, $recursive=1);
@@ -3744,55 +3769,54 @@ class tx_keyac_pi1 extends tslib_pibase {
 				}
 			}
 	    }
-
+		
 	    // run through days and check for conflicts
 	    for($i=1; $i <= 10; $i++) {
 		$startdat = $initialStartdat + ($i * 3600 * 24);
 		$enddat =  $initialEnddat + ($i * 3600 * 24);
-
-		if (strftime('%u',$startdat) < 6 ) {
-		    $conflicts = $this->checkConflicts($startdat, $enddat, $attendees);
-		    if (!is_array($conflicts)) {
-			// add as suggestion if no conflict found
-			$suggestions[] = array(
-			    'startdat' => $startdat,
-			    'enddat' => $enddat,
-			);
-		    }
-		}
+		
+			if (strftime('%u',$startdat) < 6 ) {
+				$conflicts = $this->checkConflicts($startdat, $enddat, $attendees);
+				if (!is_array($conflicts)) {
+					// add as suggestion if no conflict found
+					$suggestions[] = array(
+						'startdat' => $startdat,
+						'enddat' => $enddat,
+					);
+				}
+			}
 	    }
 
 	    // if suggestions found
 	    if (count($suggestions)) {
-		// build suggestion rows
-		foreach($suggestions as $suggestion) {
-		    $suggestionRowTemp = $this->cObj->getSubpart($this->templateCode,'###SUGGESTION_ROW###');
-		    $suggestionRowTemp = $this->cObj->substituteMarker($suggestionRowTemp,'###VALUE###',$suggestion['startdat'].'|'.$suggestion['enddat']);
-		    $suggestionRowTemp = $this->cObj->substituteMarker($suggestionRowTemp,'###STARTDAT###', strftime('%a, %d.%m.%Y %H:%M',$suggestion['startdat']));
-		    $suggestionRowTemp = $this->cObj->substituteMarker($suggestionRowTemp,'###ENDDAT###', strftime('%a, %d.%m.%Y %H:%M',$suggestion['enddat']));
-		    $suggestionRows .=  $suggestionRowTemp;
-		}
-		// build suggestion form
-		$content = $this->cObj->getSubpart($this->templateCode,'###SUB_SUGGESTIONS###');
-		$content = $this->cObj->substituteSubpart ($content, '###SUGGESTION_ROW###', $suggestionRows, $recursive=1);
-
-		// build hidden fields content
-		foreach ($this->piVars as $field => $value) {
-
-		    if ($field != "submiteditfind" && $field != "submitcreatefind") {
-			if (is_array($value)) {
-			    if ($field == 'user') {
-				    #debug($value,'user data');
-				    foreach ($value as $userId => $val) {
-					$hiddenfields .= '<input type="hidden" name="tx_keyac_pi1['.$field.']['.$userId.']" value="'.$val.'">';
-				}
-			    }
+			// build suggestion rows
+			foreach($suggestions as $suggestion) {
+				$suggestionRowTemp = $this->cObj->getSubpart($this->templateCode,'###SUGGESTION_ROW###');
+				$suggestionRowTemp = $this->cObj->substituteMarker($suggestionRowTemp,'###VALUE###',$suggestion['startdat'].'|'.$suggestion['enddat']);
+				$suggestionRowTemp = $this->cObj->substituteMarker($suggestionRowTemp,'###STARTDAT###', strftime('%a, %d.%m.%Y %H:%M',$suggestion['startdat']));
+				$suggestionRowTemp = $this->cObj->substituteMarker($suggestionRowTemp,'###ENDDAT###', strftime('%a, %d.%m.%Y %H:%M',$suggestion['enddat']));
+				$suggestionRows .=  $suggestionRowTemp;
 			}
-			else $hiddenfields .= '<input type="hidden" name="tx_keyac_pi1['.$field.']" value="'.$value.'">';
-		    }
-		}
-		$content = $this->cObj->substituteMarker($content,'###HIDDENFIELDS###',$hiddenfields);
-
+			// build suggestion form
+			$content = $this->cObj->getSubpart($this->templateCode,'###SUB_SUGGESTIONS###');
+			$content = $this->cObj->substituteSubpart ($content, '###SUGGESTION_ROW###', $suggestionRows, $recursive=1);
+			$content = $this->cObj->substituteMarker($content,'###DATE_SUGGESTIONS###', $this->pi_getLL('date_suggestions'));
+			
+			// build hidden fields content
+			foreach ($this->piVars as $field => $value) {
+				if ($field != "submiteditfind" && $field != "submitcreatefind") {
+					if (is_array($value)) {
+						if ($field == 'user') {
+							foreach ($value as $userId => $val) {
+								$hiddenfields .= '<input type="hidden" name="tx_keyac_pi1['.$field.']['.$userId.']" value="'.$val.'">';
+							}
+						}
+					} else {
+						$hiddenfields .= '<input type="hidden" name="tx_keyac_pi1['.$field.']" value="'.$value.'">';
+					}
+				}
+			}
+			$content = $this->cObj->substituteMarker($content,'###HIDDENFIELDS###',$hiddenfields);
 	    }
 	    // no suggestions found
 	    else {
@@ -3817,36 +3841,36 @@ class tx_keyac_pi1 extends tslib_pibase {
 
 	    // get attendees
 	    if (count($attendees)) {
-		foreach($attendees as $key => $attendee) {
-		    $fields = '*, tx_keyac_dates.uid as eventuid, fe_users.uid as useruid, tx_keyac_dates.title as eventtitle';
-		    $table = 'tx_keyac_dates, tx_keyac_dates_attendees_mm, fe_users';
-		    $where = 'tx_keyac_dates_attendees_mm.uid_foreign="'.$attendee['uid'].'" ';
-		    $where .= ' AND tx_keyac_dates.uid=tx_keyac_dates_attendees_mm.uid_local';
-		    $where .= ' AND fe_users.uid=tx_keyac_dates_attendees_mm.uid_foreign ';
-		    $where .= ' AND (';
-		    $where .= 'startdat between '.$compStart.' AND '.$compEnd;
-		    $where .= ' OR enddat between '.$compStart.' AND '.$compEnd;
-		    $where .= ' OR (startdat < '.$compStart.' AND enddat > '.$compEnd.')';
-		    $where .= ' OR (startdat = '.$compStart.' AND enddat='.$compEnd.')';
-		    $where .= ' OR (startdat > '.$compStart.' AND enddat < '.$compEnd.')';
-		    $where .= ' OR (startdat = '.$compStart.' AND enddat < '.$compEnd.')';
-		    $where .= ' OR (startdat > '.$compStart.' AND enddat = '.$compEnd.')';
-		    $where .= ')';
-		    $where .= $this->cObj->enableFields('tx_keyac_dates');
-		    $where .= $this->cObj->enableFields('fe_users');
-		    $res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($fields,$table,$where,$groupBy='',$orderBy='',$limit='');
-		    $anz = $GLOBALS['TYPO3_DB']->sql_num_rows($res);
-		    while ($row=$GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-			$conflicts[] = array(
-			    'title' => $row['eventtitle'],
-			    'startdat' => $row['startdat'],
-			    'enddat' => $row['enddat'],
-			    'showtime' => $row['showtime'],
-			    'user_first_name' => '',
-			    'user_last_name' => $this->getUserNameFromUserId($row['uid']),
-			);
-		    }
-		}
+			foreach($attendees as $key => $attendee) {
+				$fields = '*, tx_keyac_dates.uid as eventuid, fe_users.uid as useruid, tx_keyac_dates.title as eventtitle';
+				$table = 'tx_keyac_dates, tx_keyac_dates_attendees_mm, fe_users';
+				$where = 'tx_keyac_dates_attendees_mm.uid_foreign="'.$attendee['uid'].'" ';
+				$where .= ' AND tx_keyac_dates.uid=tx_keyac_dates_attendees_mm.uid_local';
+				$where .= ' AND fe_users.uid=tx_keyac_dates_attendees_mm.uid_foreign ';
+				$where .= ' AND (';
+				$where .= 'startdat between '.$compStart.' AND '.$compEnd;
+				$where .= ' OR enddat between '.$compStart.' AND '.$compEnd;
+				$where .= ' OR (startdat < '.$compStart.' AND enddat > '.$compEnd.')';
+				$where .= ' OR (startdat = '.$compStart.' AND enddat='.$compEnd.')';
+				$where .= ' OR (startdat > '.$compStart.' AND enddat < '.$compEnd.')';
+				$where .= ' OR (startdat = '.$compStart.' AND enddat < '.$compEnd.')';
+				$where .= ' OR (startdat > '.$compStart.' AND enddat = '.$compEnd.')';
+				$where .= ')';
+				$where .= $this->cObj->enableFields('tx_keyac_dates');
+				$where .= $this->cObj->enableFields('fe_users');
+				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($fields,$table,$where,$groupBy='',$orderBy='',$limit='');
+				$anz = $GLOBALS['TYPO3_DB']->sql_num_rows($res);
+				while ($row=$GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+					$conflicts[] = array(
+						'title' => $row['eventtitle'],
+						'startdat' => $row['startdat'],
+						'enddat' => $row['enddat'],
+						'showtime' => $row['showtime'],
+						'user_first_name' => '',
+						'user_last_name' => $this->getUserNameFromUserId($row['uid']),
+					);
+				}
+			}
 	    }
 	    return $conflicts;
 	}
@@ -3872,12 +3896,12 @@ class tx_keyac_pi1 extends tslib_pibase {
 		$filefuncs = new t3lib_basicFilefunctions();
 		$uploadfile = $filefuncs->getUniqueName($filefuncs->cleanFileName($_FILES[$attachmentName]['name']), $this->uploadFolder);
 		// Filesize OK?
-		if($_FILES[$attachmentName]['size'] > $this->conf['maxFileSize']){
+		if($_FILES[$attachmentName]['size'] > $this->conf['maxFileSize']) {
 			$this->formErrors[] = $this->pi_getLL('error_file_too_big','Error: File is too big.');
 			$success=false;
 		}
 		// File extension allowed?
-		if(!$this->extAllowed($_FILES[$attachmentName]['name'])){
+		if(!$this->extAllowed($_FILES[$attachmentName]['name'])) {
 			$this->formErrors[] = $this->pi_getLL('error_filetype_not_allowed','Error: This Filetype is not allowed.');
 			$success=false;
 		}
@@ -3888,7 +3912,7 @@ class tx_keyac_pi1 extends tslib_pibase {
 			$this->formErrors[] = $this->pi_getLL('error_file_upload_not_successful','Error: File upload was not successfull.');
 			$success=false;
 		}
-
+		
 		if ($success) {
 			return basename($uploadfile);
 		} else {
@@ -3917,7 +3941,7 @@ class tx_keyac_pi1 extends tslib_pibase {
 		$excludelist = explode(",",$this->conf['extExclude']);
 
 		$extension='';
-		if($extension=strstr($filename,'.')){
+		if($extension=strstr($filename,'.')) {
 			$extension=strtolower(substr($extension, 1));
 			return ((in_array($extension,$includelist) || in_array('*',$includelist)) && (!in_array($extension,$excludelist)));
 		} else {

@@ -162,6 +162,21 @@
 			<label index="edit_notification_subject">%s has edited the event "%s"</label>
 			<label index="delete_notification_subject">%s has deleted the event "%s"</label>
 			<label index="invitation_text_label">Please enter a text for the invitation mail:</label>
+			<label index="you_have_been_invited">You have been invited by %s to attend the event "%s".</label>
+			<label index="invitation_text_headline">The user entered the following invitation text</label>
+			<label index="use_following_link">Use the following link to get to the event.</label>
+			<label index="you_have_been_set">You habe been set as attendant by %s for the event "%s".</label>
+			<label index="cancellation_text_headline">The user entered the following reason for cancellation</label>
+			<label index="date_suggestions">Following date suggestions have been found</label>
+			
+			<!-- CONFLICTS -->
+			<label index="label_user">User</label>
+			<label index="label_from">from</label>
+			<label index="label_until">until</label>
+			<label index="conflicts_found">Conflicts found for defined period for the following attendants</label>
+			<label index="ignore_conflicts">Ignore conflict and use period?</label>
+			<label index="search_date">Search for other period</label>
+			
 		</languageKey>
 		
 		
@@ -320,6 +335,22 @@
 			<label index="edit_notification_subject">%s hat den Termin "%s" bearbeitet</label>
 			<label index="delete_notification_subject">%s hat den Termin "%s" gelöscht</label>
 			<label index="invitation_text_label">Bitte geben Sie einen Text für die Einladung an:</label>
+			<label index="you_have_been_invited">Sie wurden von %s zur Teilnahme am Termin "%s" eingeladen.</label>
+			<label index="invitation_text_headline">Der Benutzer hat folgenden Einladungstext angegeben</label>
+			<label index="use_following_link">Klicken Sie auf folgenden Link um den Termin einzusehen.</label>
+			<label index="you_have_been_set">Sie wurden von %s zur Teilnahme am Termin "%s" hinzugefügt.</label>
+			<label index="cancellation_text_headline">Der Benutzer hat folgende Begründung für die Absage angegeben</label>
+			<label index="date_suggestions">Folgende Terminvorschläge wurden ermittelt</label>
+			
+			
+			<!-- CONFLICTS -->
+			<label index="label_user">Benutzer</label>
+			<label index="label_from">von</label>
+			<label index="label_until">bis</label>
+			<label index="conflicts_found">Für den gewünschten Zeitraum existieren Konflikte bei folgenden Teilnehmern</label>
+			<label index="ignore_conflicts">Konflikte ignorieren und Termin trotzdem verwenden?</label>
+			<label index="search_date">Anderen Termin finden?</label>
+			
 		</languageKey>
 	</data>
 </T3locallang>
