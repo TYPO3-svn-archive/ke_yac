@@ -919,8 +919,8 @@ class tx_keyac_pi1 extends tslib_pibase {
 							#debug($this->singleviewPid,'svp');
 							unset($linkconf);
 							$linkconf['parameter'] = $this->singleviewPid;
-							$linkconf['additionalParams'] = '&tx_keyac_pi1[showUid]='.$row['uid'];
-							$linkconf['additionalParams'] .= '&tx_keyac_pi1[showCal]='.$this->piVars['showCal'];
+							$linkconf['additionalParams'] = '&tx_keyac_pi1[showUid]='.intval($row['uid']);
+							$linkconf['additionalParams'] .= '&tx_keyac_pi1[showCal]='.intval($this->piVars['showCal']);
 							// set backlink pid if singleview pid is different from current pid
 							if ($this->singleviewPid != $GLOBALS['TSFE']->page['uid']) $linkconf['additionalParams'] .= '&tx_keyac_pi1[backPid]='.$GLOBALS['TSFE']->page['uid'];
 							$linkconf['useCacheHash'] = true;
@@ -932,8 +932,8 @@ class tx_keyac_pi1 extends tslib_pibase {
 							unset($linkconf);
 							$linkconf['parameter'] = $GLOBALS['TSFE']->id;
 							if (isset($this->piVars['month']) && $this->piVars['year']) {
-								$linkconf['additionalParams'] = '&'.$this->prefixId.'[month]='.$this->piVars['month'];
-								$linkconf['additionalParams'] .= '&'.$this->prefixId.'[year]='.$this->piVars['year'];
+								$linkconf['additionalParams'] = '&'.$this->prefixId.'[month]='.intval($this->piVars['month']);
+								$linkconf['additionalParams'] .= '&'.$this->prefixId.'[year]='.intval($this->piVars['year']);
 							}
 							$daylink = $this->cObj->typoLink_URL($linkconf).'#'.$anchorlink;
 						}
@@ -1157,8 +1157,8 @@ class tx_keyac_pi1 extends tslib_pibase {
 				#$linkStart = $this->pi_linkTP_keepPIvars_url ($overrulePIvars, $cache=1, $clearAnyway=0);
 				unset($linkconf);
 				$linkconf['parameter'] = $this->singleviewPid;
-				$linkconf['additionalParams'] = '&tx_keyac_pi1[showUid]='.$row['dateuid'];
-				$linkconf['additionalParams'] .= '&tx_keyac_pi1[showCal]='.$this->piVars['showCal'];
+				$linkconf['additionalParams'] = '&tx_keyac_pi1[showUid]='.intval($row['dateuid']);
+				$linkconf['additionalParams'] .= '&tx_keyac_pi1[showCal]='.intval($this->piVars['showCal']);
 				// set backlink pid if singleview pid is different from current pid
 				if ($this->singleviewPid != $GLOBALS['TSFE']->page['uid']) $linkconf['additionalParams'] .= '&tx_keyac_pi1[backPid]='.$GLOBALS['TSFE']->page['uid'];
 				$linkconf['useCacheHash'] = true;
@@ -1430,7 +1430,7 @@ class tx_keyac_pi1 extends tslib_pibase {
 			}
 
 			// generate backlink
-			if ($this->piVars['backPid']) $backlink = $this->pi_linkToPage($this->pi_getLL('back'),$this->piVars['backPid'],$target='',$urlParameters=array());
+			if ($this->piVars['backPid']) $backlink = $this->pi_linkToPage($this->pi_getLL('back'),intval($this->piVars['backPid']),$target='',$urlParameters=array());
 			else $backlink = $this->getListviewLink($this->pi_getLL('back'));
 
 			// generate attendance info / link
@@ -1438,7 +1438,7 @@ class tx_keyac_pi1 extends tslib_pibase {
 				$attendanceStatus = $this->pi_getLL('user_is_attendee');
 				unset($linkconf);
 				$linkconf['parameter'] = $GLOBALS['TSFE']->id;
-	 			$linkconf['additionalParams'] = '&'.$this->prefixId.'[showUid]='.$this->piVars['showUid'];
+	 			$linkconf['additionalParams'] = '&'.$this->prefixId.'[showUid]='.intval($this->piVars['showUid']);
 	 			$linkconf['additionalParams'] .= '&'.$this->prefixId.'[action]=delattendance';
 	 			$linkconf['useCacheHash'] = true;
 	 			$attendanceAction = $this->cObj->typoLink($this->pi_getLL('delete_attendance'),$linkconf);
@@ -1447,7 +1447,7 @@ class tx_keyac_pi1 extends tslib_pibase {
 				$attendanceStatus = $this->pi_getLL('user_is_no_attendee');
 				unset($linkconf);
 				$linkconf['parameter'] = $GLOBALS['TSFE']->id;
-	 			$linkconf['additionalParams'] = '&'.$this->prefixId.'[showUid]='.$this->piVars['showUid'];
+	 			$linkconf['additionalParams'] = '&'.$this->prefixId.'[showUid]='.intval($this->piVars['showUid']);
 	 			$linkconf['additionalParams'] .= '&'.$this->prefixId.'[action]=attend';
 	 			$linkconf['useCacheHash'] = true;
 	 			$attendanceAction = $this->cObj->typoLink($this->pi_getLL('attend'),$linkconf);
@@ -1570,7 +1570,7 @@ class tx_keyac_pi1 extends tslib_pibase {
 				require_once(t3lib_extMgm::extPath('ke_ukb').'class.ke_ukb.php');
 				$ukb = t3lib_div::makeInstance('ke_ukb');
 				$content = $this->cObj->substituteMarker($content,'###LABEL_UKB###', $this->pi_getLL('label_ukb'));
-				$content = $this->cObj->substituteMarker($content,'###UKB_CONTENT###', $ukb->renderContent('tx_keyac_dates', $this->piVars['showUid']));
+				$content = $this->cObj->substituteMarker($content,'###UKB_CONTENT###', $ukb->renderContent('tx_keyac_dates', intval($this->piVars['showUid'])));
 				$content = $this->cObj->substituteMarker($content,'###UKB_FORM###', $ukb->renderForm());
 			}
 			else $content = $this->cObj->substituteSubpart ($content, '###SUB_UNIVERSAL_KEWORKS_BROWSER###', '');
@@ -2131,12 +2131,12 @@ class tx_keyac_pi1 extends tslib_pibase {
 	function generateFooterMenu() {
 
 		// user already attends: delete attendance
-		if ($this->feuserIsAttendent($GLOBALS['TSFE']->fe_user->user['uid'],$this->piVars['showUid'])) {
+		if ($this->feuserIsAttendent($GLOBALS['TSFE']->fe_user->user['uid'],intval($this->piVars['showUid']))) {
 			// delete attendance
 			$attend = $this->cObj->getSubpart($this->templateCode,'###SUB_ATTEND###');
 			unset($linkconf);
 			$linkconf['parameter'] = $GLOBALS['TSFE']->id;
-			$linkconf['additionalParams'] = '&tx_keyac_pi1[showUid]='.$this->piVars['showUid'];
+			$linkconf['additionalParams'] = '&tx_keyac_pi1[showUid]='.intval($this->piVars['showUid']);
 			$linkconf['additionalParams'] .= '&tx_keyac_pi1[action]=delattendance';
 			$linkconf['useCacheHash'] = false;
 			$attend = $this->cObj->substituteMarker($attend,'###LINK###',$this->cObj->typoLink($this->pi_getLL('label_button_delete_attendance','delete attendance'),$linkconf));
@@ -2147,7 +2147,7 @@ class tx_keyac_pi1 extends tslib_pibase {
 			$attend = $this->cObj->getSubpart($this->templateCode,'###SUB_ATTEND###');
 			unset($linkconf);
 			$linkconf['parameter'] = $GLOBALS['TSFE']->id;
-			$linkconf['additionalParams'] = '&tx_keyac_pi1[showUid]='.$this->piVars['showUid'];
+			$linkconf['additionalParams'] = '&tx_keyac_pi1[showUid]='.intval($this->piVars['showUid']);
 			$linkconf['additionalParams'] .= '&tx_keyac_pi1[action]=attend';
 			$linkconf['useCacheHash'] = false;
 			$attend = $this->cObj->substituteMarker($attend,'###LINK###',$this->cObj->typoLink($this->pi_getLL('label_button_attend','attend'),$linkconf));
@@ -2157,7 +2157,7 @@ class tx_keyac_pi1 extends tslib_pibase {
 		$invite = $this->cObj->getSubpart($this->templateCode,'###SUB_INVITE###');
 		unset($linkconf);
 		$linkconf['parameter'] = $GLOBALS['TSFE']->id;
-		$linkconf['additionalParams'] = '&tx_keyac_pi1[showUid]='.$this->piVars['showUid'];
+		$linkconf['additionalParams'] = '&tx_keyac_pi1[showUid]='.intval($this->piVars['showUid']);
 		$linkconf['additionalParams'] .= '&tx_keyac_pi1[action]=invite';
 		$linkconf['useCacheHash'] = false;
 		$invite = $this->cObj->substituteMarker($invite,'###LINK###',$this->cObj->typoLink($this->pi_getLL('label_button_invite','invite'),$linkconf));
@@ -2166,7 +2166,7 @@ class tx_keyac_pi1 extends tslib_pibase {
 		$edit = $this->cObj->getSubpart($this->templateCode,'###SUB_EDIT###');
 		unset($linkconf);
 		$linkconf['parameter'] = $GLOBALS['TSFE']->id;
-		$linkconf['additionalParams'] = '&tx_keyac_pi1[showUid]='.$this->piVars['showUid'];
+		$linkconf['additionalParams'] = '&tx_keyac_pi1[showUid]='.intval($this->piVars['showUid']);
 		$linkconf['additionalParams'] .= '&tx_keyac_pi1[action]=edit';
 		$linkconf['useCacheHash'] = false;
 		$edit = $this->cObj->substituteMarker($edit,'###LINK###',$this->cObj->typoLink($this->pi_getLL('label_button_edit','edit'),$linkconf));
@@ -2175,7 +2175,7 @@ class tx_keyac_pi1 extends tslib_pibase {
 		$move = $this->cObj->getSubpart($this->templateCode,'###SUB_MOVE###');
 		unset($linkconf);
 		$linkconf['parameter'] = $GLOBALS['TSFE']->id;
-		$linkconf['additionalParams'] = '&tx_keyac_pi1[showUid]='.$this->piVars['showUid'];
+		$linkconf['additionalParams'] = '&tx_keyac_pi1[showUid]='.intval($this->piVars['showUid']);
 		$linkconf['additionalParams'] .= '&tx_keyac_pi1[action]=move';
 		$linkconf['useCacheHash'] = false;
 		$move = $this->cObj->substituteMarker($move,'###LINK###',$this->cObj->typoLink($this->pi_getLL('label_button_move','move'),$linkconf));
@@ -2184,7 +2184,7 @@ class tx_keyac_pi1 extends tslib_pibase {
 		$delete = $this->cObj->getSubpart($this->templateCode,'###SUB_DELETE###');
 		unset($linkconf);
 		$linkconf['parameter'] = $GLOBALS['TSFE']->id;
-		$linkconf['additionalParams'] = '&tx_keyac_pi1[showUid]='.$this->piVars['showUid'];
+		$linkconf['additionalParams'] = '&tx_keyac_pi1[showUid]='.intval($this->piVars['showUid']);
 		$linkconf['additionalParams'] .= '&tx_keyac_pi1[action]=delete';
 		$linkconf['useCacheHash'] = false;
 		$delete = $this->cObj->substituteMarker($delete,'###LINK###',$this->cObj->typoLink($this->pi_getLL('label_button_delete','delete'),$linkconf));
@@ -2229,7 +2229,7 @@ class tx_keyac_pi1 extends tslib_pibase {
 		while ($row=$GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 
 			// only show users that arent attendents yet and do not show the current user
-			if (!$this->feuserIsAttendent($row['uid'], $this->piVars['showUid']) && $row['uid'] != $GLOBALS['TSFE']->fe_user->user['uid']) {
+			if (!$this->feuserIsAttendent(intval($row['uid']), intval($this->piVars['showUid'])) && intval($row['uid']) != $GLOBALS['TSFE']->fe_user->user['uid']) {
 				$name = $this->getUserNameFromUserId($row['uid']);
 
 				$checkbox = '<input type="checkbox" name="'.$this->prefixId.'[user]['.$row['uid'].']" ';
@@ -2250,7 +2250,7 @@ class tx_keyac_pi1 extends tslib_pibase {
 		// generate backlink
 		unset($linkconf);
 		$linkconf['parameter'] = $GLOBALS['TSFE']->id;
-		$linkconf['additionalParams'] = '&tx_keyac_pi1[showUid]='.$this->piVars['showUid'];
+		$linkconf['additionalParams'] = '&tx_keyac_pi1[showUid]='.intval($this->piVars['showUid']);
 		$backlink = $this->cObj->typoLink_URL($linkconf);
 
 		// generate form action
@@ -2260,7 +2260,7 @@ class tx_keyac_pi1 extends tslib_pibase {
 		$linkconf['useCacheHash'] = false;
 		$action =$this->cObj->typoLink_URL($linkconf);
 
-		$hiddenFields = '<input type="hidden" name="tx_keyac_pi1[showUid]" value="'.$this->piVars['showUid'].'" >';
+		$hiddenFields = '<input type="hidden" name="tx_keyac_pi1[showUid]" value="'.intval($this->piVars['showUid']).'" >';
 
 		// generate content
 		$subpart = $include ? '###SUB_INVITATION_INCLUDE###' : '###SUB_INVITATION###';
@@ -2272,7 +2272,7 @@ class tx_keyac_pi1 extends tslib_pibase {
 			'action' => $action,
 			'hiddenfields' => $hiddenFields,
 			'invitation_text_label' => $this->pi_getLL('invitation_text_label'),
-			'invitation_text_input' => '<textarea name="tx_keyac_pi1[invitation_text]">'.$this->piVars['invitation_text'].'</textarea>',
+			'invitation_text_input' => '<textarea name="tx_keyac_pi1[invitation_text]">'.t3lib_div::removeXSS($this->piVars['invitation_text']).'</textarea>',
 			'input_invitation_mode' => $this->renderFormField('invitation_mode'),
 
 		);
@@ -2289,7 +2289,7 @@ class tx_keyac_pi1 extends tslib_pibase {
 
 	function processInviteData() {
 		
-		$eventRow = $this->getEventRecord($this->piVars['showUid']);
+		$eventRow = $this->getEventRecord(intval($this->piVars['showUid']));
 
 		// run through all checked users
 		if (count($this->piVars['user'])) {
@@ -2311,7 +2311,7 @@ class tx_keyac_pi1 extends tslib_pibase {
 					'salutation' => $this->pi_getLL($salutationText),
 					'first_name' => '',
 					'last_name' => $this->getUserNameFromUserId($userRow['uid']),
-					'event_link' => t3lib_div::getIndpEnv('TYPO3_SITE_URL').$this->getSingleviewLink($this->piVars['showUid']),
+					'event_link' => t3lib_div::getIndpEnv('TYPO3_SITE_URL').$this->getSingleviewLink(intval($this->piVars['showUid'])),
 					'mail_footer' => $this->cObj->getSubpart($this->templateCode,'###GENERAL_MAIL_FOOTER###'),
 					'event_title' => $eventRow['title'],
 					'label_title' => $this->pi_getLL('label_title'),
@@ -2339,7 +2339,7 @@ class tx_keyac_pi1 extends tslib_pibase {
 				$mailContent = $this->cObj->substituteMarkerArray($mailContent,$markerArray,$wrap='###|###',$uppercase=1);
 
 				// show invitation text?
-				$invText  = trim($this->piVars['invitation_text']);
+				$invText  = trim(t3lib_div::removeXSS($this->piVars['invitation_text']));
 				if (!empty($invText)) {
 					$mailContent = $this->cObj->substituteMarker($mailContent,'###INVITATION_TEXT###',nl2br($this->piVars['invitation_text']));
 				} else {
@@ -2358,7 +2358,7 @@ class tx_keyac_pi1 extends tslib_pibase {
 			$messageText = $this->piVars['invitation_mode'] != 'set' ? $this->pi_getLL('invite_success') : $this->pi_getLL('invite_success_set');
 			$content = $this->cObj->substituteMarker($content,'###TEXT###', $messageText);
 			
-			$content = $this->cObj->substituteMarker($content,'###BACKLINK###', $this->getSingleviewLink($this->piVars['showUid'],$this->pi_getLL('back')));
+			$content = $this->cObj->substituteMarker($content,'###BACKLINK###', $this->getSingleviewLink(intval($this->piVars['showUid']),$this->pi_getLL('back')));
 			$content = $this->cObj->substituteMarker($content,'###BACKLINK_ICON###', $this->backlinkIcon);
 			$content = $this->cObj->substituteMarker($content,'###CSSCLASS###','message-success');
 
@@ -2366,7 +2366,7 @@ class tx_keyac_pi1 extends tslib_pibase {
 			// no invitations
 			$content = $this->cObj->getSubpart($this->templateCode,'###GENERAL_MESSAGE###');
 			$content = $this->cObj->substituteMarker($content,'###TEXT###', $this->pi_getLL('invite_no_selection'));
-			$content = $this->cObj->substituteMarker($content,'###BACKLINK###', $this->getSingleviewLink($this->piVars['showUid'],$this->pi_getLL('back')));
+			$content = $this->cObj->substituteMarker($content,'###BACKLINK###', $this->getSingleviewLink(intval($this->piVars['showUid']),$this->pi_getLL('back')));
 			$content = $this->cObj->substituteMarker($content,'###BACKLINK_ICON###', $this->backlinkIcon);
 			$content = $this->cObj->substituteMarker($content,'###CSSCLASS###','message-fail');
 		}
@@ -2426,13 +2426,13 @@ class tx_keyac_pi1 extends tslib_pibase {
 		unset($linkconf);
 		$linkconf['parameter'] = $GLOBALS['TSFE']->id;
 		$linkconf['additionalParams'] = '&tx_keyac_pi1[action]=delete';
-		$linkconf['additionalParams'] .= '&tx_keyac_pi1[showUid]='.$this->piVars['showUid'];
+		$linkconf['additionalParams'] .= '&tx_keyac_pi1[showUid]='.intval($this->piVars['showUid']);
 		$linkconf['useCacheHash'] = false;
 		$actionUrl = $this->cObj->typoLink_URL($linkconf);
 
 		$markerArray = array(
 			'action' => $actionUrl,
-			'delete_question' => sprintf($this->pi_getLL('delete_question'),$this->getEventRecord($this->piVars['showUid'],'title')),
+			'delete_question' => sprintf($this->pi_getLL('delete_question'),$this->getEventRecord(intval($this->piVars['showUid'],'title'))),
 			'yes' => $this->pi_getLL('yes'),
 			'no' => $this->pi_getLL('no'),
 			'reason_cancellation' => $this->pi_getLL('reason_cancellation'),
@@ -2450,7 +2450,7 @@ class tx_keyac_pi1 extends tslib_pibase {
 	*/
 	function processDelete() {
 		// get event data
-		$eventRecord= $this->getEventRecord($this->piVars['showUid']);
+		$eventRecord= $this->getEventRecord(intval($this->piVars['showUid']));
 		// get current users' data
 		$userRecord = $this->getUserRecord($GLOBALS['TSFE']->fe_user->user['uid']);
 
@@ -2468,11 +2468,11 @@ class tx_keyac_pi1 extends tslib_pibase {
 		    $content = $this->cObj->substituteMarker($content,'###CSSCLASS###','message-success');
 
 		    // send notifications
-		    $attendees = $this->getAttendees($this->piVars['showUid']);
+		    $attendees = $this->getAttendees(intval($this->piVars['showUid']));
 
 		    // generate reason content
 		    $reasonContent = $this->cObj->getSubpart($this->templateCode,'###SUB_DELETE_REASON###');
-		    $reasonContent = $this->cObj->substituteMarker($reasonContent,'###TEXT###',nl2br($this->piVars['delete_reason']));
+		    $reasonContent = $this->cObj->substituteMarker($reasonContent,'###TEXT###',nl2br(t3lib_div::removeXSS($this->piVars['delete_reason'])));
 
 		    // run through attendees
 		    if (count($attendees)) {
@@ -2497,7 +2497,7 @@ class tx_keyac_pi1 extends tslib_pibase {
 						'last_name' => $this->getUserNameFromUserId($attendee['uid']),
 						'user_name' => $this->getUserNameFromUserId($GLOBALS['TSFE']->fe_user->user['uid']),
 						'event_title' => $eventRecord['title'],
-						'event_link' => t3lib_div::getIndpEnv('TYPO3_SITE_URL').$this->getSingleviewLink($this->piVars['showUid']),
+						'event_link' => t3lib_div::getIndpEnv('TYPO3_SITE_URL').$this->getSingleviewLink(intval($this->piVars['showUid'])),
 						'mail_footer' => $this->cObj->getSubpart($this->templateCode,'###GENERAL_MAIL_FOOTER###'),
 						'label_title' => $this->pi_getLL('label_title'),
 						'label_startdat' => $this->pi_getLL('label_startdat'),
@@ -2518,7 +2518,8 @@ class tx_keyac_pi1 extends tslib_pibase {
 					$mailContent = $this->cObj->substituteMarkerArray($mailContent,$markerArray,$wrap='###|###',$uppercase=1);
 
 					// fill reason subpart
-					if (!empty($this->piVars['delete_reason'])) $mailContent = $this->cObj->substituteSubpart ($mailContent, '###SUB_DELETE_REASON###', $reasonContent, $recursive=1);
+					$reason = t3lib_div::removeXSS($this->piVars['delete_reason']);
+					if (!empty($reason)) $mailContent = $this->cObj->substituteSubpart ($mailContent, '###SUB_DELETE_REASON###', $reasonContent, $recursive=1);
 					else $mailContent = $this->cObj->substituteSubpart ($mailContent, '###SUB_DELETE_REASON###', '', $recursive=1);
 
 					// set subject
@@ -2550,7 +2551,7 @@ class tx_keyac_pi1 extends tslib_pibase {
 			    'last_name' => $this->getUserNameFromUserId($eventRecord['owner']),
 			    'user_name' => $this->getUserNameFromUserId($GLOBALS['TSFE']->fe_user->user['uid']),
 			    'event_title' => $eventRecord['title'],
-			    'event_link' => t3lib_div::getIndpEnv('TYPO3_SITE_URL').$this->getSingleviewLink($this->piVars['showUid']),
+			    'event_link' => t3lib_div::getIndpEnv('TYPO3_SITE_URL').$this->getSingleviewLink(intval($this->piVars['showUid'])),
 			    'mail_footer' => $this->cObj->getSubpart($this->templateCode,'###GENERAL_MAIL_FOOTER###'),
 				'label_title' => $this->pi_getLL('label_title'),
 				'label_startdat' => $this->pi_getLL('label_startdat'),
@@ -2571,7 +2572,8 @@ class tx_keyac_pi1 extends tslib_pibase {
 			$mailContent = $this->cObj->substituteMarkerArray($mailContent,$markerArray,$wrap='###|###',$uppercase=1);
 
 			// fill reason subpart
-			if (!empty($this->piVars['delete_reason'])) $mailContent = $this->cObj->substituteSubpart ($mailContent, '###SUB_DELETE_REASON###', $reasonContent, $recursive=1);
+			$reason = t3lib_div::removeXSS($this->piVars['delete_reason']);
+			if (!empty($reason)) $mailContent = $this->cObj->substituteSubpart ($mailContent, '###SUB_DELETE_REASON###', $reasonContent, $recursive=1);
 			else $mailContent = $this->cObj->substituteSubpart ($mailContent, '###SUB_DELETE_REASON###', '', $recursive=1);
 
 			// set subject
@@ -2606,9 +2608,7 @@ class tx_keyac_pi1 extends tslib_pibase {
 
 			$table = 'tx_keyac_dates_attendees_mm';
 			$fields_values = array(
-				#'uid_local' => $this->piVars['showUid'],
 				'uid_local' => $eventUid,
-				#'uid_foreign' => $GLOBALS['TSFE']->fe_user->user['uid'],
 				'uid_foreign' => $userUid,
 			);
 			$GLOBALS['TYPO3_DB']->exec_INSERTquery($table,$fields_values,$no_quote_fields=FALSE);
@@ -2640,7 +2640,7 @@ class tx_keyac_pi1 extends tslib_pibase {
 							'last_name' => $this->getUserNameFromUserId($attendee['uid']),
 							'attendee_name' => $this->getUserNameFromUserId($userRecord['uid']),
 							'event_title' => $recordData['title'],
-							'event_link' => t3lib_div::getIndpEnv('TYPO3_SITE_URL').$this->getSingleviewLink($this->piVars['showUid']),
+							'event_link' => t3lib_div::getIndpEnv('TYPO3_SITE_URL').$this->getSingleviewLink(intval($this->piVars['showUid'])),
 							'mail_footer' => $this->cObj->getSubpart($this->templateCode,'###GENERAL_MAIL_FOOTER###'),
 							'label_title' => $this->pi_getLL('label_title'),
 							'label_startdat' => $this->pi_getLL('label_startdat'),
@@ -2687,7 +2687,7 @@ class tx_keyac_pi1 extends tslib_pibase {
 						'last_name' => $this->getUserNameFromUserId($ownerRecord['uid']),
 						'attendee_name' => $this->getUserNameFromUserId($GLOBALS['TSFE']->fe_user->user['uid']),
 						'event_title' => $recordData['title'],
-						'event_link' => t3lib_div::getIndpEnv('TYPO3_SITE_URL').$this->getSingleviewLink($this->piVars['showUid']),
+						'event_link' => t3lib_div::getIndpEnv('TYPO3_SITE_URL').$this->getSingleviewLink(intval($this->piVars['showUid'])),
 						'mail_footer' => $this->cObj->getSubpart($this->templateCode,'###GENERAL_MAIL_FOOTER###'),
 
 						'label_title' => $this->pi_getLL('label_title'),
@@ -2724,7 +2724,7 @@ class tx_keyac_pi1 extends tslib_pibase {
 	function deleteUserAsAttendant($eventUid, $userUid) {
 
 		$table = 'tx_keyac_dates_attendees_mm';
-		$where = ' uid_local="'.$this->piVars['showUid'].'" AND uid_foreign="'.$GLOBALS['TSFE']->fe_user->user['uid'].'"  ';
+		$where = ' uid_local="'.intval($this->piVars['showUid']).'" AND uid_foreign="'.$GLOBALS['TSFE']->fe_user->user['uid'].'"  ';
 		$GLOBALS['TYPO3_DB']->exec_DELETEquery($table,$where);
 
 		$userRecord = $this->getUserRecord($userUid);
@@ -2753,7 +2753,7 @@ class tx_keyac_pi1 extends tslib_pibase {
 				'last_name' => $this->getUserNameFromUserId($attendee['uid']),
 				'attendee_name' => $this->getUserNameFromUserId($userRecord['uid']),
 				'event_title' => $recordData['title'],
-				'event_link' => t3lib_div::getIndpEnv('TYPO3_SITE_URL').$this->getSingleviewLink($this->piVars['showUid']),
+				'event_link' => t3lib_div::getIndpEnv('TYPO3_SITE_URL').$this->getSingleviewLink(intval($this->piVars['showUid'])),
 				'mail_footer' => $this->cObj->getSubpart($this->templateCode,'###GENERAL_MAIL_FOOTER###'),
 
 
@@ -2802,7 +2802,7 @@ class tx_keyac_pi1 extends tslib_pibase {
 			'last_name' => $this->getUserNameFromUserId($ownerRecord['uid']),
 			'attendee_name' => $this->getUserNameFromUserId($userRecord['uid']),
 			'event_title' => $recordData['title'],
-			'event_link' => t3lib_div::getIndpEnv('TYPO3_SITE_URL').$this->getSingleviewLink($this->piVars['showUid']),
+			'event_link' => t3lib_div::getIndpEnv('TYPO3_SITE_URL').$this->getSingleviewLink(intval($this->piVars['showUid'])),
 			'mail_footer' => $this->cObj->getSubpart($this->templateCode,'###GENERAL_MAIL_FOOTER###'),
 
 			'label_title' => $this->pi_getLL('label_title'),
@@ -2834,9 +2834,6 @@ class tx_keyac_pi1 extends tslib_pibase {
 	 * function showForm
 	 */
 	function showForm($editUid=0,$errors=array(), $conflicts=array()) {
-
-		#debug($this->piVars,'pi Vars');
-		// t3lib_div::debug($conflicts,'conflicts');
 
 		// edit form?
 		if ($editUid) $data = $this->getRecordData($editUid);
@@ -2875,7 +2872,7 @@ class tx_keyac_pi1 extends tslib_pibase {
 		// get subpart content and fill markers
 		$content = $editUid ? $this->cObj->getSubpart($this->templateCode,'###EDIT_FORM###') : $this->cObj->getSubpart($this->templateCode,'###CREATE_FORM###');
 		#$content = $this->cObj->getSubpart($this->templateCode,'###CREATE_FORM###');
-		$backUrl = $editUid ? $this->getSingleviewLink($this->piVars['showUid']) : $this->getListviewLink();
+		$backUrl = $editUid ? $this->getSingleviewLink(intval($this->piVars['showUid'])) : $this->getListviewLink();
 		$markerArray = array(
 			'action' => $formAction,
 			'form_title' => $this->pi_getLL('form_title_create'),
@@ -2973,7 +2970,6 @@ class tx_keyac_pi1 extends tslib_pibase {
 	 */
 	function renderFormField($fieldName,$data=array()) {
 		// set value
-		#$value = is_array($data['event']) ? $data['event'][$fieldName] : $this->piVars[$fieldName];
 		if ($this->piVars['submitedit'] ||$this->piVars['submitcreate'] || $this->piVars['submitsuggestion']) $value = $this->piVars[$fieldName];
 		else $value = $data['event'][$fieldName];
 
@@ -3083,7 +3079,7 @@ class tx_keyac_pi1 extends tslib_pibase {
 					$imageConf = $this->conf['icons.']['deleteFile.'];
 
 					// generate the delete link
-					$additionalParams = '&' . $this->prefixId . '[showUid]=' . $this->piVars['showUid'];
+					$additionalParams = '&' . $this->prefixId . '[showUid]=' . intval($this->piVars['showUid']);
 					$additionalParams .= '&' . $this->prefixId . '[deleteFile]=' . $filename;
 					#$additionalParams .= $this->getAdditionalParamsFromKeepPiVars();
 					$deleteLinkConf = array(
@@ -3426,20 +3422,20 @@ class tx_keyac_pi1 extends tslib_pibase {
 		    'pid' => $this->pids,
 		    'startdat' => strtotime($this->piVars['startdat']),
 		    'enddat' => strtotime($this->piVars['enddat']),
-		    'title' => $this->piVars['title'],
+		    'title' => t3lib_div::removeXSS($this->piVars['title']),
 		    'bodytext' => $this->piVars['bodytext'],
 		    'teaser' => $this->piVars['teaser'],
 		    'showtime' => $this->piVars['showtime'],
 		    'private' => $this->piVars['private'],
-		    'location' => $this->piVars['location'],
+		    'location' => t3lib_div::removeXSS($this->piVars['location']),
 		    'cat' => sizeof($this->piVars['cat']),
-		    'address' => $this->piVars['address'],
-		    'zip' => $this->piVars['zip'],
-		    'city' => $this->piVars['city'],
+		    'address' => t3lib_div::removeXSS($this->piVars['address']),
+		    'zip' => t3lib_div::removeXSS($this->piVars['zip']),
+		    'city' => t3lib_div::removeXSS($this->piVars['city']),
 		    'tstamp' => time(),
 		    'crdate' => time(),
-		    'cruser_id' => $GLOBALS['TSFE']->fe_user->user['uid'],
-		    'owner' => $GLOBALS['TSFE']->fe_user->user['uid'],
+		    'cruser_id' => intval($GLOBALS['TSFE']->fe_user->user['uid']),
+		    'owner' => intval($GLOBALS['TSFE']->fe_user->user['uid']),
 		    'attachments' => $this->piVars['attachments'],
 		);
 
@@ -3509,18 +3505,18 @@ class tx_keyac_pi1 extends tslib_pibase {
 
 			$where = 'uid="'.intval($editUid).'" ';
 			$fields_values = array(
-				'title' => $this->piVars['title'],
+				'title' => t3lib_div::removeXSS($this->piVars['title']),
 				'startdat' => strtotime($this->piVars['startdat']),
 				'enddat' => strtotime($this->piVars['enddat']),
 				'bodytext' => $this->piVars['bodytext'],
 				'teaser' => $this->piVars['teaser'],
 				'showtime' => $this->piVars['showtime'],
 				'private' => $this->piVars['private'],
-				'location' => $this->piVars['location'],
+				'location' => t3lib_div::removeXSS($this->piVars['location']),
 				'cat' => sizeof($this->piVars['cat']),
-				'address' => $this->piVars['address'],
-				'zip' => $this->piVars['zip'],
-				'city' => $this->piVars['city'],
+				'address' => t3lib_div::removeXSS($this->piVars['address']),
+				'zip' => t3lib_div::removeXSS($this->piVars['zip']),
+				'city' => t3lib_div::removeXSS($this->piVars['city']),
 				'tstamp' => time(),
 				'attachments' => $this->piVars['attachments'],
 			);
@@ -3533,8 +3529,8 @@ class tx_keyac_pi1 extends tslib_pibase {
 				$table = 'tx_keyac_dates_cat_mm';
 				foreach ($this->piVars['cat'] as $key => $catUid) {
 					$fields_values = array(
-						'uid_local' => $editUid,
-						'uid_foreign' => $catUid,
+						'uid_local' => intval($editUid),
+						'uid_foreign' => intval($catUid),
 						'tablenames' => '',
 						'sorting' => 1,
 					);
