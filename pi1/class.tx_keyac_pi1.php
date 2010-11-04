@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 /***************************************************************
 *  Copyright notice
 *
@@ -26,6 +26,7 @@ require_once(PATH_tslib.'class.tslib_pibase.php');
 
 // needed for checking filenames when uploading files
 require_once(PATH_t3lib.'class.t3lib_basicfilefunc.php');
+
 
 /**
  * Plugin 'Show Calendar' for the 'ke_yac' extension.
@@ -1694,6 +1695,7 @@ class tx_keyac_pi1 extends tslib_pibase {
  	*
  	*/
  	function renderGoogleMap($address,$company,$i,$htmladdress,$zoom) {
+		
 		//Create dynamic DIV to show GoogleMaps-element in
 		$gMaps = new GoogleMapAPI('keyac_map_'.$i);
 
@@ -1707,7 +1709,7 @@ class tx_keyac_pi1 extends tslib_pibase {
 		$gMaps->setWidth($this->conf['gmaps.']['width']);
 		$gMaps->setHeight($this->conf['gmaps.']['height']);
 		$gMaps->setZoomLevel($gmapsZoom);
-		$gMaps->addMarkerByAddress($address,$company,$htmladdress,$company);
+		$gMaps->addMarkerByAddress($address,$company,nl2br($htmladdress),$company);
 		$gMaps->setInfoWindowTrigger('mouseover');
 		if ($this->conf['gmaps.']['disableMapControls']) $gMaps->disableMapControls();
 		if ($this->conf['gmaps.']['enableTypeControls']) $gMaps->enableTypeControls();
