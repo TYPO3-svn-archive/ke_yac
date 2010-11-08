@@ -430,6 +430,15 @@ class tx_keyac_pi1 extends tslib_pibase {
 			'legend' => $legend,
 			'listview' => $listView,
 		);
+		
+		// Hook for additional markers
+		if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['tx_keyac']['additionalMainTemplateMarkers'])) {
+			foreach($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['tx_keyac']['additionalMainTemplateMarkers'] as $_classRef) {
+				$_procObj = & t3lib_div::getUserObj($_classRef);
+				$_procObj->additionalMainTemplateMarkers(&$markerArray,$this);
+			}
+		}
+		
 		$content = $this->cObj->getSubpart($this->templateCode,'###MAIN_TEMPLATE###');
 		$content = $this->cObj->substituteMarkerArray($content,$markerArray,$wrap='###|###',$uppercase=1);
 	
