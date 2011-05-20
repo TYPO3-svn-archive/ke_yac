@@ -59,7 +59,7 @@ class tx_keyac_pi1 extends tslib_pibase {
 		$this->pi_initPIflexform(); // Init and get the flexform data of the plugin
 		$this->lcObj=t3lib_div::makeInstance('tslib_cObj');
 		$this->internal['results_at_a_time'] = 100;
-		
+
 		// GET FLEXFORM DATA
 		$this->pi_initPIflexForm();
 		$piFlexForm = $this->cObj->data['pi_flexform'];
@@ -72,7 +72,7 @@ class tx_keyac_pi1 extends tslib_pibase {
 				}
 			}
 		}
-		
+
 		// set user_int if fe editing is enabled
 		/*
 		if ($this->ffdata['enableFrontendEditing']) {
@@ -84,7 +84,7 @@ class tx_keyac_pi1 extends tslib_pibase {
 		}
 		t3lib_div::debug($this->pi_USER_INT_obj,'user_int???');
 		*/
-		
+
 		// DB DEBUG
  		//$GLOBALS['TYPO3_DB']->debugOutput = true;
 
@@ -115,7 +115,7 @@ class tx_keyac_pi1 extends tslib_pibase {
 		// Singleview PID
 		$this->singleviewPid = $this->ffdata['singleviewPid'] ? $this->ffdata['singleviewPid'] : $this->conf['singleviewPid'];
 		if (!$this->singleviewPid) $this->singleviewPid = $GLOBALS['TSFE']->page['uid'];
-		
+
 		// get the plugin-mode from flexforms
 		$mode_selector = $this->ffdata['mode_selector'];
 		// Overwrite Mode if teaser is set in TS
@@ -153,16 +153,16 @@ class tx_keyac_pi1 extends tslib_pibase {
 			// CALENDAR / LIST (no singleview - e.g. for calendar view as teaser - ignores "showUid")
 			case "3":
 			default:
-				
+
 				// unset showUid if this mode was selected
 				if ($mode_selector == '3') {
 					unset($this->piVars['showUid']);
 				}
-				
+
 				// =========================
 				// -------- action handling --------------
 				// =========================
-				
+
 				// create new record
 				if ($this->piVars['action'] == 'create') {
 					$this->initDate2Cal();
@@ -172,10 +172,10 @@ class tx_keyac_pi1 extends tslib_pibase {
 					else $content = $this->showForm();
 					return $this->pi_wrapInBaseClass($content);
 				}
-				
+
 				// edit event
 				if ($this->piVars['action'] == 'edit' && $GLOBALS['TSFE']->loginUser) {
-					
+
 					$this->initDate2Cal();
 					// find new startdat and enddat for event
 					if ($this->piVars['submiteditfind']) $content = $this->findEventTime();
@@ -183,14 +183,14 @@ class tx_keyac_pi1 extends tslib_pibase {
 					else $content = $this->showForm(intval($this->piVars['showUid']));
 					return $this->pi_wrapInBaseClass($content);
 				}
-				
+
 				// attend
 				if ($this->piVars['action'] == 'attend' && $GLOBALS['TSFE']->loginUser) {
 					$this->setUserAsAttendant(intval($this->piVars['showUid']), $GLOBALS['TSFE']->fe_user->user['uid']);
 					// clear page cache
 					$this->clearPageCache($GLOBALS['TSFE']->id);
 				}
-				
+
 				// delete attendance
 				if ($this->piVars['action'] == 'delattendance' && $GLOBALS['TSFE']->loginUser) {
 					$this->deleteUserAsAttendant(intval($this->piVars['showUid']),$GLOBALS['TSFE']->fe_user->user['uid']);
@@ -201,7 +201,7 @@ class tx_keyac_pi1 extends tslib_pibase {
 				// invite other users
 				if ($this->piVars['action'] == 'invite' && $GLOBALS['TSFE']->loginUser) {
 					if ($this->piVars['submitinvite']) {
-						// automatically set invited persons as attendee 
+						// automatically set invited persons as attendee
 						if ($this->piVars['invitation_mode'] == 'set') {
 							foreach ($this->piVars['user'] as $invUser => $value) {
 								$this->setUserAsAttendant(intval($this->piVars['showUid']), $invUser, false);
@@ -253,32 +253,32 @@ class tx_keyac_pi1 extends tslib_pibase {
 		return $this->pi_wrapInBaseClass($content);
 	}
 
-		
+
 	function initDate2Cal() {
-		
+
 		// process only if date2cal is loaded
 		if (t3lib_extMgm::isLoaded('date2cal')) {
-		
+
 			// include jscalendar api
 			include_once(t3lib_extMgm::siteRelPath('date2cal') . '/src/class.jscalendar.php');
-			
+
 			// init jscalendar class
 			$this->JSCalendar = JSCalendar::getInstance();
-			
+
 			// datetime format (default: time)
 			$format = '%d.%m.%Y';
 			$this->JSCalendar->setDateFormat(true, $format);
-			
+
 			// set options
 			$this->JSCalendar->setConfigOption('firstDay', true);
 			$this->JSCalendar->setLanguage($this->extConfig['lang']);
-			
+
 			// get initialisation code of the calendar
 			if (($jsCode = $this->JSCalendar->getMainJS()) != '') {
 				$GLOBALS['TSFE']->additionalHeaderData['date2cal'] = $jsCode;
 			}
 		}
-		
+
 	}
 
 	function loadJS() {
@@ -320,8 +320,8 @@ class tx_keyac_pi1 extends tslib_pibase {
 	* show calendars and other elements of this view
 	*/
 	function getCalendarView($month=0,$year=0) {
-		
-		// show passed events? 
+
+		// show passed events?
 		$this->sessionData = $GLOBALS['TSFE']->fe_user->getKey('ses', $this->extKey);
 		if ($this->piVars['showpassedchange']) {
 			$this->sessionData['showpassed'] = $this->piVars['showpassed'];
@@ -331,7 +331,7 @@ class tx_keyac_pi1 extends tslib_pibase {
 			unset($this->piVars['showpassed']);
 		}
 		#debug($this->sessionData,'session');
-		
+
 		// use rows and columns values from ff or conf?
 		$this->calRows = $this->ffdata['rows'] ? $this->ffdata['rows'] : $this->conf['rows'];
 		$this->calColumns = $this->ffdata['columns'] ? $this->ffdata['columns'] : $this->conf['columns'];
@@ -430,7 +430,7 @@ class tx_keyac_pi1 extends tslib_pibase {
 			'legend' => $legend,
 			'listview' => $listView,
 		);
-		
+
 		// Hook for additional markers
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['tx_keyac']['additionalMainTemplateMarkers'])) {
 			foreach($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['tx_keyac']['additionalMainTemplateMarkers'] as $_classRef) {
@@ -438,15 +438,15 @@ class tx_keyac_pi1 extends tslib_pibase {
 				$_procObj->additionalMainTemplateMarkers(&$markerArray,$this);
 			}
 		}
-		
+
 		$content = $this->cObj->getSubpart($this->templateCode,'###MAIN_TEMPLATE###');
 		$content = $this->cObj->substituteMarkerArray($content,$markerArray,$wrap='###|###',$uppercase=1);
-	
-		// set checkbox 
+
+		// set checkbox
 		$showpassedChecked = $this->sessionData['showpassed'] == 'on' ? 'checked="checked" ' : '';
 		$content = $this->cObj->substituteMarker($content,'###SHOWPASSED_CHECKED###', $showpassedChecked );
 		$content = $this->cObj->substituteMarker($content,'###LABEL_SHOW_PASSED###', $this->pi_getLL('label_show_passed_events'));
-		
+
 		// overwrite subparts if not activated
 		if (!$this->ffdata['showHideCalendarLink'] && !$this->conf['showHideCalendar']) $content = $this->cObj->substituteSubpart ($content, '###SUB_HIDE_CALENDAR###', '');
 		if (!$this->ffdata['showLegend'] && !$this->conf['showLegend']) $content = $this->cObj->substituteSubpart ($content, '###SUB_LEGEND###', '');
@@ -1034,7 +1034,7 @@ class tx_keyac_pi1 extends tslib_pibase {
 	 * list view of events for the months shown in calendar
 	 */
 	function listView($day=0,$month=0,$year=0,$tooltip=false) {
-		
+
 		$lcObj=t3lib_div::makeInstance('tslib_cObj');
 
 		// generate "more" icon
@@ -1087,7 +1087,7 @@ class tx_keyac_pi1 extends tslib_pibase {
 			else $where .= ' AND 1=2 ';
 
 		}
-		
+
 		#if ($tooltip==false) debug($GLOBALS['TYPO3_DB']->SELECTquery($fields,$table,$where,$groupBy='dateuid',$orderBy='startdat,enddat',$entryLimit));
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($fields,$table,$where,$groupBy='dateuid',$orderBy='startdat,enddat',$entryLimit);
 		$content = '';
@@ -1297,7 +1297,7 @@ class tx_keyac_pi1 extends tslib_pibase {
 		}
 		return $userName;
 	}
-	
+
 	function getUserNameFromUserRecord ($userRow) {
 		$userName = '';
 		$data = $userRow;
@@ -1315,7 +1315,7 @@ class tx_keyac_pi1 extends tslib_pibase {
 		}
 		return $userName;
 	}
-	
+
 
 	/**
 	 * fe_getRecord
@@ -1521,7 +1521,7 @@ class tx_keyac_pi1 extends tslib_pibase {
 			if ($row['location'] && $row['address'] && $row['zip'] && $row['city']) {
 				// include api file
 				if (!class_exists('GoogleMapAPI')) require_once(dirname(__FILE__). '/../res/GoogleMapAPI.class.php');
-				
+
 				// render map
 				$this->markerArray['map'] = $this->renderGoogleMap(
 					$this->getFieldContent('gmaps_address',$row),
@@ -1573,7 +1573,7 @@ class tx_keyac_pi1 extends tslib_pibase {
 			if (!$this->getNumberOfAttendees($id)) {
 				$content = $this->cObj->substituteSubpart ($content, '###SUB_ATTENDEES###', '');
 			}
-			
+
 			// UNIVERSAL KEWORKS BROWSER
 			// AK 13.04.2010
 			if (t3lib_extMgm::isLoaded('ke_ukb')) {
@@ -1584,8 +1584,8 @@ class tx_keyac_pi1 extends tslib_pibase {
 				$content = $this->cObj->substituteMarker($content,'###UKB_FORM###', $ukb->renderForm());
 			}
 			else $content = $this->cObj->substituteSubpart ($content, '###SUB_UNIVERSAL_KEWORKS_BROWSER###', '');
-			
-			
+
+
 		}
 
 		// Event not found
@@ -1647,7 +1647,7 @@ class tx_keyac_pi1 extends tslib_pibase {
 			$endTimeOnly = strftime($this->conf['myevents.']['strftimeFormatTime'], $row['enddat']);
 			$startday = strftime('%d.%m.%Y',$row['startdat']);
 			$endday = strftime('%d.%m.%Y',$row['enddat']);
-			
+
 
 			// do not print time in teaser
 			if (!$row['showtime'] || $this->conf['teaser.']['dontShowTime'] ) {
@@ -1660,7 +1660,7 @@ class tx_keyac_pi1 extends tslib_pibase {
 				else if ($startday == $endday) $timestr = $startWithTime.' - '.$endTimeOnly;
 				else $timestr = $startWithTime.' - '.$endWithTime;
 			}
-			
+
 			// generate single view url
 			$linkconf['parameter'] = $singleViewPid;
  			$linkconf['additionalParams'] = '&tx_keyac_pi1[showUid]='.$row['uid'];
@@ -1704,7 +1704,7 @@ class tx_keyac_pi1 extends tslib_pibase {
  	*
  	*/
  	function renderGoogleMap($address,$company,$i,$htmladdress,$zoom) {
-		
+
 		//Create dynamic DIV to show GoogleMaps-element in
 		$gMaps = new GoogleMapAPI('keyac_map_'.$i);
 
@@ -1927,7 +1927,7 @@ class tx_keyac_pi1 extends tslib_pibase {
 			$listitem_temp = $this->cObj->getSubpart($this->templateCode,'###LEGEND_SINGLE###');
 			$listitem_temp = $this->cObj->substituteMarkerArray($listitem_temp,$markerArray,$wrap='###|###',$uppercase=1);
 			$cat_entries .= $listitem_temp;
-			
+
 		}
 
 		$content = $this->cObj->getSubpart($this->templateCode,'###LEGEND_TEMPLATE###');
@@ -1942,7 +1942,7 @@ class tx_keyac_pi1 extends tslib_pibase {
 	*/
 	function teaserView() {
 		$lcObj=t3lib_div::makeInstance('tslib_cObj');
-		
+
 		// get pid of singleView and no. of entries in teaser; either from flexforms or from ts
 		$singlePid = $this->ffdata['singlePid'] ? $this->ffdata['singlePid'] : $this->conf['singlePid'];
 		$limit = $this->ffdata['teaserLimit'] ? $this->ffdata['teaserLimit'] : $this->conf['teaserLimit'];
@@ -1974,7 +1974,7 @@ class tx_keyac_pi1 extends tslib_pibase {
 		// if result -> print teaser box with data
 		else {
 			while ($row=$GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-				
+
 				// get formatstring for strftime from ts
 				$startNoTime = strftime($this->conf['teaser.']['strftimeFormatStringWithoutTime'], $row['startdat']);
 				$endNoTime = strftime($this->conf['teaser.']['strftimeFormatStringWithoutTime'], $row['enddat']);
@@ -1983,10 +1983,10 @@ class tx_keyac_pi1 extends tslib_pibase {
 				$endTimeOnly = strftime($this->conf['teaser.']['strftimeFormatTime'], $row['enddat']);
 				$startday = strftime('%d.%m.%Y',$row['startdat']);
 				$endday = strftime('%d.%m.%Y',$row['enddat']);
-				
+
 				// shorten title?
 				$title = strlen($row['title'])>$this->conf['teaserLength'] ? substr($row['title'],0,$this->conf['teaserLength']).'...' : $row['title'];
-				
+
 				// build attendees string
 				$attendees = $this->getAttendees($row['uid']);
 				$attendeesString = '';
@@ -2011,7 +2011,7 @@ class tx_keyac_pi1 extends tslib_pibase {
 					else if ($startday == $endday) $timestr = $startWithTime.' - '.$endTimeOnly;
 					else $timestr = $startWithTime.' - '.$endWithTime;
 				}
-				
+
 				// user is not allowed to see private event
 				// do not link event
 				if ($row['private'] && $GLOBALS['TSFE']->fe_user->user['uid'] != $row['owner']) {
@@ -2026,7 +2026,7 @@ class tx_keyac_pi1 extends tslib_pibase {
 					$linkconf['useCacheHash'] = true;
 					$linktitle = $this->cObj->typoLink($title,$linkconf);
 				}
-				
+
 				$temp_marker = array(
 					'location' => $row['location'],
 					'datetime' => $timestr,
@@ -2113,10 +2113,7 @@ class tx_keyac_pi1 extends tslib_pibase {
  	*
  	*/
  	function clearPageCache($pid) {
-		$TCE = t3lib_div::makeInstance('t3lib_TCEmain');
-		$TCE->admin = 1;
-		$TCE->clear_cacheCmd('pages');
-		$TCE->clear_cacheCmd($pid);
+		$GLOBALS['TSFE']->clearPageCacheContent_pidList($pid);
  	}
 
 
@@ -2299,7 +2296,7 @@ class tx_keyac_pi1 extends tslib_pibase {
 	 */
 
 	function processInviteData() {
-		
+
 		$eventRow = $this->getEventRecord(intval($this->piVars['showUid']));
 
 		// run through all checked users
@@ -2348,9 +2345,9 @@ class tx_keyac_pi1 extends tslib_pibase {
 					'invitation_text_headline' => $this->pi_getLL('invitation_text_headline'),
 					'use_following_link' => $this->pi_getLL('use_following_link'),
 				);
-				
+
 				$mailContent = $this->cObj->substituteMarkerArray($mailContent,$markerArray,$wrap='###|###',$uppercase=1);
-				
+
 				// show invitation text?
 				$invText  = trim(t3lib_div::removeXSS($this->piVars['invitation_text']));
 				if (!empty($invText)) {
@@ -2370,7 +2367,7 @@ class tx_keyac_pi1 extends tslib_pibase {
 			$content = $this->cObj->getSubpart($this->templateCode,'###GENERAL_MESSAGE###');
 			$messageText = $this->piVars['invitation_mode'] != 'set' ? $this->pi_getLL('invite_success') : $this->pi_getLL('invite_success_set');
 			$content = $this->cObj->substituteMarker($content,'###TEXT###', $messageText);
-			
+
 			$content = $this->cObj->substituteMarker($content,'###BACKLINK###', $this->getSingleviewLink(intval($this->piVars['showUid']),$this->pi_getLL('back')));
 			$content = $this->cObj->substituteMarker($content,'###BACKLINK_ICON###', $this->backlinkIcon);
 			$content = $this->cObj->substituteMarker($content,'###CSSCLASS###','message-success');
@@ -2623,9 +2620,9 @@ class tx_keyac_pi1 extends tslib_pibase {
 	 * @param $userUid
 	 */
 	function setUserAsAttendant($eventUid, $userUid, $notification=true) {
-		
+
 		if (!$this->feuserIsAttendent($userUid, $eventUid)) {
-			
+
 			$userRecord = $this->getUserRecord($userUid);
 
 			$table = 'tx_keyac_dates_attendees_mm';
@@ -2681,9 +2678,9 @@ class tx_keyac_pi1 extends tslib_pibase {
 							'use_following_link' => $this->pi_getLL('use_following_link'),
 							'attendance_notification_text' => sprintf($this->pi_getLL('attendance_notification_subject'),$this->getUserNameFromUserId($GLOBALS['TSFE']->fe_user->user['uid']) ,$recordData['title']),
 						);
-						
+
 						$mailContent = $this->cObj->substituteMarkerArray($mailContent,$markerArray,$wrap='###|###',$uppercase=1);
-						
+
 						#debug($mailContent, 'mailContentAttendant' );
 						$subject = sprintf($this->pi_getLL('attendance_notification_subject'), $this->getUserNameFromUserId($GLOBALS['TSFE']->fe_user->user['uid']), $recordData['title']);
 						$this->sendNotificationMail($attendee['email'], $subject, $mailContent, $userRecord['email'], $this->getUserNameFromUserId($GLOBALS['TSFE']->fe_user->user['uid']));
@@ -2925,13 +2922,13 @@ class tx_keyac_pi1 extends tslib_pibase {
 			$content = $this->cObj->substituteMarker($content,'###INVITATIONS_TEXT###','Einladen:');
 			$content = $this->cObj->substituteMarker($content,'###INVITATIONS###', $this->showInviteForm(true));
 		}
-		
+
 		// OWNER - ATTEND?
 		if (!$editUid) {
 			$content = $this->cObj->substituteMarker($content,'###LABEL_OWNER_ATTEND###',$this->pi_getLL('label_owner_attend'));
 			$content = $this->cObj->substituteMarker($content,'###FIELD_OWNER_ATTEND###', $this->renderFormField('owner_attend', $this->piVars['owner']));
 		}
-		
+
 
 		// CONFLICTS
 		$conflictsSubpart = $editUid ? '###SUB_CONFLICTS_EDIT###' : '###SUB_CONFLICTS_CREATE###';
@@ -2953,7 +2950,7 @@ class tx_keyac_pi1 extends tslib_pibase {
 					'conflicts_found' => $this->pi_getLL('conflicts_found'),
 					'ignore_conflicts' => $this->pi_getLL('ignore_conflicts'),
 					'search_date' => $this->pi_getLL('search_date'),
-					
+
 				);
 				$tempRowContent = $this->cObj->substituteMarkerArray($tempRowContent, $tempMarkerArray, $wrap='###|###',$uppercase=1);
 				$conflictsRows .= $tempRowContent;
@@ -3010,16 +3007,16 @@ class tx_keyac_pi1 extends tslib_pibase {
 			default:
 				$fieldContent = '<input class="text" type="text" name="tx_keyac_pi1['.$fieldName.']" value="'.$value.'">';
 				break;
-			
+
 			// Date2Cal Field
 			case 'enddat':
 			case 'startdat':
-				
+
 				$format = '%H:%M %d.%m.%Y';
 				if ($this->piVars['submitedit'] ||$this->piVars['submitcreate'] || $this->piVars['submitsuggestion']) $value = $this->piVars[$fieldName];
 				else if ($data['event'][$fieldName]) $value = strftime($format,$data['event'][$fieldName]);
 				else $value = '';
-				
+
 				$prefill = $value;
 
 				// overwrite field value with suggestion data if existent
@@ -3028,14 +3025,14 @@ class tx_keyac_pi1 extends tslib_pibase {
 				    if ($fieldName == 'startdat') $prefill = strftime($format, $suggestionData[0]);
 				    if ($fieldName == 'enddat') $prefill = strftime($format, $suggestionData[1]);
 				}
-				
+
 				// render calendar stuff
 				$this->JSCalendar->setInputField('tx_keyac_pi1['.$fieldName.']');
 				$fieldContent = $this->JSCalendar->render($prefill);
 				break;
-			
-			
-			
+
+
+
 			// CHECKBOX
 			case 'showtime':
 			case 'private':
@@ -3043,21 +3040,21 @@ class tx_keyac_pi1 extends tslib_pibase {
 				if ($value) $fieldContent .= ' checked="checked" ';
 				$fieldContent .= '>';
 				break;
-			
+
 			case 'owner_attend':
 				$fieldContent = '<input type="checkbox" name="tx_keyac_pi1['.$fieldName.']" value="1" ';
-				
+
 				// submitted and value == 1
 				if (($this->piVars['submitcreate'] || $this->piVars['submitsuggestion']) && $this->piVars[$fieldName] == 1) $fieldContent .= ' checked="checked" ';
 				// not submitted: activate checkbox by default
 				else $fieldContent .= ' checked="checked" ';
-				
-				
+
+
 				if ($value) $fieldContent .= ' checked="checked" ';
 				$fieldContent .= '>';
 				break;
-			
-			
+
+
 			// TEXTAREA
 			case 'teaser':
 			case 'bodytext':
@@ -3164,7 +3161,7 @@ class tx_keyac_pi1 extends tslib_pibase {
 			    $content .= '</table>';
 			    $fieldContent = $content;
 				break;
-			
+
 			case 'invitation_mode':
 				$modes = array('invite', 'set');
 				if (empty($this->piVars['invitation_mode'])) $this->piVars['invitation_mode'] = 'invite';
@@ -3173,9 +3170,9 @@ class tx_keyac_pi1 extends tslib_pibase {
 					if ($this->piVars['invitation_mode'] == $mode) $fieldContent .= ' checked="checked" ';
 					$fieldContent .= '> '.$this->pi_getLL('label_invitation_mode_'.$mode).'<br />';
 				}
-				
+
 				break;
-			
+
 
 		}
 
@@ -3231,7 +3228,7 @@ class tx_keyac_pi1 extends tslib_pibase {
 		// check conflicts for invited persons
 		if (!isset($this->piVars['submitcreateignore'])) {
 			$attendees = $this->piVars['user'];
-			// add current user only if he wants to 
+			// add current user only if he wants to
 			if ($this->piVars['owner_attend']) $attendees[$GLOBALS['TSFE']->fe_user->user['uid']] = 'on' ;
 			$conflicts = $this->checkConflictsCreate($attendees);
 		}
@@ -3263,14 +3260,14 @@ class tx_keyac_pi1 extends tslib_pibase {
 
 	    // startdat and enddat is set
 	    if (!empty($this->piVars['startdat']) && !empty($this->piVars['enddat'])) {
-			
+
 			// invalid dates
 			$startdatTimestamp = strtotime($this->piVars['startdat']);
 			$enddatTimestamp = strtotime($this->piVars['enddat']);
-			
+
 			if ($startdatTimestamp  == '') $errors['startdat'] = $this->pi_getLL('error_invalid_date');
 			if ($enddatTimestamp == '') $errors['enddat'] = $this->pi_getLL('error_invalid_date');
-			
+
 			// valid dates -> further checks
 			if (!$errors['enddat'] && !$errors['startdat']) {
 				// enddat before startdat
@@ -3295,12 +3292,12 @@ class tx_keyac_pi1 extends tslib_pibase {
 				default:
 				if ($oldData[$fieldName] != $this->piVars[$fieldName]) $changedFields[] = $fieldName;
 				break;
-	
+
 				case 'startdat':
 				case 'enddat':
 				if ($oldData[$fieldName] != strtotime($this->piVars[$fieldName])) $changedFields[] = $fieldName;
 				break;
-	
+
 				case 'showtime':
 				// checkbox has been clicked
 				if (isset($this->piVars[$fieldName]) && $oldData[$fieldName] == 0) $changedFields[] = $fieldName;
@@ -3400,7 +3397,7 @@ class tx_keyac_pi1 extends tslib_pibase {
 		// comparison timestamps
 	    $compStart = strtotime($this->piVars['startdat']);
 	    $compEnd = strtotime($this->piVars['enddat']);
-		
+
 	    // get attendees
 		if (count($attendees)) {
 			foreach($attendees as $attendee => $val) {
@@ -3504,10 +3501,10 @@ class tx_keyac_pi1 extends tslib_pibase {
 						$GLOBALS['TYPO3_DB']->exec_INSERTquery($table,$fields_values,$no_quote_fields=FALSE);
 					}
 				}
-				
+
 				// send invitations
 				if (count($this->piVars['user'])) {
-					// automatically set invited persons as attendee 
+					// automatically set invited persons as attendee
 					if ($this->piVars['invitation_mode'] == 'set') {
 						foreach ($this->piVars['user'] as $invUser => $value) {
 							$this->setUserAsAttendant($insertedUid, $invUser, false);
@@ -3515,7 +3512,7 @@ class tx_keyac_pi1 extends tslib_pibase {
 					}
 					$this->processInviteData();
 				}
-				
+
 				// set owner as attendee ?
 				if ($this->piVars['owner_attend']) $this->setUserAsAttendant($insertedUid, $GLOBALS['TSFE']->fe_user->user['uid'], false);
 
@@ -3780,12 +3777,12 @@ class tx_keyac_pi1 extends tslib_pibase {
 				}
 			}
 	    }
-		
+
 	    // run through days and check for conflicts
 	    for($i=1; $i <= 10; $i++) {
 		$startdat = $initialStartdat + ($i * 3600 * 24);
 		$enddat =  $initialEnddat + ($i * 3600 * 24);
-		
+
 			if (strftime('%u',$startdat) < 6 ) {
 				$conflicts = $this->checkConflicts($startdat, $enddat, $attendees);
 				if (!is_array($conflicts)) {
@@ -3812,7 +3809,7 @@ class tx_keyac_pi1 extends tslib_pibase {
 			$content = $this->cObj->getSubpart($this->templateCode,'###SUB_SUGGESTIONS###');
 			$content = $this->cObj->substituteSubpart ($content, '###SUGGESTION_ROW###', $suggestionRows, $recursive=1);
 			$content = $this->cObj->substituteMarker($content,'###DATE_SUGGESTIONS###', $this->pi_getLL('date_suggestions'));
-			
+
 			// build hidden fields content
 			foreach ($this->piVars as $field => $value) {
 				if ($field != "submiteditfind" && $field != "submitcreatefind") {
@@ -3923,7 +3920,7 @@ class tx_keyac_pi1 extends tslib_pibase {
 			$this->formErrors[] = $this->pi_getLL('error_file_upload_not_successful','Error: File upload was not successfull.');
 			$success=false;
 		}
-		
+
 		if ($success) {
 			return basename($uploadfile);
 		} else {
