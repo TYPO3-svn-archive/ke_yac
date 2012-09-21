@@ -21,17 +21,12 @@ plugin.tx_keyac_pi1 {
 	showList = 1
 	showPassed = 1
 	linkToSingleView = 0
-	showTooltips = 1
 
 	##-- CALENDAR IMAGES --
 	calendar.prevIcon = IMAGE
 	calendar.prevIcon.file = EXT:ke_yac/res/images/prev.gif
 	calendar.nextIcon = IMAGE
 	calendar.nextIcon.file = EXT:ke_yac/res/images/next.gif
-	
-	#-- NOTIFICATION -- ####################################################
-	notification.from_name = KE_YAC
-	notification.from_email = noreply@domain.de
 	
 	#-- DATEFORMAT -- ######################################################
 	strftimeFormatStringWithoutTime = %d.%m.%Y
@@ -40,7 +35,7 @@ plugin.tx_keyac_pi1 {
 
 	#-- LISTVIEW -- #########################################################
 	# Show default if no image is set in record?
-	showDefaultImageInSingleview = 0
+	showDefaultImageInListview = 0
 
 	#-- "MORE" ICON IN LISTVIEW --
 	listview.moreIcon = IMAGE
@@ -130,11 +125,6 @@ plugin.tx_keyac_pi1 {
 	#-- INFOLINK ICON --
 	singleview.infolinkIcon = IMAGE
 	singleview.infolinkIcon.file = EXT:ke_yac/res/images/infolink.gif
-
-	#-- DELETE ATTACHMENT ICON --
-	icons.deleteFile {
-		file = EXT:ke_yac/res/images/delete.png
-	}
 
 	#-- ATTACHMENT ICONS --
 	attachmentIcon.default = IMAGE
