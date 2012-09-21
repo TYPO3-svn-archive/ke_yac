@@ -1,4 +1,4 @@
-CURRENT DEV VERSION
+3.0.0 (September 2012)
 --------------------------------------------------------------------------------
 * new feature: added next / previous navigation links to singleview
 * TYPO3 6.0 compatibility (removed deprecated functions and more)
@@ -33,13 +33,4 @@ CURRENT DEV VERSION
 * bugfix: removed HTML fragments that were still visible when hiding navigation 
   bar
 * bugfix: correct handling of more than one frontend edit usergroup
-
-
-
-----------------------------------------------
-TODO
-----------------------------------------------
-* check rendering when using different amount of cols and rows as the default 
-  value
-* check and update EXT manual
-* TEST T3 4.5 / T3 4.6 / T3 4.7 / 6.0 beta 2
+* several minor improvements
