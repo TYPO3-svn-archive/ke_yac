@@ -2214,8 +2214,6 @@ class tx_keyac_pi1 extends tslib_pibase {
 		    $i++;
 		}
 		$where .= ') '.$this->cObj->enableFields($table);
-		t3lib_Utility_Debug::debug($where, 'invite where');
-
 
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($fields,$table,$where,$groupBy='',$orderBy='last_name',$limit='');
 		$anz = $GLOBALS['TYPO3_DB']->sql_num_rows($res);
