@@ -1,0 +1,320 @@
+/****************************/
+/* YAC - CALENDAR AND LIST  */
+/****************************/
+
+/* --- LISTVIEW SETTINGS --- */
+.tx-keyac-pi1 .listview{
+	margin-top:10px;
+}
+
+.tx-keyac-pi1 .listview_dark{
+
+}
+
+.tx-keyac-pi1 .listview_bright{
+	border-top: none;
+}
+
+.tx-keyac-pi1 #listview_spacer{
+	height: 50px;
+}
+
+.tx-keyac-pi1 .create-link {
+	padding: 3px 0 1em 0;
+	margin-left: 75px;
+	width:595px;
+	/* border-bottom:15px solid #dbdbdb; */
+}
+
+.tx-keyac-pi1 .create-link img {
+    vertical-align: middle;
+}
+
+
+
+/* --- EVENT ITEM ROW --- */
+.tx-keyac-pi1 .listview .event-item {
+	margin: 10px 0 10px 0;
+	padding: 5px;
+	clear: both;
+}
+.tx-keyac-pi1 .listview .event-item .thumbnail {
+	float:left;
+	display: block;
+	margin: 0 10px 10px 0;
+	padding-top: 3px;
+	display: block;
+	width: 80px;
+}
+.tx-keyac-pi1 .listview .event-item .content {
+	float: left;
+	padding-top: 5px;
+	display: block;
+	max-width: 550px;
+}
+.tx-keyac-pi1 .listview .event-item .content .teasertext {
+	float: left;
+	display: block;
+	padding: 3px 0 3px 10px;
+}
+.tx-keyac-pi1 .listview .event-item .content .link {
+	font-weight: bold;
+}
+.tx-keyac-pi1 .listview .event-item .content .catiocn {
+	float: left;
+	border: 1px solid red;
+}
+.tx-keyac-pi1 .listview .event-item .content .attendees {
+	padding: 3px 0 3px 10px;
+}
+.tx-keyac-pi1 .listview .event-item .content .attendees img {
+	vertical-align: middle;
+}
+.tx-keyac-pi1 .listview .event-item .content .attendees-list {
+	font-style: italic;
+}
+.tx-keyac-pi1 .listview .event-item .content .more {
+	padding: 3px 0 3px 10px;
+}
+.tx-keyac-pi1 .listview .event-item .content .more img {
+	vertical-align: middle;
+}
+.tx-keyac-pi1 .listview .divider {
+	height: 1px;
+	border-bottom: 1px dashed #666;
+}
+
+/* --- NAVIGATION --- */
+.tx-keyac-pi1 #navigation {
+	margin: 10px 68px 10px 31px;
+	padding: 5px 5px 10px 5px;
+	text-align:center;
+	background: #dbdbdb;
+}
+
+/* PREV AND NEXT ARROW */
+.tx-keyac-pi1 #arrow_prev,
+.tx-keyac-pi1 #arrow_next {
+	float:left;
+	display: inline-block;
+	margin-top:5px;
+}
+.tx-keyac-pi1 #arrow_next {
+	margin-left: 8px;
+}
+
+
+
+/* --- CALENDAR --- */
+.tx-keyac-pi1 #calendar-container {
+	margin:0 auto;
+}
+
+/* CALENDARS */
+.tx-keyac-pi1 div.calendars {
+	float:left;
+}
+
+.tx-keyac-pi1 #yac_calendars {
+	text-align: center;
+}
+.tx-keyac-pi1 table.calendar {
+	float: left;
+	margin-bottom:1em;
+	margin:0px 15px 0px 15px;
+	display:inline;
+	background: white;
+	width:178px;
+	border-spacing: 1px;
+	font-size: 10px;
+}
+
+.tx-keyac-pi1 table.calendar tbody{
+	width:135px;
+}
+
+.tx-keyac-pi1 table.lastcalendar {
+	margin-right: 0;
+}
+.tx-keyac-pi1 table.calendar th {
+	background:#ececec;
+	text-align:center;
+	padding:6px;
+	font-weight:bold;
+	color: #646464;
+}
+
+.tx-keyac-pi1 table.calendar td {
+	height:20px;
+	width:20px;
+	text-align:center;
+	font-size: 12px;
+	background:#ececec;
+}
+.tx-keyac-pi1 table.calendar td a{
+	color: #007fc0;
+	text-decoration: underline;
+}
+.tx-keyac-pi1 table.calendar td a:hover,
+.tx-keyac-pi1 table.calendar td a:focus{
+	text-decoration: none;
+}
+.tx-keyac-pi1 table.calendar td.day,
+.tx-keyac-pi1 table.calendar td.week {
+	color:#b6b4b4;
+	background:#e0e0e0;
+	border:1px solid #e0e0e0;
+	font-weight:bold;
+}
+#content[id] .tx-keyac-pi1 table.calendar td {
+	padding:0;
+}
+
+/* CALENDAR CELL COLORS */
+.tx-keyac-pi1 table.calendar td.today {
+	background: #CCC;
+}
+
+/* CALENDAR CELL COLORS */
+.tx-keyac-pi1 table.calendar td.today {
+	background: #CCC;
+}
+
+/* default for events without category */
+.tx-keyac-pi1 table.calendar td.catdef,
+.tx-keyac-pi1 table.calendar td.todaycatdef {
+	border: 1px solid #000;
+}
+
+/* border colors for each category - the number in classname represents the uid of the category record */
+.tx-keyac-pi1 table.calendar td.cat1,
+.tx-keyac-pi1 table.calendar td.todaycat1 {
+	border: 1px solid #b8d13a;
+	color: #007fc0;
+}
+.tx-keyac-pi1 table.calendar td.cat2,
+.tx-keyac-pi1 table.calendar td.todaycat2 {
+	border: 1px solid #007fc0;
+	color: #007fc0;
+}
+.tx-keyac-pi1 table.calendar td.cat3,
+.tx-keyac-pi1 table.calendar td.todaycat3 {
+	border: 1px solid #3eb000;
+	color: #007fc0;
+}
+.tx-keyac-pi1 table.calendar td.cat4,
+.tx-keyac-pi1 table.calendar td.todaycat4 {
+	border: 1px solid #e71678;
+	color: #007fc0;
+}
+.tx-keyac-pi1 table.calendar td.cat5,
+.tx-keyac-pi1 table.calendar td.todaycat5 {
+	border: 1px solid #bb1515;
+	color: #007fc0;
+}
+.tx-keyac-pi1 table.calendar td.cat6,
+.tx-keyac-pi1 table.calendar td.todaycat6 {
+	border: 1px solid #fcff00;
+	color: #007fc0;
+}
+.tx-keyac-pi1 table.calendar td.cat7,
+.tx-keyac-pi1 table.calendar td.todaycat7 {
+	border: 1px solid #3cff00;
+	color: #007fc0;
+}
+.tx-keyac-pi1 table.calendar td.cat8,
+.tx-keyac-pi1 table.calendar td.todaycat8 {
+	border: 1px solid #00fcff;
+	color: #007fc0;
+}
+.tx-keyac-pi1 table.calendar td.cat9,
+.tx-keyac-pi1 table.calendar td.todaycat9 {
+	border: 1px solid #ff6c00;
+	color: #007fc0;
+}
+.tx-keyac-pi1 table.calendar td.cat10,
+.tx-keyac-pi1 table.calendar td.todaycat10 {
+	border: 1px solid #ffd200;
+	color: #007fc0;
+}
+
+
+/* cat99 means that there are different events in different categories on one day */
+.tx-keyac-pi1 table.calendar td.cat999,
+.tx-keyac-pi1 table.calendar td.todaycat999 {
+	border: 1px solid;
+	border-left-color:#ffd200;
+	border-top-color:#32b135;
+	border-right-color:#111a9c;
+	border-bottom-color:#b325c4;
+}
+
+/* set background color for events that are on current date */
+.tx-keyac-pi1 table.calendar td.todaycat0,
+.tx-keyac-pi1 table.calendar td.todaycat1,
+.tx-keyac-pi1 table.calendar td.todaycat2,
+.tx-keyac-pi1 table.calendar td.todaycat3,
+.tx-keyac-pi1 table.calendar td.todaycat4,
+.tx-keyac-pi1 table.calendar td.todaycat5,
+.tx-keyac-pi1 table.calendar td.todaycat6,
+.tx-keyac-pi1 table.calendar td.todaycat7,
+.tx-keyac-pi1 table.calendar td.todaycat8,
+.tx-keyac-pi1 table.calendar td.todaycat9,
+.tx-keyac-pi1 table.calendar td.todaycat10,
+.tx-keyac-pi1 table.calendar td.todaycat999 {
+	background: #CCC;
+}
+
+.tx-keyac-pi1 table.calendar td.normal {
+	border: 1px solid transparent;
+}
+
+
+/* LEGEND */
+.tx-keyac-pi1 .legend {
+	clear:both;
+	margin:10px auto;
+	background: #fff;
+}
+.tx-keyac-pi1 .legend img {
+	margin-right:2px;
+	vertical-align: middle;
+}
+.tx-keyac-pi1 .legend .cat-entry {
+	margin-right: 30px;
+}
+
+
+
+/* Kalender - Popups */
+.yac-tooltip {
+	display:none;
+	width: auto;
+	position:absolute;
+	margin-top: 22px;
+	margin-left: 6px;
+	background: #FEFFA3;
+	border: 1px solid black;
+	padding: 3px;
+	opacity:0;
+	text-align:left;
+
+}
+
+.tx-keyac-pi1 .tooltip-row {
+	line-height: 16px;
+}
+.tx-keyac-pi1 .tooltip-row a{
+	vertical-align: middle;
+}
+
+
+.tx-keyac-pi1 .yac-tooltip .event-item {
+	margin:0 0 0px 0;
+	width: 200px;
+}
+
+.tx-keyac-pi1 .yac-tooltip img{
+	position: relative;
+	top: 3px;
+}

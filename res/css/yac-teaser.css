@@ -1,0 +1,51 @@
+/*****************/
+/* YAC - TEASER  */
+/*****************/
+
+/* Kalender - TeaserView  */
+.tx-keyac-pi1 .yac-teaser {
+	border:1px solid #A0A09E;
+	width:180px;
+	line-height:1.2;
+	background: #f8f8f8;
+	font-size: 11px;
+
+}
+.tx-keyac-pi1 .yac-teaser-header {
+	display:block;
+	color:#000;
+	background:#d6d6d6;
+	vertical-align:middle;
+	background-position: left center;
+	background-repeat:no-repeat;
+	font-weight:bold;
+	font-size:1.0em;
+	height:2.2em;
+	padding-left:2.5em;
+	padding-top: 0.7em;
+	font-size: 12px;
+}
+.tx-keyac-pi1 .yac-teaser .date{
+	font-weight: bold;
+}
+.tx-keyac-pi1 .yac-teaser-body{
+	/*border-top:1px solid #A0A09E;*/
+	padding:0.7em 0 0 0.7em;
+	line-height: 145%;
+}
+
+.tx-keyac-pi1 .yac-teaser a:link,
+.tx-keyac-pi1 .yac-teaser a:visited {
+	text-decoration:none;
+	color: #0098a1;
+	background: #f8f8f8;
+}
+.tx-keyac-pi1 .yac-teaser a:hover{
+	text-decoration: underline;
+}
+.tx-keyac-pi1 .yac-teaser img.hrLine{
+	width: 160px;
+	padding-top: 1.3em;
+	height:1px;
+
+}

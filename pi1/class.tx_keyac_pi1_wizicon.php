@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2006 Andreas Kiefer <kiefer@kiwebservices.de>
+*  (c) 2006-2012 Andreas Kiefer <kiefer@kiwebservices.de>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -34,39 +34,43 @@
  */
 class tx_keyac_pi1_wizicon {
 
-					/**
-					 * Processing the wizard items array
-					 *
-					 * @param	array		$wizardItems: The wizard items
-					 * @return	Modified array with wizard items
-					 */
-					function proc($wizardItems)	{
-						global $LANG;
+	/**
+	 * Processing the wizard items array
+	 *
+	 * @param	array		$wizardItems: The wizard items
+	 * @return	Modified array with wizard items
+	 */
+	function proc($wizardItems)	{
+		global $LANG;
 
-						$LL = $this->includeLocalLang();
+		$LL = $this->includeLocalLang();
 
-						$wizardItems['plugins_tx_keyac_pi1'] = array(
-							'icon'=>t3lib_extMgm::extRelPath('ke_yac').'pi1/ce_wiz.gif',
-							'title'=>$LANG->getLLL('pi1_title',$LL),
-							'description'=>$LANG->getLLL('pi1_plus_wiz_description',$LL),
-							'params'=>'&defVals[tt_content][CType]=list&defVals[tt_content][list_type]=ke_yac_pi1'
-						);
+		$wizardItems['plugins_tx_keyac_pi1'] = array(
+			'icon'=>t3lib_extMgm::extRelPath('ke_yac').'pi1/ce_wiz.gif',
+			'title'=>$LANG->getLLL('pi1_title',$LL),
+			'description'=>$LANG->getLLL('pi1_plus_wiz_description',$LL),
+			'params'=>'&defVals[tt_content][CType]=list&defVals[tt_content][list_type]=ke_yac_pi1'
+		);
 
-						return $wizardItems;
-					}
+		return $wizardItems;
+	}
 
-					/**
-					 * Reads the [extDir]/locallang.xml and returns the \$LOCAL_LANG array found in that file.
-					 *
-					 * @return	The array with language labels
-					 */
-					function includeLocalLang()	{
-						$llFile = t3lib_extMgm::extPath(ke_yac).'locallang.xml';
-						$LOCAL_LANG = t3lib_div::readLLXMLfile($llFile, $GLOBALS['LANG']->lang);
-						
-						return $LOCAL_LANG;
-					}
-				}
+	/**
+	 * Reads the [extDir]/locallang.xml and returns the \$LOCAL_LANG array found in that file.
+	 *
+	 * @return	The array with language labels
+	 */
+	 function includeLocalLang()    {
+		$llFile = t3lib_extMgm::extPath('ke_yac') . 'locallang.xml';
+		if(t3lib_div::compat_version('6.0')) {
+		    $xmlParser = t3lib_div::makeInstance('t3lib_l10n_parser_Llxml');
+		    $LOCAL_LANG = $xmlParser->getParsedData($llFile, $GLOBALS['LANG']->lang);
+		} else {
+		    $LOCAL_LANG = t3lib_div::readLLXMLfile($llFile, $GLOBALS['LANG']->lang);
+		}
+		return $LOCAL_LANG;
+	    }
+}
 
 
 

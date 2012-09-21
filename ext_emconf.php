@@ -17,7 +17,7 @@ $EM_CONF[$_EXTKEY] = array(
 	'author' => 'Andreas Kiefer (kennziffer.com)',
 	'author_email' => 'kiefer@kennziffer.com',
 	'shy' => '',
-	'dependencies' => 'cms,date2cal',
+	'dependencies' => 'cms',
 	'conflicts' => '',
 	'priority' => '',
 	'module' => '',
@@ -28,12 +28,10 @@ $EM_CONF[$_EXTKEY] = array(
 	'modify_tables' => '',
 	'clearCacheOnLoad' => 1,
 	'lockType' => '',
-	'author_company' => '',
+	'author_company' => 'www.kennziffer.com GmbH',
 	'version' => '2.0.3',
 	'constraints' => array(
 		'depends' => array(
-			'cms' => '',
-			'date2cal' => '',
 		),
 		'conflicts' => array(
 		),

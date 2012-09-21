@@ -1,24 +1,27 @@
 plugin.tx_keyac_pi1 {
-	#-- MAIN -- #########################################################
-	templateFile = EXT:ke_yac/pi1/yac-template.html
-	cssFile =
+	#-- MAIN -- ############################################################
+	templateFile = EXT:ke_yac/res/yac-template.html
+	cssPath = EXT:ke_yac/res/css/
+	includeJQuery = 1
+	jQueryPath = EXT:ke_yac/res/js/jquery-1,8,2.min.js
+	includeJQueryDateTimePicker = 1
+	includeJQueryTooltips = 1
 	dataPids =
-	useJS = 1
-	showEventsWithoutCat = 0
-	
-	
-	#-- CALENDAR -- #########################################################
-	rows = 2
-	columns = 4
+	showEventsWithoutCat = 1
+	mode = 0
+
+
+	#-- CALENDAR -- ########################################################
+	rows = 1
+	columns = 3
 	showDaysRow = 0
-	showMonthsNavigation = 6
-	showHideCalendar = 0
-	showWeekNumberRow = 0
+	showMonthsNavigation = 4
+	showWeekNumberRow = 1
 	showLegend = 0
 	showList = 1
+	showPassed = 1
 	linkToSingleView = 0
 	showTooltips = 1
-	tooltipDuration = 3000
 
 	##-- CALENDAR IMAGES --
 	calendar.prevIcon = IMAGE
@@ -26,8 +29,11 @@ plugin.tx_keyac_pi1 {
 	calendar.nextIcon = IMAGE
 	calendar.nextIcon.file = EXT:ke_yac/res/images/next.gif
 	
+	#-- NOTIFICATION -- ####################################################
+	notification.from_name = KE_YAC
+	notification.from_email = noreply@domain.de
 	
-	#-- DATEFORMAT -- #########################################################
+	#-- DATEFORMAT -- ######################################################
 	strftimeFormatStringWithoutTime = %d.%m.%Y
 	strftimeFormatStringWithTime = %d.%m.%Y %H:%M
 	strftimeFormatTime = %H:%M
@@ -52,30 +58,36 @@ plugin.tx_keyac_pi1 {
 	#-- DEFAULT IMAGE IN LISTVIEW --
 	listviewDefaultImg.file = EXT:ke_yac/res/images/defaultImage.gif
 
+	#-- ATTENDEES ICON LISTVIEW
+	listview.attendeesIcon = IMAGE
+	listview.attendeesIcon.file = EXT:ke_yac/res/images/attendees-icon-listview.png
+
+
 	#-- CATEGORY ICONS
 	# number represents uid of category record, def = default
 	categoryIcon.def = IMAGE
-	categoryIcon.def.file = EXT:ke_yac/res/images/catdefault.gif
+	categoryIcon.def.file = EXT:ke_yac/res/images/categoryIcons/catdefault.gif
 	categoryIcon.1 = IMAGE
-	categoryIcon.1.file = EXT:ke_yac/res/images/cat1.gif
+	categoryIcon.1.file = EXT:ke_yac/res/images/categoryIcons/cat1.gif
 	categoryIcon.2 = IMAGE
-	categoryIcon.2.file = EXT:ke_yac/res/images/cat2.gif
+	categoryIcon.2.file = EXT:ke_yac/res/images/categoryIcons/cat2.gif
 	categoryIcon.3 = IMAGE
-	categoryIcon.3.file = EXT:ke_yac/res/images/cat3.gif
+	categoryIcon.3.file = EXT:ke_yac/res/images/categoryIcons/cat3.gif
 	categoryIcon.4 = IMAGE
-	categoryIcon.4.file = EXT:ke_yac/res/images/cat4.gif
+	categoryIcon.4.file = EXT:ke_yac/res/images/categoryIcons/cat4.gif
 	categoryIcon.5 = IMAGE
-	categoryIcon.5.file = EXT:ke_yac/res/images/cat5.gif
+	categoryIcon.5.file = EXT:ke_yac/res/images/categoryIcons/cat5.gif
 	categoryIcon.6 = IMAGE
-	categoryIcon.6.file = EXT:ke_yac/res/images/cat6.gif
+	categoryIcon.6.file = EXT:ke_yac/res/images/categoryIcons/cat6.gif
 	categoryIcon.7 = IMAGE
-	categoryIcon.7.file = EXT:ke_yac/res/images/cat7.gif
+	categoryIcon.7.file = EXT:ke_yac/res/images/categoryIcons/cat7.gif
 	categoryIcon.8 = IMAGE
-	categoryIcon.8.file = EXT:ke_yac/res/images/cat8.gif
+	categoryIcon.8.file = EXT:ke_yac/res/images/categoryIcons/cat8.gif
 	categoryIcon.9 = IMAGE
-	categoryIcon.9.file = EXT:ke_yac/res/images/cat9.gif
+	categoryIcon.9.file = EXT:ke_yac/res/images/categoryIcons/cat9.gif
 	categoryIcon.10 = IMAGE
-	categoryIcon.10.file = EXT:ke_yac/res/images/cat10.gif
+	categoryIcon.10.file = EXT:ke_yac/res/images/categoryIcons/cat10.gif
+
 	
 	
 	#-- SINGLEVIEW -- #########################################################
@@ -85,8 +97,10 @@ plugin.tx_keyac_pi1 {
 	#-- IMAGES IN SINGLEVIEW --
 	singleviewImg = IMAGE
 	singleviewImg {
-		file.maxW = 235
-		file.maxH = 123
+		file.maxW = 700
+		file.maxH = 300
+		file.width = 700c-0
+		file.height = 300c-0
 		imageLinkWrap = 1
 		imageLinkWrap.enable = 1
 	}
@@ -104,10 +118,23 @@ plugin.tx_keyac_pi1 {
 	#-- BACKLINK ICON --
 	singleview.backlinkIcon = IMAGE
 	singleview.backlinkIcon.file = EXT:ke_yac/res/images/backlink.gif
+	
+	#-- PREVLINK ICON --
+	singleview.prevLinkIcon = IMAGE
+	singleview.prevLinkIcon.file = EXT:ke_yac/res/images/prevlink.gif
+
+	#-- NEXTLINK ICON --
+	singleview.nextLinkIcon = IMAGE
+	singleview.nextLinkIcon.file = EXT:ke_yac/res/images/nextlink.gif
 
 	#-- INFOLINK ICON --
 	singleview.infolinkIcon = IMAGE
 	singleview.infolinkIcon.file = EXT:ke_yac/res/images/infolink.gif
+
+	#-- DELETE ATTACHMENT ICON --
+	icons.deleteFile {
+		file = EXT:ke_yac/res/images/delete.png
+	}
 
 	#-- ATTACHMENT ICONS --
 	attachmentIcon.default = IMAGE
@@ -175,12 +202,7 @@ plugin.tx_keyac_pi1 {
 	
 	
 	#-- GOOGLE MAPS CONFIG -- #################################################
-	gmaps.apiKey = 
-	gmaps.width = 400
-	gmaps.height = 200
-	gmaps.defaultZoom = 12   // 0 - 17
-	gmaps.disableMapControls = 0
-	gmaps.enableTypeControls = 1
+	gmaps.defaultZoom = 12   // possible values: 0 - 17
 	
 	
 	#-- MY EVENTS -- ##########################################################

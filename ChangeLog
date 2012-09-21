@@ -1,3 +1,45 @@
-2009-07-23 Andreas Kiefer [kennziffer.com]  <kiefer@kennziffer.com>
+CURRENT DEV VERSION
+--------------------------------------------------------------------------------
+* new feature: added next / previous navigation links to singleview
+* TYPO3 6.0 compatibility (removed deprecated functions and more)
+* caching improvements
+* CSS and template improvements
+* new default image in listview
+* template based rendering of calendar view
+* option "show passed events" moved from list view to plugin configuration, this
+  option leaded to caching errors
+* improved handling of flexforms and conf values
+* removed date2cal functions and dependency
+* removed GoogleMaps API class, now using GoogleMaps JS API v3
+* removed mootools
+* removed config option "useJS"
+* removed function "loadJS" 
+* new config options "includeJQuery" and "jQueryPath"
+* new config option "includeJQueryDateTimePicker"; if set the datepicker from 
+  jQuery UI will be used
+* new config option "includeJQueryTooltips"; if set the tooltips will be 
+  rendered with jQuery plugin qTip
+* removed "showCal" param and "hideCalendar" function 
+* CSS files seperated for each view; new config option "cssPath" replaces 
+  "cssFile" (note that your CSS files have to be named correctly when not using
+  the default value)
+* bugfix: correct even/odd css class for listview results
+* bugfix: show correct week number (as defined in ISO 8601:1988)
+* bugfix: show frontend editing function links only if user has access
+* use new T3 mail api for notifications
+* some config options removed from flexform (configuration by TS only)
+* default HTML template moved to res/
+* bugfix: "showMonthsNavigation" not treated correctly
+* bugfix: removed HTML fragments that were still visible when hiding navigation 
+  bar
+* bugfix: correct handling of more than one frontend edit usergroup
 
-	* initial code generated with kickstarter
+
+
+----------------------------------------------
+TODO
+----------------------------------------------
+* check rendering when using different amount of cols and rows as the default 
+  value
+* check and update EXT manual
+* TEST T3 4.5 / T3 4.6 / T3 4.7 / 6.0 beta 2

@@ -1,0 +1,147 @@
+/****************************/
+/* STYLES FOR KE_YAC  */
+/****************************/
+
+html, table {
+	font-size: 12px;
+}
+
+/* --- COMPLETE WRAP ---  */
+.tx-keyac-pi1 {
+	padding: 0px 10px 5px 10px;
+	font: 100% Verdana, Arial, sans-serif;
+	width: 700px;
+	max-width: 700px;
+}
+
+
+/* --- CLEARER --- */
+.tx-keyac-pi1 .clearer {
+	clear:both;
+	font-size:1px;
+	line-height:1px;
+	display: block;
+}
+
+/* --- HEADLINES --- */
+.tx-keyac-pi1 h1 {
+	font-weight: bold;
+	font-size: 120%;
+}
+.tx-keyac-pi1 h2 {
+	font-weight: bold;
+	font-size: 110%;
+}
+
+
+/* --- TABLE SETTINGS --- */
+table{
+	border-top: none;
+	border-bottom: none;
+}
+th, td{
+	padding:0.2em;
+}
+
+
+/* --- FORM SETTINGS --- */
+.tx-keyac-pi1 .fieldset {
+	margin-bottom: 10px;
+	clear: both;
+}
+
+.tx-keyac-pi1 .fieldset input, .tx-keyac-pi1 .fieldset textarea{
+	padding-left:5px;
+	padding-right:5px;
+}
+
+:root .tx-keyac-pi1 .fieldset input{
+	padding-bottom:3px; /*only FF*/
+}
+
+.tx-keyac-pi1 .fieldset input[type="file"] {
+	width:230px;
+	min-height:20px;
+}
+
+.tx-keyac-pi1 .fieldset .label {
+	width: 200px;
+	float:left;
+	display:block;
+	font-weight: bold;
+}
+.tx-keyac-pi1 .fieldset .field {
+	float:left;
+}
+.tx-keyac-pi1 .conflict {
+    color:red;
+    font-weight: bold;
+}
+.tx-keyac-pi1 .fieldset .fielderror {
+	color: red;
+	margin-left: 5px;
+}
+
+.tx-keyac-pi1 form textarea {
+	width: 400px;
+	height: 80px;
+}
+
+* html .tx-keyac-pi1 form input {
+	height:15px;
+}
+
+.tx-keyac-pi1 form input.text{
+	width: 200px;
+	vertical-align:middle;
+}
+
+.tx-keyac-pi1 form input.jscalendar {
+	/* width: 100px; */
+}
+
+.tx-keyac-pi1 p.message-success {
+	background: #A4EFAE;
+	border: 1px solid #17BF2E;
+	padding: 3px 6px 3px 6px;
+}
+
+.tx-keyac-pi1 p.message-fail {
+	background: #EF7777;
+	border: 1px solid #FF0000;
+	padding: 3px 6px 3px 6px;
+}
+
+.tx-keyac-pi1 .create-link {
+	padding: 3px 0 1em 0;
+	margin-left: 75px;
+	width:595px;
+}
+
+.tx-keyac-pi1 .create-link img {
+    vertical-align: middle;
+}
+
+.tx-keyac-pi1 .show_passed {
+	margin-left: 75px;
+	margin-bottom: 15px;
+}
+
+.tx-keyac-pi1 .required_mark {
+	color: red;
+}
+
+.tx-keyac-pi1 p.delete-question {
+	font-weight: bold;
+	background: #EF7777;
+	border: 1px solid #FF0000;
+	padding: 3px 6px 3px 6px;
+}
+
+.tx-keyac-pi1 input.yes-button {
+    font-weight: bold;
+    width: 75px;
+}
+.tx-keyac-pi1 input.no-button{
+    width: 75px;
+}

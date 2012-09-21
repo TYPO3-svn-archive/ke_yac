@@ -1,0 +1,19 @@
+/********************/
+/* YAC - MY EVENTS  */
+/********************/
+
+.tx-keyac-pi1 ul.myevents {
+	list-style-type: none;
+	padding: 0;
+}
+
+.tx-keyac-pi1 ul.myevents  li{
+	display:block;
+	padding: 10px;
+	border-bottom: 1px dotted #adadad;
+
+}
+.tx-keyac-pi1 ul.myevents  li img{
+	vertical-align: middle;
+	margin-right: 5px;
+}

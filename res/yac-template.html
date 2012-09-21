@@ -1,19 +1,16 @@
-﻿<!-- ################### -->
-<!-- ####### MAIN ###### -->
-<!-- ################### -->
+<!-- ################# -->
+<!-- ##### MAIN ###### -->
+<!-- ################# -->
 
 
 <!-- ###MAIN_TEMPLATE### begin -->
-	<div id="navigation">###NAVIGATION###</div>
-	<div id="yac_three_tables">
+	<!-- ###SUB_NAVIGATION### --><div id="navigation">###NAVIGATION###</div><!-- ###SUB_NAVIGATION### -->
+	<div id="yac_calendars">
 		<div id="arrow_prev">###PREV_ARROW###</div>
 		<div class="calendars">###CALENDARS###</div>
 		<div id="arrow_next">###NEXT_ARROW###</div>
 		<div class="clearer">&nbsp;</div>
 	</div>
-	<!-- ###SUB_HIDE_CALENDAR### start -->
-		<div class="calswitch">###HIDE_CALENDAR###</div>
-	<!-- ###SUB_HIDE_CALENDAR### end-->
 
 	<!-- ###SUB_LEGEND### start -->
 		<div class="legend">###LEGEND###</div>
@@ -25,13 +22,6 @@
 	    </div>
 	<!-- ###SUB_CREATE_LINK### end -->
 	
-	<div class="show_passed">
-		<form method="post">
-			<input type="hidden" name="tx_keyac_pi1[showpassedchange]" value="1" />
-			<input type="checkbox" name="tx_keyac_pi1[showpassed]" ###SHOWPASSED_CHECKED###  onchange="this.form.submit();" /> ###LABEL_SHOW_PASSED###
-		</form>
-	</div>
-	
 	<!-- ###SUB_LISTVIEW### start -->
 		<div class="listview">###LISTVIEW###</div>
 		<!-- <div id="listview_spacer">&nbsp;</div> -->
@@ -41,44 +31,71 @@
 
 
 <!-- ##################### -->
-<!-- ####### CLEARER ##### -->
-<!-- ##################### -->
-<!-- ###CALENDARS_CLEARER### begin -->
-	<!--<div class="yac_clearer">&nbsp;</div>-->
-<!-- ###CALENDARS_CLEARER### end -->
-
-<!-- ##################### -->
 <!-- #### SINGLEVIEW ##### -->
 <!-- ##################### -->
 
 <!-- ###SINGLEVIEW_TEMPLATE### start -->
 
-	<div id="keyac-singleview-header-container">
+	<div id="keyac-singleview-header">
+		<h1>###TITLE###</h1>
+		<h2>
+			###DATESTRING###<br />
+			###LOCATION###
+		</h2>
 
-		<div class="content-left">
-			<div class="title">###TITLE###</div>
-			<!-- ###SUB_IMAGES### start -->
-				<div class="images">###IMAGES###</div><!-- ###SUB_IMAGES### end -->
-					<div class="datestring">###DATESTRING### ###LOCATION###<br />
-						###ADDRESS### ###ZIP### ###CITY###<br />
-						###LABEL_OWNER###: ###OWNER_FIRST_NAME### ###OWNER_LAST_NAME###<br />
-						###LABEL_CREATION_DATE###: ###CREATION_DATE###<br />
-						###LABEL_EDIT_DATE###: ###EDIT_DATE###<br />
-					</div>
-				
-				<!-- ###SUB_TEASERTEXT### start -->
-				###TEASERTEXT###
-				<!-- ###SUB_TEASERTEXT### end -->
+		<!-- ###SUB_TEASERTEXT### start --><p>###TEASERTEXT###</p><!-- ###SUB_TEASERTEXT### end -->
 
-			</div>
+		<p>
+			<div class="content-left"><b>###LABEL_EVENT_ADDRESS###:</b></div>
+			<div class="content-right">###ADDRESS###<br />###ZIP### ###CITY###</div>
 			<div class="clearer">&nbsp;</div>
+
+			<div>
+				<div class="content-left"><b>###LABEL_OWNER###:</b></div>
+				<div class="content-right">###OWNER_FIRST_NAME### ###OWNER_LAST_NAME### <!--(###OWNER_USERNAME###, ###OWNER_EMAIL###)--></div>
+				<div class="clearer">&nbsp;</div>
+			</div>
+
+			<div>
+				<div class="content-left"><b>###LABEL_CREATION_DATE###:</b></div>
+				<div class="content-right">###CREATION_DATE###</div>
+				<div class="clearer">&nbsp;</div>
+			</div>
+
+			<div>
+				<div class="content-left"><b>###LABEL_EDIT_DATE###:</b></div>
+				<div class="content-right">###EDIT_DATE###</div>
+				<div class="clearer">&nbsp;</div>
+			</div>
+
+			<!-- ###SUB_INFOLINK### start -->
+				<div class="content-left"><b>###LABEL_INFOLINK###:</b></div>
+				<div class="content-right infolink">###INFOLINK_ICON### ###INFOLINK###</div>
+				<span class="clearer">
+			<!-- ###SUB_INFOLINK### end -->
+
+			<!-- ###SUB_ATTENDANCE### start -->
+				<div class="content-left"><b>###LABEL_ATTENDANCE###:</b></div>
+				<div class="content-right attend">###ATTENDANCE_STATUS###<br />###ATTENDANCE_ACTION###</div>
+				<span class="clearer">
+			<!-- ###SUB_ATTENDANCE### end -->
+		</p>
 	</div>
-	<div id="keyac-singleview-body-container">
-		<!-- ###SUB_DESCRIPTION### start -->
+
+	<!-- ###SUB_IMAGES### start -->
+	<div id="keyac-singleview-image">
+		<div class="images">###IMAGES###</div>
+	</div>
+	<!-- ###SUB_IMAGES### end -->
+
+	<!-- ###SUB_DESCRIPTION### start -->
+		<div id="keyac-singleview-body">
+			<b>###LABEL_DESCRIPTION###</b>
 			<div class="description">###DESCRIPTION###</div>
 			<div class="clearer"></div>
-		<!-- ###SUB_DESCRIPTION### end -->
-	</div>
+		</div>
+	<!-- ###SUB_DESCRIPTION### end -->
+
 	<!--- ###SUB_ATTACHMENTS### start -->
 		<div class="content-left"><b>###LABEL_ATTACHMENTS###</b></div>
 		<div class="content-right attachments">###ATTACHMENTS###</div>
@@ -86,73 +103,50 @@
 	<!-- ###SUB_ATTACHMENTS### end -->
 
 	<!-- ###SUB_MAP### start -->
-	<div id="keyac-singleview-map-container">
 		<div id="keyac-singleview-map">
-			###MAPJS###
-			<div class="map">###MAP###</div>
+			<div id="map_canvas" class="map"></div>
 		</div>
-	</div>
 	<!-- ###SUB_MAP### end -->
-	
-	
-	
+
 	<!-- ###SUB_ATTENDEES### start -->
-	<div id="keyac-singleview-attendees-container">
-		<div class="attendees-headerrow">
-			<div class="content-left attendees-empty">&nbsp;</div>
-			<div class="content-right attendees-label"><b>###LABEL_ATTENDEES###</b></div>
-			<div class="clearer">&nbsp;</div>
-		</div>
-		###ATTENDEES###
-		<span class="clearer">&nbsp;</span>
-	</div>
+		<table class="attendees-table">
+			<tr>
+				<th colspan="2">###LABEL_ATTENDEES###</th>
+			</tr>
+			###ATTENDEES###
+		</table>
 	<!-- ###SUB_ATTENDEES### end -->
-	
-	
+
 	<!-- ###SUB_UNIVERSAL_KEWORKS_BROWSER### start -->
 		<div class="content-left"><b>###LABEL_UKB###</b></div>
 		<div class="content-right">
 			###UKB_CONTENT###
 			###UKB_FORM###
 		</div>
-		<hr class="clearer">
-	<!-- ###SUB_UNIVERSAL_KEWORKS_BROWSER### start -->
-
+		<span class="clearer">
+	<!-- ###SUB_UNIVERSAL_KEWORKS_BROWSER### end -->
 
 	<!-- ###SUB_FOOTER_MENU### start -->
-	<div id="keyac-singleview-footer-container">
-		<!-- ###SUB_ATTEND### start --><div class="keyac-singleview-button first">###LINK###</div><!-- ###SUB_ATTEND### end -->
-		<!-- ###SUB_INVITE### start --><div class="keyac-singleview-button">###LINK###</div><!-- ###SUB_INVITE### end -->
-		<!-- ###SUB_EDIT### start --><div class="keyac-singleview-button">###LINK###</div><!-- ###SUB_EDIT### end -->
-		<!-- ###SUB_DELETE### start --><div class="keyac-singleview-button last">###LINK###</div><!-- ###SUB_DELETE### end -->
-	</div>
+		<div id="keyac-singleview-footer">
+			<!-- ###SUB_ATTEND### start -->###LINK###<!-- ###SUB_ATTEND### end -->
+			<!-- ###SUB_INVITE### start -->###LINK###<!-- ###SUB_INVITE### end -->
+			<!-- ###SUB_EDIT### start -->###LINK###<!-- ###SUB_EDIT### end -->
+			<!-- ###SUB_DELETE### start -->###LINK###<!-- ###SUB_DELETE### end -->
+			<span class="clearer">&nbsp;</span>
+		</div>
 	<!-- ###SUB_FOOTER_MENU### end -->
+
+
 	<div class="clearer">&nbsp;</div>
-	<div class="backlink">###BACKLINK_ICON### ###BACKLINK###</div>
+	<div class="backlink">
+		<div class="left">###BACKLINK_ICON### ###BACKLINK###</div>
+		<div class="right">###PREV_LINK_ICON### ###PREV_LINK### ###DIVIDER### ###NEXT_LINK### ###NEXT_LINK_ICON### </div>
+		<span class="clearer">&nbsp;</span>
+	</div>
 
-	<!--<div class="content-left"><b>###LABEL_DESCRIPTION###</b></div>-->
 
-	<!--<div class="content-left"><b>###LABEL_EVENT###</b></div>-->
-
-	<!-- ###SUB_INFOLINK### start -->
-		<!--<div class="content-left"><b>###LABEL_INFOLINK###</b></div>
-		<div class="content-right infolink">###INFOLINK_ICON### ###INFOLINK###</div>
-		<hr class="clearer">-->
-	<!-- ###SUB_INFOLINK### end -->
-
-	<!-- ###SUB_ATTENDANCE### start -->
-		<!--
-		<div class="content-left"><b>###LABEL_ATTENDANCE###</b></div>
-		<div class="content-right attend">###ATTENDANCE_STATUS###<br />###ATTENDANCE_ACTION###</div>
-		<hr class="clearer">
-		-->
-	<!-- ###SUB_ATTENDANCE### end -->
-
-	<!--###OWNER_USERNAME### ###OWNER_EMAIL### -->
 
 <!-- ###SINGLEVIEW_TEMPLATE### end -->
-
-
 
 
 <!-- ###IMAGE_ROW### start -->
@@ -164,10 +158,10 @@
 <!-- ###ATTACHMENT_ROW### end -->
 
 <!-- ###ATTENDEE_ROW### start -->
-		<div class="attendees-row ###CSS_ROW###">
-				<div class="content-left attendees-icon">###ATTENDEE_ICON###</div>
-				<div class="content-right attendees">###NAME###<br /></div>
-		</div>
+		<tr class="attendees-row ###CSS_ROW###">
+			<td class="icon">###ATTENDEE_ICON###</td>
+			<td>###NAME###</td>
+		</tr>
 <!-- ###ATTENDEE_ROW### end -->
 
 
@@ -191,51 +185,44 @@
 
 
 <!-- ################### -->
-<!-- #### HIDE CALENDAR #### -->
-<!-- ################### -->
-
-<!-- ###HIDE_CALENDAR_TEMPLATE### begin -->
-	###LINK###
-<!-- ###HIDE_CALENDAR_TEMPLATE### end -->
-
-
-
-<!-- ################### -->
 <!-- ##### LISTVIEW   ###### -->
 <!-- ################### -->
 
 <!-- ###LISTVIEW_SINGLE### begin -->
+	<div class="divider">&nbsp;</div>
 	<div class="event-item ###CSS_ROW###">
-		###ANCHOR###
-		<div class="caticon">###CATICON###</div>
-		###LINK_START### ###DATE### ###TITLE### ###LINK_END###
-		<br />
-		<div class="more">
-			<div class="thumbnail">###THUMBNAIL###</div>
-			<div class="teasertext">
-				###TEASERTEXT###
-				<i><!-- ###LABEL_ATTENDEES###:   -->  ###ATTENDEES###</i>
-			</div>
-			<hr class="clearer" />
-			<!--###LINK_START### ###MORE_ICON### ###MORE_TEXT### ###LINK_END###-->
+		<div class="thumbnail">###THUMBNAIL###</div>
+		<div class="content">
+			<div class="link">###CATICON### ###LINK_START### ###DATE### ###TITLE### ###LINK_END###</div>
+			<div class="teasertext">###TEASERTEXT###</div>
+			<span class="clearer" >&nbsp;</span>
+			<!-- ###LISTVIEW_SUB_ATTENDEES### start -->
+				<div class="attendees">
+					###ATTENDEES_ICON###
+					<span class="attendees-label">###LABEL_ATTENDEES###:</span>
+					<span class="attendees-list">###ATTENDEES###</span>
+				</div>
+			<!-- ###LISTVIEW_SUB_ATTENDEES### end -->
+			<div class="more">###MORE_ICON### ###LINK_START### ###MORE_TEXT### ###LINK_END###</div>
 		</div>
+		<span class="clearer" >&nbsp;</span>
 	</div>
 <!-- ###LISTVIEW_SINGLE### end -->
 
 
-<!-- ################### -->
-<!-- ##### TOOLTIP   ###### -->
-<!-- ################### -->
+<!-- #################### -->
+<!-- ##### TOOLTIP ###### -->
+<!-- #################### -->
 
 <!-- ###TOOLTIP_ROW### begin -->
-	<div class="tooltip-row">###CATICON### ###DATE### ###TITLE###</div>
+	<div class="tooltip-row">###CATICON### ###LINK_START### ###DATE### ###TITLE### ###LINK_END### </div>
 <!-- ###TOOLTIP_ROW### end -->
 
 
 
-<!-- ################### -->
-<!-- ###### LEGEND     ###### -->
-<!-- ################### -->
+<!-- #################### -->
+<!-- ###### LEGEND ###### -->
+<!-- #################### -->
 
 <!-- ###LEGEND_TEMPLATE### begin -->
 	###CAT_ENTRIES###
@@ -247,9 +234,9 @@
 
 
 
-<!-- ################### -->
-<!-- ###### TEASER    ###### -->
-<!-- ################### -->
+<!-- #################### -->
+<!-- ###### TEASER ###### -->
+<!-- #################### -->
 
 <!-- ###TEASER_TEMPLATE### begin -->
 	<div class="yac-teaser">
@@ -641,12 +628,11 @@
 
 <!-- Mail that is sent as invitation to join an event -->
 <!-- ###INVITATION_MAIL### begin -->
-	###SALUTATION### ###FIRST_NAME### ###LAST_NAME###,<br /><br />
+	###SALUTATION### ###INVITED_USER_NAME###,<br /><br />
 	###YOU_HAVE_BEEN_INVITED###<br />
 	<br />
 	<!-- ###SUB_INVITATION_TEXT### start -->
 		###INVITATION_TEXT_HEADLINE###: <br />
-		<!-- Der Benutzer hat folgenden Einladungstext angegeben: <br /> -->
 		###INVITATION_TEXT###<br /><br />
 	<!-- ###SUB_INVITATION_TEXT### end -->
 
@@ -670,7 +656,7 @@
 
 <!-- Mail that is sent if user was set as attendee by date owner -->
 <!-- ###INVITATION_SET_MAIL### begin -->
-	###SALUTATION### ###FIRST_NAME### ###LAST_NAME###,<br /><br />
+	###SALUTATION### ###INVITED_USER_NAME###,<br /><br />
 	###YOU_HAVE_BEEN_SET###<br />
 	<br />
 	<!-- ###SUB_INVITATION_TEXT### start -->
@@ -699,7 +685,7 @@
 
 <!-- Mail that is sent to owner and attendees when a user joins an event -->
 <!-- ###ATTEND_MAIL### start -->
-	###SALUTATION### ###FIRST_NAME### ###LAST_NAME###, <br /><br />
+	###SALUTATION### ###ATTENDEE_NAME###, <br /><br />
 	###ATTENDANCE_NOTIFICATION_TEXT###<br />
 	<br />
 	<table>
@@ -722,7 +708,7 @@
 
 <!-- Mail that is sent to owner and attendees when a user deletes his attendance -->
 <!-- ###ATTEND_DELETE_MAIL### start -->
-	###SALUTATION### ###FIRST_NAME### ###LAST_NAME###, <br /><br />
+	###SALUTATION### ###ATTENDEE_NAME###, <br /><br />
 	<!-- ###ATTENDEE_NAME### hat seine Teilnahme am Termin "###EVENT_TITLE###" abgesagt.<br />-->
 	###ATTENDANCE_DELETE_NOTIFICATION_TEXT###<br />
 	<br />
@@ -751,7 +737,7 @@
     ###EDIT_NOTIFICATION_SUBJECT###</p>
     <br />
     <!-- ###CHANGED_FIELDS### start  -->
-	<b>ge&auml;nderte Daten:</b><br /><br />
+	<b>###CHANGED_DATA###</b><br /><br />
 	<table>
 	    <!-- ###CHANGED_FIELD_ROW### start -->
 		<tr><td><b>###FIELD###:&nbsp;&nbsp;</b></td><td>###VALUE###</td></tr>
@@ -770,7 +756,7 @@
 
 <!-- Mail that is sent to owner and attendees when a user deletes an event -->
 <!-- ###DELETE_MAIL### start -->
-	###SALUTATION### ###FIRST_NAME### ###LAST_NAME###, <br /><br />
+	###SALUTATION### ###ATTENDEE_NAME###, <br /><br />
 	###DELETE_NOTIFICATION_SUBJECT###<br />
 	<br />
 	<table>
@@ -793,7 +779,7 @@
 <!-- ###DELETE_MAIL### end -->
 
 
-
+<!-- EVENT DATE SUGGESTION TEMPLATE -->
 <!-- ###SUB_SUGGESTIONS### start -->
     <form method="post">
 	<p><b>###DATE_SUGGESTIONS###:</b></p>
@@ -805,3 +791,21 @@
 	###HIDDENFIELDS###
     </form>
 <!-- ###SUB_SUGGESTIONS### end -->
+
+
+
+<!-- SINGLE CALENDAR TEMPLATE -->
+<!-- ###CAL### -->
+	<table class="calendar">
+		<tr><th colspan="###COLS###">###MONTH###</th></tr>
+		<!-- ###SUB_CAL_ROW### -->
+		<tr>
+		<!-- ###SUB_CAL_CELL### -->
+			<td class="###CSSCLASS###" id="###ID###">###CONTENT###</td>
+		<!-- ###SUB_CAL_CELL### -->
+		</tr>
+		<!-- ###SUB_CAL_ROW### -->
+	</table>
+<!-- ###CAL### -->
+  
+
