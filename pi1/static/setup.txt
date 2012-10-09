@@ -3,7 +3,7 @@ plugin.tx_keyac_pi1 {
 	templateFile = EXT:ke_yac/res/yac-template.html
 	cssPath = EXT:ke_yac/res/css/
 	includeJQuery = 1
-	jQueryPath = EXT:ke_yac/res/js/jquery-1,8,2.min.js
+	jQueryPath = EXT:ke_yac/res/js/jquery-1.8.2.min.js
 	includeJQueryDateTimePicker = 1
 	includeJQueryTooltips = 1
 	dataPids =
