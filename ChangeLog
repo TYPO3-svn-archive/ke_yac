@@ -2,6 +2,7 @@ Current SVN trunk
 --------------------------------------------------------------------------------
 * Removed category icon config from category record as it has no more effect. 
   Category icons can be edited by TYPOScript only.
+* Preparations for feature "GoogleMaps as popup" (see EXT ke_yac_googlemaps)
 
 
 3.0.0 (September 2012)
