@@ -1489,30 +1489,47 @@ class tx_keyac_pi1 extends tslib_pibase {
 
 			// show map?
 			if ($row['location'] && $row['address'] && $row['zip'] && $row['city']) {
-
-				// include gMaps Api v3
-				$gMapsSrc = 'http://maps.google.com/maps/api/js?sensor=false';
-				$gMapsJS = t3lib_extMgm::siteRelPath($this->extKey).'res/js/ke_yac_gmaps.js';
-
-				// inline js for gmaps
-				$mapZoom = $row['googlemap_zoom'] > 0 ? $row['googlemap_zoom'] : $this->conf['gmaps.']['defaultZoom'];
-				$infoContent = $this->getFieldContent('gmaps_htmladdress', $row);	
-				$inlineJS = '
-						var mapAddress = "'.$this->getFieldContent('gmaps_address', $row).'";
-						var mapZoom = '.$mapZoom.';
-						var infocontent = "'.$infoContent.'";';
 				
-				// include files
-				if ($this->typo3version6) {
-					$this->pageRenderer->addJsLibrary('yac_gMapsSrc', $gMapsSrc);
-					$this->pageRenderer->addJsLibrary('yac_gMapsJS', $gMapsJS);
-					$this->pageRenderer->addJsInlineCode('yac_gMaps_inline', $inlineJS);
+				if (!t3lib_extMgm::isLoaded('ke_yac_googlemap')) {
+					// include gMaps Api v3
+					$gMapsSrc = 'http://maps.google.com/maps/api/js?sensor=false';
+					$gMapsJS = t3lib_extMgm::siteRelPath($this->extKey).'res/js/ke_yac_gmaps.js';
+
+					// inline js for gmaps
+					$mapZoom = $row['googlemap_zoom'] > 0 ? $row['googlemap_zoom'] : $this->conf['gmaps.']['defaultZoom'];
+					$infoContent = $this->getFieldContent('gmaps_htmladdress', $row);	
+					$inlineJS = '
+							var mapAddress = "'.$this->getFieldContent('gmaps_address', $row).'";
+							var mapZoom = '.$mapZoom.';
+							var infocontent = "'.$infoContent.'";';
+
+					// include files
+					if ($this->typo3version6) {
+						$this->pageRenderer->addJsLibrary('yac_gMapsSrc', $gMapsSrc);
+						$this->pageRenderer->addJsLibrary('yac_gMapsJS', $gMapsJS);
+						$this->pageRenderer->addJsInlineCode('yac_gMaps_inline', $inlineJS);
+					} else {
+						$GLOBALS['TSFE']->additionalHeaderData[$this->prefixId.'_gMapsSrc'] = '<script type="text/javascript" src="'.$gMapsSrc.'"></script>';
+						$GLOBALS['TSFE']->additionalHeaderData[$this->prefixId.'gmapsJS'] = '<script type="text/javascript" src="'.$gMapsJS.'"></script>';
+						$GLOBALS['TSFE']->additionalHeaderData[$this->prefixId.'gmaps_inline'] = '<script type="text/javascript">'.$inlineJS.'</script>';
+					}
+					$this->markerArray['label_map'] = $this->pi_getLL('map');
 				} else {
-					$GLOBALS['TSFE']->additionalHeaderData[$this->prefixId.'_gMapsSrc'] = '<script type="text/javascript" src="'.$gMapsSrc.'"></script>';
-					$GLOBALS['TSFE']->additionalHeaderData[$this->prefixId.'gmapsJS'] = '<script type="text/javascript" src="'.$gMapsJS.'"></script>';
-					$GLOBALS['TSFE']->additionalHeaderData[$this->prefixId.'gmaps_inline'] = '<script type="text/javascript">'.$inlineJS.'</script>';
-				}
-				$this->markerArray['label_map'] = $this->pi_getLL('map');
+					// render link to ke_yac_googlemaps
+					// image
+					$imageConf['file'] = t3lib_extMgm::siteRelPath('ke_yac_googlemap').'res/map.gif';
+					$imageConf['altText'] = 'Google Map';
+					$imageConf['params'] = 'style="vertical-align: middle;"';
+					$mapImage=$this->cObj->IMAGE($imageConf);
+
+					// show popup link only
+					unset($linkconf);
+					$mapURL = t3lib_div::locationHeaderUrl('index.php?eID=yac_googlemap&yacuid='.$id);
+					$linkconf['parameter'] = $mapURL.' 800x500:resizable=1,location=0,scrollbars=1';
+					$linkconf['additionalParams'] = '&tx_keyacgooglemap_pi1[showUid]='.intval($row['uid']);
+					$linkconf['useCacheHash'] = true;
+					$mapLink = $mapImage.' '.$this->cObj->typoLink($this->pi_getLL('mapview'),$linkconf);
+				} 
 			}
 
 			// Hook for additional markers
@@ -1528,7 +1545,12 @@ class tx_keyac_pi1 extends tslib_pibase {
 			// fill marker
 			$content = $this->cObj->getSubpart($this->templateCode,'###SINGLEVIEW_TEMPLATE###');
 			$content = $this->cObj->substituteMarkerArray($content,$this->markerArray,$wrap='###|###',$uppercase=1);
-
+			
+			// render map link?
+			if ($mapLink && t3lib_extMgm::isLoaded('ke_yac_googlemap')) {
+				$content = $this->cObj->substituteSubpart($content, '###SUB_MAP###', $mapLink);
+			}
+			
 			// overwrite subparts if no content available
 			if (empty($row['teaser'])) $content = $this->cObj->substituteSubpart($content, '###SUB_TEASERTEXT###', '');
 			if (empty($row['bodytext'])) $content = $this->cObj->substituteSubpart($content, '###SUB_DESCRIPTION###', '');

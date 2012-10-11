@@ -77,6 +77,7 @@
 			<label index="reason_cancellation">Reason for the cancellation</label>
 			<label index="previous">previous event</label>
 			<label index="next">next event</label>
+			<label index="mapview">show map in new window</label>
 			
 			<!-- FORM FIELD LABELS -->
 			<label index="label_startdat">Start Date</label>
@@ -203,6 +204,7 @@
 			<label index="reason_cancellation">Bitte geben Sie eine Begründung für die Absage an</label>
 			<label index="previous">vorheriger</label>
 			<label index="next">nächster</label>
+			<label index="mapview">Zur Kartenansicht</label>
 			
 			<!-- FORM FIELD LABELS -->
 			<label index="label_startdat">Startdatum</label>
