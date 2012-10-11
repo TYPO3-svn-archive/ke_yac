@@ -105,21 +105,6 @@ $TCA['tx_keyac_cat'] = array (
 				'size' => '30',
 			)
 		),
-		'image' => array (		
-			'exclude' => 1,		
-			'label' => 'LLL:EXT:ke_yac/locallang_db.xml:tx_keyac_cat.image',		
-			'config' => array (
-				'type' => 'group',
-				'internal_type' => 'file',
-				'allowed' => $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'],	
-				'max_size' => $GLOBALS['TYPO3_CONF_VARS']['BE']['maxFileSize'],	
-				'uploadfolder' => 'uploads/tx_keyac',
-				'show_thumbs' => 1,	
-				'size' => 1,	
-				'minitems' => 0,
-				'maxitems' => 1,
-			)
-		),
 	),
 	'types' => array (
 		'0' => array('showitem' => 'sys_language_uid;;;;1-1-1, l10n_parent, l10n_diffsource, hidden;;1, title;;;;2-2-2, image;;;;3-3-3')
