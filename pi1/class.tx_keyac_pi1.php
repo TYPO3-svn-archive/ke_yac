@@ -64,9 +64,6 @@ class tx_keyac_pi1 extends tslib_pibase {
 		
 		// process initials
 		$this->initPlugin();
-		//t3lib_Utility_Debug::debug($this->conf, 'conf');
-		//t3lib_Utility_Debug::debug($this->conf['showPassed'], 'passed?');
-		//t3lib_Utility_Debug::debug($this->conf['showEventsWithoutCat'], 'without cat?');
 		
 		// get Content corresponding to mode
 		switch($this->mode) {
