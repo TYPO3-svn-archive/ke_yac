@@ -512,7 +512,7 @@ class tx_keyac_pi1 extends tslib_pibase {
 				$pre_year +=1;
 			}
 			$timestamp = mktime(0,0,0,$pre_month,1,$pre_year);
-			$text = utf8_decode(strftime('%B %y',$timestamp));
+			$text = strftime('%B %y',$timestamp);
 
 			$var_year = date('Y',$timestamp);
 			$var_month = date('m',$timestamp);
