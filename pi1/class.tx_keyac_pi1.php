@@ -1652,13 +1652,8 @@ class tx_keyac_pi1 extends tslib_pibase {
  	*/
  	function myEventsView() {
 
+		// get subpart
 		$content = $this->cObj->getSubpart($this->templateCode,'###MYEVENTS###');
-
-		// print message if no user is logged in
-		if (!$GLOBALS['TSFE']->loginUser) {
-			$content = $this->cObj->substituteSubpart ($content, '###MYEVENTS_ROW###', $this->pi_getLL('no_login'));
-			return $content;
-		}
 
 		// singleview pid
 		$singleViewPid = $this->conf['myEvents.']['singleViewPid'];
@@ -1666,68 +1661,74 @@ class tx_keyac_pi1 extends tslib_pibase {
 		// icon
 		$myEventsIcon = $this->cObj->IMAGE($this->conf['myEvents.']['icon.']);
 
-		// today
-		$today = strtotime('today');
+		// user logged in
+		if ($GLOBALS['TSFE']->loginUser) {
+			// today
+			$today = strtotime('today');
 
-		$fields = '*';
- 		$table = 'tx_keyac_dates, tx_keyac_dates_attendees_mm';
- 		$where = 'tx_keyac_dates.uid=uid_local ';
-		$where .= ' AND enddat >= '.$today.' ';
- 		$where .= 'AND uid_foreign="'.intval($GLOBALS['TSFE']->fe_user->user['uid']).'" ';
- 		$where .= $this->cObj->enableFields('tx_keyac_dates');
- 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($fields,$table,$where,$groupBy='',$orderBy='startdat asc',$limit='');
- 		$anz = $GLOBALS['TYPO3_DB']->sql_num_rows($res);
- 		$rowsContent = '';
-		$i=1;
-		while ($row=$GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+			$fields = '*';
+			$table = 'tx_keyac_dates, tx_keyac_dates_attendees_mm';
+			$where = 'tx_keyac_dates.uid=uid_local ';
+			$where .= ' AND enddat >= '.$today.' ';
+			$where .= 'AND uid_foreign="'.intval($GLOBALS['TSFE']->fe_user->user['uid']).'" ';
+			$where .= $this->cObj->enableFields('tx_keyac_dates');
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($fields,$table,$where,$groupBy='',$orderBy='startdat asc',$limit='');
+			$anz = $GLOBALS['TYPO3_DB']->sql_num_rows($res);
+			$rowsContent = '';
+			$i=1;
+			while ($row=$GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 
-			// get formatstring for strftime from ts
-			$startNoTime = strftime($this->conf['myevents.']['strftimeFormatStringWithoutTime'], $row['startdat']);
-			$endNoTime = strftime($this->conf['myevents.']['strftimeFormatStringWithoutTime'], $row['enddat']);
-			$startWithTime = strftime($this->conf['myevents.']['strftimeFormatStringWithTime'], $row['startdat']);
-			$endWithTime = strftime($this->conf['myevents.']['strftimeFormatStringWithTime'], $row['enddat']);
-			$endTimeOnly = strftime($this->conf['myevents.']['strftimeFormatTime'], $row['enddat']);
-			$startday = strftime('%d.%m.%Y',$row['startdat']);
-			$endday = strftime('%d.%m.%Y',$row['enddat']);
+				// get formatstring for strftime from ts
+				$startNoTime = strftime($this->conf['myevents.']['strftimeFormatStringWithoutTime'], $row['startdat']);
+				$endNoTime = strftime($this->conf['myevents.']['strftimeFormatStringWithoutTime'], $row['enddat']);
+				$startWithTime = strftime($this->conf['myevents.']['strftimeFormatStringWithTime'], $row['startdat']);
+				$endWithTime = strftime($this->conf['myevents.']['strftimeFormatStringWithTime'], $row['enddat']);
+				$endTimeOnly = strftime($this->conf['myevents.']['strftimeFormatTime'], $row['enddat']);
+				$startday = strftime('%d.%m.%Y',$row['startdat']);
+				$endday = strftime('%d.%m.%Y',$row['enddat']);
 
 
-			// do not print time in teaser
-			if (!$row['showtime'] || $this->conf['teaser.']['dontShowTime'] ) {
-				if ($startNoTime == $endNoTime) $timestr = $startNoTime;
-				else $timestr = $startNoTime.' - '.$endNoTime;
+				// do not print time in teaser
+				if (!$row['showtime'] || $this->conf['teaser.']['dontShowTime'] ) {
+					if ($startNoTime == $endNoTime) $timestr = $startNoTime;
+					else $timestr = $startNoTime.' - '.$endNoTime;
+				}
+				// print time information
+				else {
+					if ($startWithTime == $endWithTime) $timestr = $startWithTime;
+					else if ($startday == $endday) $timestr = $startWithTime.' - '.$endTimeOnly;
+					else $timestr = $startWithTime.' - '.$endWithTime;
+				}
+
+				// generate single view url
+				$linkconf['parameter'] = $singleViewPid;
+				$linkconf['additionalParams'] = '&tx_keyac_pi1[showUid]='.$row['uid'];
+				$linkconf['additionalParams'] .= '&tx_keyac_pi1[backPid]='.$GLOBALS['TSFE']->id;
+				$linkconf['useCacheHash'] = true;
+				$singleViewURL = $this->cObj->typoLink_URL($linkconf);
+
+				$tempContent = $this->cObj->getSubpart($this->templateCode,'###MYEVENTS_ROW###');
+				$tempMarker = array(
+					'icon' => $myEventsIcon,
+					'link_start' => '<a href="'.$singleViewURL.'">',
+					'link_end' => '</a>',
+					'title' => $row['title'],
+					'teasertext' => $this->pi_RTEcssText($row['teaser']),
+					'date' => $timestr,
+					'css_class' => $i%2 ? 'odd' : 'even',
+				);
+				$tempContent = $this->cObj->substituteMarkerArray($tempContent,$tempMarker,$wrap='###|###',$uppercase=1);
+
+				$rowsContent .= $tempContent;
+				$i++;
 			}
-			// print time information
-			else {
-				if ($startWithTime == $endWithTime) $timestr = $startWithTime;
-				else if ($startday == $endday) $timestr = $startWithTime.' - '.$endTimeOnly;
-				else $timestr = $startWithTime.' - '.$endWithTime;
-			}
 
-			// generate single view url
-			$linkconf['parameter'] = $singleViewPid;
- 			$linkconf['additionalParams'] = '&tx_keyac_pi1[showUid]='.$row['uid'];
- 			$linkconf['additionalParams'] .= '&tx_keyac_pi1[backPid]='.$GLOBALS['TSFE']->id;
- 			$linkconf['useCacheHash'] = true;
- 			$singleViewURL = $this->cObj->typoLink_URL($linkconf);
-
-			$tempContent = $this->cObj->getSubpart($this->templateCode,'###MYEVENTS_ROW###');
-			$tempMarker = array(
-				'icon' => $myEventsIcon,
-				'link_start' => '<a href="'.$singleViewURL.'">',
-				'link_end' => '</a>',
-				'title' => $row['title'],
-				'teasertext' => $this->pi_RTEcssText($row['teaser']),
-				'date' => $timestr,
-				'css_class' => $i%2 ? 'odd' : 'even',
-			);
-			$tempContent = $this->cObj->substituteMarkerArray($tempContent,$tempMarker,$wrap='###|###',$uppercase=1);
-
-			$rowsContent .= $tempContent;
-			$i++;
- 		}
-
-		if ($anz) $content = $this->cObj->substituteSubpart ($content, '###MYEVENTS_ROW###', $rowsContent, $recursive=1);
-		else $content = $this->cObj->substituteSubpart ($content, '###MYEVENTS_ROW###', $this->pi_getLL('noResults'), $recursive=1);
+			if ($anz) $content = $this->cObj->substituteSubpart ($content, '###MYEVENTS_ROW###', $rowsContent, $recursive=1);
+			else $content = $this->cObj->substituteSubpart ($content, '###MYEVENTS_ROW###', $this->pi_getLL('noResults'), $recursive=1);
+		} else {
+			// no login
+			$content = $this->cObj->substituteSubpart ($content, '###MYEVENTS_ROW###', $this->pi_getLL('no_login'));
+		}
 		
 		$content = $this->cObj->substituteMarker($content,'###HEADER###',$this->pi_getLL('myevents_header'));
 

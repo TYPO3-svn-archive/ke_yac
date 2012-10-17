@@ -2,18 +2,44 @@
 /* YAC - MY EVENTS  */
 /********************/
 
+/* Kalender - TeaserView  */
+.tx-keyac-pi1 .yac-myevents {
+	border:1px solid #A0A09E;
+	width:180px;
+	background: #f8f8f8;
+}
+.tx-keyac-pi1 .yac-myevents-header {
+	display:block;
+	color:#000;
+	background:#d6d6d6;
+	vertical-align:middle;
+	background-position: left center;
+	background-repeat:no-repeat;
+	font-weight:bold;
+	font-size:1.0em;
+	height:2.2em;
+	padding-left:2.5em;
+	padding-top: 0.7em;
+	font-size: 12px;
+}
+.tx-keyac-pi1 .yac-myevents .date{
+	font-weight: bold;
+}
+.tx-keyac-pi1 .yac-mevents-body{
+}
+
 .tx-keyac-pi1 ul.myevents {
 	list-style-type: none;
 	padding: 0;
+	margin:0 !important;
 }
 
 .tx-keyac-pi1 ul.myevents  li{
 	display:block;
-	padding: 10px;
+	padding: 10px 10px 10px 10px;
 	border-bottom: 1px dotted #adadad;
 
 }
 .tx-keyac-pi1 ul.myevents  li img{
-	vertical-align: middle;
 	margin-right: 5px;
 }

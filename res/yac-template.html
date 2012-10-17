@@ -268,17 +268,20 @@
 <!-- ###################### -->
 
 <!-- ###MYEVENTS### start -->
-	<div class="yac-teaser">
+	<div class="yac-myevents">
 		<!-- Meine Termine-->
-		<div class="yac-teaser-header">###HEADER###</div>
-			<!-- ###MYEVENTS_ROW### start -->
-				 <!-- ###ICON### -->
-				    <div class="yac-teaser-body">
-				     <span class="date">###DATE###</span> <br />
-				    ###LINK_START### ###TITLE### ###LINK_END###
-				    <img class="hrLine" src="typo3conf/ext/ke_yac/pi1/images/horizontal_line.gif" alt="Horizontale Trennlinie" />
-				    </div>
-			<!-- ###MYEVENTS_ROW### end -->
+		<div class="yac-myevents-header">###HEADER###</div>
+		<div class="yac-myevents-body">	
+			<ul class="myevents">
+				<!-- ###MYEVENTS_ROW### start -->
+				<li>
+					###ICON###
+					<span class="date">###DATE###</span> <br />
+					###LINK_START### ###TITLE### ###LINK_END###
+				</li>
+				<!-- ###MYEVENTS_ROW### end -->
+			</ul>
+		</div>
 	</div>
 <!-- ###MYEVENTS### end -->
 
