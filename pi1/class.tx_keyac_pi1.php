@@ -94,23 +94,9 @@ class tx_keyac_pi1 extends tslib_pibase {
 				// =====================
 				// == ACTION HANDLING ==
 				// =====================
-
-				
 				// special AJAX actions
 				if ($this->ajax && $GLOBALS['TSFE']->type == $this->conf['ajaxPageType']) {
-					$action = t3lib_div::_GET('action');
-					if ($action == 'refreshCalendarAndList') {
-						$month = intval(t3lib_div::_GET('month'));
-						$year = intval(t3lib_div::_GET('year'));
-						$content =  $this->getCalendarView($month, $year);
-					} else if ($action == 'refreshSingleview') {
-						$day = intval(t3lib_div::_GET('day'));
-						$month = intval(t3lib_div::_GET('month'));
-						$year = intval(t3lib_div::_GET('year'));
-						$singleUid = intval(t3lib_div::_GET('singleUid'));
-						if ($singleUid) $content = $this->singleView($singleUid);
-						else $content = $this->singleView(0, $day, $month, $year);
-					}
+					$content = $this->ajaxActions(t3lib_div::_GET('action'));
 				} else {
 					// create new record
 					if ($this->piVars['action'] == 'create') {
@@ -196,6 +182,40 @@ class tx_keyac_pi1 extends tslib_pibase {
 				
 		}
 		return $this->pi_wrapInBaseClass($content);
+	}
+	
+	
+	function ajaxActions($action) {
+		$content = '';
+		switch ($action) {
+			case 'refreshCalendar':
+				$month = intval(t3lib_div::_GET('month'));
+				$year = intval(t3lib_div::_GET('year'));
+				$content =  $this->getCalendarView($month, $year);
+				break;
+
+			case 'refreshList':
+				$month = intval(t3lib_div::_GET('month'));
+				$year = intval(t3lib_div::_GET('year'));
+				$content =  $this->getCalendarView($month, $year);
+				break;
+
+			case 'refreshSingleview':
+				$day = intval(t3lib_div::_GET('day'));
+				$month = intval(t3lib_div::_GET('month'));
+				$year = intval(t3lib_div::_GET('year'));
+				$singleUid = intval(t3lib_div::_GET('singleUid'));
+				if ($singleUid) $content = $this->singleView($singleUid);
+				else $content = $this->singleView(0, $day, $month, $year);
+				break;
+
+			case 'refreshCalendarAndList':
+				$month = intval(t3lib_div::_GET('month'));
+				$year = intval(t3lib_div::_GET('year'));
+				$content =  $this->getCalendarView($month, $year);
+				break;
+		}
+		return $content;
 	}
 	
 	/*
@@ -1403,7 +1423,6 @@ class tx_keyac_pi1 extends tslib_pibase {
 			$where .= $this->cObj->enableFields('tx_keyac_dates');
 		}
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($fields,$table,$where,$groupBy='',$orderBy='startdat',$limit='');
-		//t3lib_Utility_Debug::debug($GLOBALS['TYPO3_DB']->SELECTquery($fields,$table,$where,$groupBy='',$orderBy='startdat',$limit=''), 'query');
 		
 		$numberOfResults = $GLOBALS['TYPO3_DB']->sql_num_rows($res);
 
@@ -1493,7 +1512,7 @@ class tx_keyac_pi1 extends tslib_pibase {
 			$backlink = $this->cObj->typoLink($this->pi_getLL('back'), $linkconf);
 			
 			// generate attendance info / link
-			if ($this->feuserIsAttendent($GLOBALS['TSFE']->fe_user->user['uid'],$id)) {
+			if ($this->feuserIsAttendent($GLOBALS['TSFE']->fe_user->user['uid'],$row['dateuid'])) {
 				$attendanceStatus = $this->pi_getLL('user_is_attendee');
 				unset($linkconf);
 				$linkconf['parameter'] = $GLOBALS['TSFE']->id;
@@ -1524,25 +1543,27 @@ class tx_keyac_pi1 extends tslib_pibase {
 			$singleview_url =$this->cObj->typoLink_URL($linkconf);
 			
 			// get next / previous events records (not in detail view)
-			if ($this->mode != 4) $prevNext = $this->getPreviousAndNextEvent($id, $row['startdat']);
+			if ($this->mode != 4) $prevNext = $this->getPreviousAndNextEvent($row['dateuid'], $row['startdat']);
 
 			// next link
-			if (!$this->ajax && is_array($prevNext['next'])) {
+			//if (!$this->ajax && is_array($prevNext['next'])) {
+			if (is_array($prevNext['next'])) {
 				unset($linkconf);
 				$linkconf['parameter'] = $this->singleviewPid;
 				$linkconf['additionalParams'] = '&tx_keyac_pi1[showUid]='.intval($prevNext['next']['uid']);
 				$linkconf['useCacheHash'] = true;
-				$linkconf['ATagParams'] = 'class="next" ';
+				$linkconf['ATagParams'] = 'class="next uid'.intval($prevNext['next']['uid']).'" ';
 				$nextLink = $this->cObj->typoLink($this->pi_getLL('next'), $linkconf);
 			}
 
 			// prev link
-			if (!$this->ajax && is_array($prevNext['previous'])) {
+			//if (!$this->ajax && is_array($prevNext['previous'])) {
+			if (is_array($prevNext['previous'])) {
 				unset($linkconf);
 				$linkconf['parameter'] = $this->singleviewPid;
 				$linkconf['additionalParams'] = '&tx_keyac_pi1[showUid]='.intval($prevNext['previous']['uid']);
 				$linkconf['useCacheHash'] = true;
-				$linkconf['ATagParams'] = 'class="prev" ';
+				$linkconf['ATagParams'] = 'class="prev uid'.intval($prevNext['previous']['uid']).'" ';
 				$prevLink = $this->cObj->typoLink($this->pi_getLL('previous'),$linkconf);
 			}
 			
@@ -1553,8 +1574,8 @@ class tx_keyac_pi1 extends tslib_pibase {
 				$spinnerImage = $this->cObj->IMAGE($imageConf);
 			} else {
 				$spinnerImage = '';
-				$prevLink = '';
-				$nextLink = '';
+				//$prevLink = '';
+				//$nextLink = '';
 			}
 
 			// fill markers
@@ -1642,7 +1663,7 @@ class tx_keyac_pi1 extends tslib_pibase {
 
 					// show popup link only
 					unset($linkconf);
-					$mapURL = t3lib_div::locationHeaderUrl('index.php?eID=yac_googlemap&yacuid='.$id);
+					$mapURL = t3lib_div::locationHeaderUrl('index.php?eID=yac_googlemap&yacuid='.$row['dateuid']);
 					$linkconf['parameter'] = $mapURL.' '.$this->conf['gmaps.']['popupWidth'].'x'.$this->conf['gmaps.']['popupHeight'].':resizable=1,location=0,scrollbars=1';
 					$linkconf['additionalParams'] = '&tx_keyacgooglemap_pi1[showUid]='.intval($row['uid']);
 					$linkconf['useCacheHash'] = true;
@@ -1688,7 +1709,7 @@ class tx_keyac_pi1 extends tslib_pibase {
 			$subContent = $this->cObj->substituteSubpart ($subContent, '###SUB_FOOTER_MENU###', $footerMenuContent, $recursive=1);
 
 			// event has attendees?
-			if (!$this->getNumberOfAttendees($id) || !$this->conf['enableFrontendEditing']) {
+			if (!$this->getNumberOfAttendees($row['dateuid']) || !$this->conf['enableFrontendEditing']) {
 				$subContent = $this->cObj->substituteSubpart ($subContent, '###SUB_ATTENDEES###', '');
 			}
 
@@ -1900,8 +1921,7 @@ class tx_keyac_pi1 extends tslib_pibase {
 				foreach ($attachments as $att) {
 					unset($linkconf);
 					// generate link
-					$linkconf['parameter'] = 'uploads/tx_keyac/'.$att;
-					$linkconf['target'] = '_blank';
+					$linkconf['parameter'] = 'uploads/tx_keyac/'.$att.' _blank';
 
 					// generate attachment icon
 					$filetype = strtolower(substr(strrchr($att, '.'), 1));

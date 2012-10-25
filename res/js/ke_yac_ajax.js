@@ -58,13 +58,17 @@ jQuery(document).ready(function(){
 	// singleview "next" link
 	$('a.next').live('click', function(e){
 		e.preventDefault();
-		refreshSingleview('next');
+		classes = $(this).attr('class');
+		classesArray = classes.split(' ');
+		refreshSingleview('single', Number(classesArray[1].substr(3)));
 	});
 	
 	// singleview "prev" link
 	$('a.prev').live('click', function(e){
 		e.preventDefault();
-		refreshSingleview('prev');
+		classes = $(this).attr('class');
+		classesArray = classes.split(' ');
+		refreshSingleview('single', Number(classesArray[1].substr(3)));
 	});
 	
 	// backlink from singleview to list
