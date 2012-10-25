@@ -4,8 +4,12 @@
 
 
 <!-- ###MAIN_TEMPLATE### begin -->
-	<!-- ###SUB_NAVIGATION### --><div id="navigation">###NAVIGATION###</div><!-- ###SUB_NAVIGATION### -->
+	###SPINNER###
+	
 	<div id="yac_calendars">
+		<!-- ###SUB_NAVIGATION### -->
+			<div id="navigation">###NAVIGATION###</div>
+		<!-- ###SUB_NAVIGATION### -->
 		<div id="arrow_prev">###PREV_ARROW###</div>
 		<div class="calendars">###CALENDARS###</div>
 		<div id="arrow_next">###NEXT_ARROW###</div>
@@ -15,18 +19,16 @@
 	<!-- ###SUB_LEGEND### start -->
 		<div class="legend">###LEGEND###</div>
 	<!-- ###SUB_LEGEND### end -->
-	
+
 	<!-- ###SUB_CREATE_LINK### start -->
 	    <div class="create-link">
 		###CREATE_EVENT_ICON### ###CREATE_EVENT_LINK###
 	    </div>
 	<!-- ###SUB_CREATE_LINK### end -->
-	
+
 	<!-- ###SUB_LISTVIEW### start -->
 		<div class="listview">###LISTVIEW###</div>
-		<!-- <div id="listview_spacer">&nbsp;</div> -->
 	<!-- ###SUB_LISTVIEW### end-->
-
 <!-- ###MAIN_TEMPLATE### end -->
 
 
@@ -35,7 +37,7 @@
 <!-- ##################### -->
 
 <!-- ###SINGLEVIEW_TEMPLATE### start -->
-
+	###SPINNER###
 	<div id="keyac-singleview-header">
 		<h1>###TITLE###</h1>
 		<h2>
@@ -106,7 +108,9 @@
 
 	<!-- ###SUB_MAP### start -->
 		<div id="keyac-singleview-map">
-			<div id="map_canvas" class="map"></div>
+			<!-- ###SUB_MAP_CONTENT### -->
+				<div id="map_canvas" class="map"></div>
+			<!-- ###SUB_MAP_CONTENT### -->
 		</div>
 	<!-- ###SUB_MAP### end -->
 
@@ -217,7 +221,10 @@
 <!-- #################### -->
 
 <!-- ###TOOLTIP_ROW### begin -->
-	<div class="tooltip-row">###CATICON### ###LINK_START### ###DATE### ###TITLE### ###LINK_END### </div>
+	<div class="tooltip-row">
+		###CATICON### ###LINK_START### ###DATE###<br />
+		<span class="title">###TITLE###</span>
+		###LINK_END### </div>
 <!-- ###TOOLTIP_ROW### end -->
 
 
@@ -812,5 +819,3 @@
 		<!-- ###SUB_CAL_ROW### -->
 	</table>
 <!-- ###CAL### -->
-  
-

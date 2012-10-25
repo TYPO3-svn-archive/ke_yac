@@ -27,5 +27,7 @@ function gmap_init() {
 	});
 }
 
-jQuery(window).load(function() {gmap_init();});
+jQuery(window).load(function() {
+	gmap_init();
+});
 

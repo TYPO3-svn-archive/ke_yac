@@ -10,12 +10,15 @@ plugin.tx_keyac_pi1 {
 	showEventsWithoutCat = 1
 	mode = 0
 
+	useAjax = 1
+	ajaxPageType = 3765
+
 
 	#-- CALENDAR -- ########################################################
 	rows = 1
 	columns = 3
 	showDaysRow = 0
-	showMonthsNavigation = 4
+	showMonthsNavigation = 6
 	showWeekNumberRow = 1
 	showLegend = 0
 	showList = 1
@@ -27,6 +30,11 @@ plugin.tx_keyac_pi1 {
 	calendar.prevIcon.file = EXT:ke_yac/res/images/prev.gif
 	calendar.nextIcon = IMAGE
 	calendar.nextIcon.file = EXT:ke_yac/res/images/next.gif
+
+	##-- SPINNER --
+	spinnerImage = IMAGE
+	spinnerImage.file = EXT:ke_yac/res/images/spinner.gif
+	spinnerImage.params = class="yac-spinner"
 	
 	#-- DATEFORMAT -- ######################################################
 	strftimeFormatStringWithoutTime = %d.%m.%Y
@@ -92,12 +100,10 @@ plugin.tx_keyac_pi1 {
 	#-- IMAGES IN SINGLEVIEW --
 	singleviewImg = IMAGE
 	singleviewImg {
-		file.maxW = 700
+		file.maxW = 662
 		file.maxH = 300
-		file.width = 700c-0
+		file.width = 662c-0
 		file.height = 300c-0
-		imageLinkWrap = 1
-		imageLinkWrap.enable = 1
 	}
 
 	#-- DEFAULT IMAGE IN SINGLEVIEW --
@@ -106,8 +112,6 @@ plugin.tx_keyac_pi1 {
 		file = EXT:ke_yac/res/images/defaultImage.gif
 		file.maxW = 235
 		file.maxH = 123
-		#imageLinkWrap = 1
-		#imageLinkWrap.enable = 1
 	}
 
 	#-- BACKLINK ICON --
@@ -125,6 +129,17 @@ plugin.tx_keyac_pi1 {
 	#-- INFOLINK ICON --
 	singleview.infolinkIcon = IMAGE
 	singleview.infolinkIcon.file = EXT:ke_yac/res/images/infolink.gif
+
+	# -- GMAPS POPUP LINK ICON --
+	singleview.gmapsPopupIcon = IMAGE
+	singleview.gmapsPopupIcon {
+		file = EXT:ke_yac/res/images/gmaps.png
+		file.maxW = 40
+		file.maxH = 40		
+		altText = GoogleMaps Popup
+		params = class="gmapsicon"
+	}
+
 
 	#-- ATTACHMENT ICONS --
 	attachmentIcon.default = IMAGE
@@ -193,6 +208,12 @@ plugin.tx_keyac_pi1 {
 	
 	#-- GOOGLE MAPS CONFIG -- #################################################
 	gmaps.defaultZoom = 12   // possible values: 0 - 17
+	gmaps.showAsPopup = 0
+	gmaps.popupWidth = 800
+	gmaps.popupHeight = 500
+	
+
+	
 	
 	
 	#-- MY EVENTS -- ##########################################################
@@ -216,4 +237,19 @@ plugin.tx_keyac_pi1 {
 	doNotSetOwnerAsAttendee = 0
 	
 	
+}
+
+// NEW PAGE TYPE FOR AJAX
+
+yac = PAGE
+yac {
+	typeNum  < plugin.tx_keyac_pi1.ajaxPageType
+	10  < styles.content.get
+	config {
+		disableAllHeaderCode = 1
+		xhtml_cleaning = 0
+		admPanel = 0
+		debug = 0
+		no_cache = 1
+	}
 }

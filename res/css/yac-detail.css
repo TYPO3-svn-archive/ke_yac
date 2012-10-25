@@ -30,7 +30,6 @@
 	margin-bottom:10px;
 }
 
-
 #keyac-singleview-header .title{
 	font-weight: bold;
 	font-size: 130%;
@@ -38,11 +37,19 @@
 }
 
 #keyac-singleview-map .map {
-	width: 700px;
+	width: 600px;
 	height: 300px;
 	margin-bottom: 10px;
 }
 
+#keyac-singleview-map {
+	border: 1px solid #CFCFCF;
+	margin-bottom: 10px;
+}
+
+img.gmapsicon {
+	vertical-align: middle;
+}
 
 /* -- ATTENDEES -- */
 .tx-keyac-pi1 table.attendees-table {

@@ -4,33 +4,18 @@
 
 /* --- LISTVIEW SETTINGS --- */
 .tx-keyac-pi1 .listview{
-	margin-top:10px;
-}
-
-.tx-keyac-pi1 .listview_dark{
-
-}
-
-.tx-keyac-pi1 .listview_bright{
-	border-top: none;
-}
-
-.tx-keyac-pi1 #listview_spacer{
-	height: 50px;
+	margin-top:20px;
 }
 
 .tx-keyac-pi1 .create-link {
 	padding: 3px 0 1em 0;
 	margin-left: 75px;
 	width:595px;
-	/* border-bottom:15px solid #dbdbdb; */
 }
 
 .tx-keyac-pi1 .create-link img {
     vertical-align: middle;
 }
-
-
 
 /* --- EVENT ITEM ROW --- */
 .tx-keyac-pi1 .listview .event-item {
@@ -86,7 +71,9 @@
 
 /* --- NAVIGATION --- */
 .tx-keyac-pi1 #navigation {
-	margin: 10px 68px 10px 31px;
+	margin-left: 30px;
+	margin-right: 38px;
+	margin-bottom: 10px;
 	padding: 5px 5px 10px 5px;
 	text-align:center;
 	background: #dbdbdb;
@@ -103,18 +90,12 @@
 	margin-left: 8px;
 }
 
-
-
-/* --- CALENDAR --- */
-.tx-keyac-pi1 #calendar-container {
-	margin:0 auto;
+.tx-keyac-pi1 #arrow_prev img,
+.tx-keyac-pi1 #arrow_next img {
+	cursor: pointer;
 }
 
 /* CALENDARS */
-.tx-keyac-pi1 div.calendars {
-	float:left;
-}
-
 .tx-keyac-pi1 #yac_calendars {
 	text-align: center;
 }
@@ -123,7 +104,6 @@
 	margin-bottom:1em;
 	margin:0px 15px 0px 15px;
 	display:inline;
-	background: white;
 	width:178px;
 	border-spacing: 1px;
 	font-size: 10px;
@@ -176,7 +156,7 @@
 }
 
 /* CALENDAR CELL COLORS */
-.tx-keyac-pi1 table.calendar td.today {
+.tx-keyac-pi1 table.calendar td.todaycatdef {
 	background: #CCC;
 }
 
@@ -286,8 +266,8 @@
 
 
 
-/* Kalender - Popups */
-.yac-tooltip {
+/* Tooltips */
+.tx-keyac-pi1 .yac-tooltip {
 	display:none;
 	width: auto;
 	position:absolute;
@@ -300,21 +280,16 @@
 	text-align:left;
 
 }
-
-.tx-keyac-pi1 .tooltip-row {
-	line-height: 16px;
+.tx-keyac-pi1 .yac-tooltip .tooltip-row {
+	/* line-height: 16px; */
 }
-.tx-keyac-pi1 .tooltip-row a{
+.tooltip-row .title {
+	padding: 0 0 0 10px;
+	font-weight: bold;
+}
+.tx-keyac-pi1 .yac-tooltip .tooltip-row img {
 	vertical-align: middle;
-}
-
-
-.tx-keyac-pi1 .yac-tooltip .event-item {
-	margin:0 0 0px 0;
-	width: 200px;
-}
-
-.tx-keyac-pi1 .yac-tooltip img{
-	position: relative;
-	top: 3px;
+	display: inline-block;
+	float: left;
+	background: red;
 }

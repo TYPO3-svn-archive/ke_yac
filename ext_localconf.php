@@ -17,7 +17,8 @@ t3lib_extMgm::addTypoScript($_EXTKEY,'setup','
 	tt_content.shortcut.20.0.conf.tx_keyac_dates.CMD = singleView
 ',43);
 
-
+// Add eID-Script for getting google map popup 
+$TYPO3_CONF_VARS['FE']['eID_include']['yac_googlemap'] = 'EXT:ke_yac/class.tx_keyac_googlemap_eid.php';
 
 
 ?>
