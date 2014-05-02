@@ -22,11 +22,8 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-require_once(PATH_tslib.'class.tslib_pibase.php');
-
-// needed for checking filenames when uploading files
-require_once(PATH_t3lib.'class.t3lib_basicfilefunc.php');
-
+use \TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use \TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Plugin 'Show Calendar' for the 'ke_yac' extension.
@@ -35,7 +32,8 @@ require_once(PATH_t3lib.'class.t3lib_basicfilefunc.php');
  * @package	TYPO3
  * @subpackage	tx_keyac
  */
-class tx_keyac_pi1 extends tslib_pibase {
+
+class tx_keyac_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 
 	var $prefixId = 'tx_keyac_pi1';		// Same as class name
 	var $scriptRelPath = 'pi1/class.tx_keyac_pi1.php';	// Path to this script relative to the extension dir.
@@ -59,7 +57,7 @@ class tx_keyac_pi1 extends tslib_pibase {
 		$this->pi_setPiVarDefaults();
 		$this->pi_loadLL();
 		$this->pi_initPIflexform(); // Init and get the flexform data of the plugin
-		$this->lcObj=t3lib_div::makeInstance('tslib_cObj');
+		$this->lcObj=  GeneralUtility::makeInstance('tslib_cObj');
 		$this->internal['results_at_a_time'] = 100;
 		
 		// process initials
@@ -86,7 +84,7 @@ class tx_keyac_pi1 extends tslib_pibase {
 			case "3":	// CALENDAR / LIST (no singleview - e.g. for calendar view as teaser - ignores "showUid")
 			default:
 				
-				if ($GLOBALS['TSFE']->type != $this->conf['ajaxPageType']) $this->loadJQuery();
+				$this->loadJQuery();
 
 				// unset showUid if this mode was selected
 				if ($this->mode == '3') unset($this->piVars['showUid']);
@@ -94,128 +92,88 @@ class tx_keyac_pi1 extends tslib_pibase {
 				// =====================
 				// == ACTION HANDLING ==
 				// =====================
-				// special AJAX actions
-				if ($this->ajax && $GLOBALS['TSFE']->type == $this->conf['ajaxPageType']) {
-					$content = $this->ajaxActions(t3lib_div::_GET('action'));
-				} else {
-					// create new record
-					if ($this->piVars['action'] == 'create') {
-						// find new startdat and enddat for event
-						if ($this->piVars['submitcreatefind']) $content = $this->findEventTime();
-						else if ($this->piVars['submitcreate'] || $this->piVars['submitcreateignore']) $content = $this->evaluateCreateData();
-						else $content = $this->showForm();
-						return $this->pi_wrapInBaseClass($content);
-					}
 
-					// edit event
-					if ($this->piVars['action'] == 'edit' && $GLOBALS['TSFE']->loginUser) {
-						// find new startdat and enddat for event
-						if ($this->piVars['submiteditfind']) $content = $this->findEventTime();
-						else if ($this->piVars['submitedit'] || $this->piVars['submiteditignore']) $content = $this->evaluateEditData(intval($this->piVars['showUid']));
-						else $content = $this->showForm(intval($this->piVars['showUid']));
-						return $this->pi_wrapInBaseClass($content);
-					}
+				// create new record
+				if ($this->piVars['action'] == 'create') {
+					// find new startdat and enddat for event
+					if ($this->piVars['submitcreatefind']) $content = $this->findEventTime();
+					else if ($this->piVars['submitcreate'] || $this->piVars['submitcreateignore']) $content = $this->evaluateCreateData();
+					else $content = $this->showForm();
+					return $this->pi_wrapInBaseClass($content);
+				}
 
-					// attend
-					if ($this->piVars['action'] == 'attend' && $GLOBALS['TSFE']->loginUser) {
-						$this->setUserAsAttendant(intval($this->piVars['showUid']), $GLOBALS['TSFE']->fe_user->user['uid']);
-						// clear page cache
-						$this->clearPageCache($GLOBALS['TSFE']->id);
-					}
+				// edit event
+				if ($this->piVars['action'] == 'edit' && $GLOBALS['TSFE']->loginUser) {
+					// find new startdat and enddat for event
+					if ($this->piVars['submiteditfind']) $content = $this->findEventTime();
+					else if ($this->piVars['submitedit'] || $this->piVars['submiteditignore']) $content = $this->evaluateEditData(intval($this->piVars['showUid']));
+					else $content = $this->showForm(intval($this->piVars['showUid']));
+					return $this->pi_wrapInBaseClass($content);
+				}
 
-					// delete attendance
-					if ($this->piVars['action'] == 'delattendance' && $GLOBALS['TSFE']->loginUser) {
-						$this->deleteUserAsAttendant(intval($this->piVars['showUid']),$GLOBALS['TSFE']->fe_user->user['uid']);
-						// clear page cache
-						$this->clearPageCache($GLOBALS['TSFE']->id);
-					}
+				// attend
+				if ($this->piVars['action'] == 'attend' && $GLOBALS['TSFE']->loginUser) {
+					$this->setUserAsAttendant(intval($this->piVars['showUid']), $GLOBALS['TSFE']->fe_user->user['uid']);
+					// clear page cache
+					$this->clearPageCache($GLOBALS['TSFE']->id);
+				}
 
-					// invite other users
-					if ($this->piVars['action'] == 'invite' && $GLOBALS['TSFE']->loginUser) {
-						if ($this->piVars['submitinvite']) {
-							// automatically set invited persons as attendee
-							if ($this->piVars['invitation_mode'] == 'set') {
-								foreach ($this->piVars['user'] as $invUser => $value) {
-									$this->setUserAsAttendant(intval($this->piVars['showUid']), $invUser, false);
-								}
+				// delete attendance
+				if ($this->piVars['action'] == 'delattendance' && $GLOBALS['TSFE']->loginUser) {
+					$this->deleteUserAsAttendant(intval($this->piVars['showUid']),$GLOBALS['TSFE']->fe_user->user['uid']);
+					// clear page cache
+					$this->clearPageCache($GLOBALS['TSFE']->id);
+				}
+
+				// invite other users
+				if ($this->piVars['action'] == 'invite' && $GLOBALS['TSFE']->loginUser) {
+					if ($this->piVars['submitinvite']) {
+						// automatically set invited persons as attendee
+						if ($this->piVars['invitation_mode'] == 'set') {
+							foreach ($this->piVars['user'] as $invUser => $value) {
+								$this->setUserAsAttendant(intval($this->piVars['showUid']), $invUser, false);
 							}
-							$content = $this->processInviteData();
 						}
-						else $content = $this->showInviteForm();
-						return $this->pi_wrapInBaseClass($content);
+						$content = $this->processInviteData();
 					}
+					else $content = $this->showInviteForm();
+					return $this->pi_wrapInBaseClass($content);
+				}
 
-					// move event
-					if ($this->piVars['action'] == 'move' && $GLOBALS['TSFE']->loginUser) {
-						if ($this->piVars['submitmove']) $content = $this->processMoveData();
-						else $content = $this->showMoveForm();
-						return $this->pi_wrapInBaseClass($content);
-					}
+				// move event
+				if ($this->piVars['action'] == 'move' && $GLOBALS['TSFE']->loginUser) {
+					if ($this->piVars['submitmove']) $content = $this->processMoveData();
+					else $content = $this->showMoveForm();
+					return $this->pi_wrapInBaseClass($content);
+				}
 
-					// delete the event
-					if ($this->piVars['action'] == 'delete' && $GLOBALS['TSFE']->loginUser) {
-						if ($this->piVars['submitdeleteyes']) {
-							$content = $this->processDelete(intval($this->piVars['showUid']));
-							$this->clearPageCache($GLOBALS['TSFE']->id);
-						} else if ($this->piVars['submitdeleteno']) {
-							$content.=$this->getCalendarView();
-						}
-						else $content = $this->showDeleteForm(intval($this->piVars['showUid']));
-						return $this->pi_wrapInBaseClass($content);
-					}
-
-					// single view if event is chosen
-					if ($this->piVars['showUid']) {
-						$content.=$this->singleView(intval($this->piVars['showUid']));
-					}
-
-					// if month and year for viewing the cal are chosen
-					else if ($this->piVars['month'] && $this->piVars['year']) {
-						$content.=$this->getCalendarView(intval($this->piVars['month']),intval($this->piVars['year']));
-					} else {
-						// show current month if nothing is set
+				// delete the event
+				if ($this->piVars['action'] == 'delete' && $GLOBALS['TSFE']->loginUser) {
+					if ($this->piVars['submitdeleteyes']) {
+						$content = $this->processDelete(intval($this->piVars['showUid']));
+						$this->clearPageCache($GLOBALS['TSFE']->id);
+					} else if ($this->piVars['submitdeleteno']) {
 						$content.=$this->getCalendarView();
 					}
-					break;
+					else $content = $this->showDeleteForm(intval($this->piVars['showUid']));
+					return $this->pi_wrapInBaseClass($content);
 				}
-				
-				
+
+				// single view if event is chosen
+				if ($this->piVars['showUid']) {
+					$content.=$this->singleView(intval($this->piVars['showUid']));
+				}
+
+				// if month and year for viewing the cal are chosen
+				else if ($this->piVars['month'] && $this->piVars['year']) {
+					$content.=$this->getCalendarView(intval($this->piVars['month']),intval($this->piVars['year']));
+				} else {
+					// show current month if nothing is set
+					$content.=$this->getCalendarView();
+				}
+				break;
 		}
 		return $this->pi_wrapInBaseClass($content);
-	}
-	
-	
-	function ajaxActions($action) {
-		$content = '';
-		switch ($action) {
-			case 'refreshCalendar':
-				$month = intval(t3lib_div::_GET('month'));
-				$year = intval(t3lib_div::_GET('year'));
-				$content =  $this->getCalendarView($month, $year);
-				break;
-
-			case 'refreshList':
-				$month = intval(t3lib_div::_GET('month'));
-				$year = intval(t3lib_div::_GET('year'));
-				$content =  $this->getCalendarView($month, $year);
-				break;
-
-			case 'refreshSingleview':
-				$day = intval(t3lib_div::_GET('day'));
-				$month = intval(t3lib_div::_GET('month'));
-				$year = intval(t3lib_div::_GET('year'));
-				$singleUid = intval(t3lib_div::_GET('singleUid'));
-				if ($singleUid) $content = $this->singleView($singleUid);
-				else $content = $this->singleView(0, $day, $month, $year);
-				break;
-
-			case 'refreshCalendarAndList':
-				$month = intval(t3lib_div::_GET('month'));
-				$year = intval(t3lib_div::_GET('year'));
-				$content =  $this->getCalendarView($month, $year);
-				break;
-		}
-		return $content;
 	}
 	
 	/*
@@ -229,16 +187,8 @@ class tx_keyac_pi1 extends tslib_pibase {
 		// set plugin configuration
 		$this->moveFlexFormDataToConf();
 		
-		// ajax mode?
-		$this->ajax = $this->conf['useAjax'];
-		// deactivate ajax mode if fe editing is activated
-		if ($this->conf['enableFrontendEditing'] && $this->ajax) {
-			$this->ajax = false;
-			t3lib_Utility_Debug::debug('AJAX mode can not be used when frontend editing is active!', 'CAUTION');
-		}
-		
 		// check if TYPO3 version is at least 6.0
-		$this->typo3version6 = t3lib_div::compat_version('6.0');
+		$this->typo3version6 = \TYPO3\CMS\Core\Utility\GeneralUtility::compat_version('6.0');
 
 		// load page renderer if TYPO3 version is at least 6.0
 		if ($this->typo3version6) $this->pageRenderer = $GLOBALS['TSFE']->getPageRenderer();
@@ -273,7 +223,8 @@ class tx_keyac_pi1 extends tslib_pibase {
 
 		// generate backlink icon
 		unset($imageConf);
-		$imageConf['file'] = t3lib_extMgm::siteRelPath($this->extKey).'res/images/backlink.gif';
+		$imageConf['file'] = ExtensionManagementUtility::siteRelPath($this->extKey) . 'res/images/backlink.gif';
+		
 		$imageConf['altText'] = $this->pi_getLL('back');
 		$this->backlinkIcon=$this->cObj->IMAGE($imageConf);
 
@@ -330,27 +281,17 @@ class tx_keyac_pi1 extends tslib_pibase {
 				$jQuerySrc = $GLOBALS['TSFE']->tmpl->getFileName($this->conf['jQueryPath']);
 				$this->pageRenderer->addJsLibrary('jQuery', $jQuerySrc);
 			} else {
-				$jQuerySrc = t3lib_extMgm::siteRelPath($this->extKey).'res/js/jquery-1.8.2.min.js';
+				$jQuerySrc = ExtensionManagementUtility::siteRelPath($this->extKey).'res/js/jquery-1.8.2.min.js';
 				$GLOBALS['TSFE']->additionalHeaderData[$this->prefixId.'_jquery'] = '<script type="text/javascript" src="'.$jQuerySrc.'"></script>';
 			}
 		} 
 		
-		// include ajax functions if activated
-		if ($this->ajax) {
-			$ajax = t3lib_extMgm::siteRelPath($this->extKey).'res/js/ke_yac_ajax.js';
-			if ($this->typo3version6) {
-				$this->pageRenderer->addJsFile($ajax);
-			} else {
-				$GLOBALS['TSFE']->additionalHeaderData[$this->prefixId.'_qtip'] = '<script type="text/javascript" src="'.$ajax.'"></script>';
-			}
-		}
-		
 		// include js and css needed for datetimepicker
 		if ($this->conf['includeJQueryDateTimePicker']) {
-			$jQueryUi = t3lib_extMgm::siteRelPath($this->extKey).'res/js/jquery-ui/js/jquery-ui-1.8.23.custom.min.js';
-			$jQueryUiCss = t3lib_extMgm::siteRelPath($this->extKey).'res/js/jquery-ui/css/ui-lightness/jquery-ui-1.8.23.custom.css';
-			$jQueryTimepicker = t3lib_extMgm::siteRelPath($this->extKey).'res/js/jquery-ui-timepicker-addon.js';
-			$keYacDatepickerJs = t3lib_extMgm::siteRelPath($this->extKey).'res/js/ke_yac_datepicker.js';
+			$jQueryUi = ExtensionManagementUtility::siteRelPath($this->extKey).'res/js/jquery-ui/js/jquery-ui-1.8.23.custom.min.js';
+			$jQueryUiCss = ExtensionManagementUtility::siteRelPath($this->extKey).'res/js/jquery-ui/css/ui-lightness/jquery-ui-1.8.23.custom.css';
+			$jQueryTimepicker = ExtensionManagementUtility::siteRelPath($this->extKey).'res/js/jquery-ui-timepicker-addon.js';
+			$keYacDatepickerJs = ExtensionManagementUtility::siteRelPath($this->extKey).'res/js/ke_yac_datepicker.js';
 			
 			if ($this->typo3version6) {
 				$this->pageRenderer->addJsLibrary('jQueryUi', $jQueryUi);
@@ -367,9 +308,9 @@ class tx_keyac_pi1 extends tslib_pibase {
 		
 		// include js and css needed for tooltips
 		if ($this->conf['includeJQueryTooltips']) {
-			$qtip2 = t3lib_extMgm::siteRelPath($this->extKey).'res/js/jquery-qtip/jquery.qtip.min.js';
-			$qtip2Css = t3lib_extMgm::siteRelPath($this->extKey).'res/js/jquery-qtip/jquery.qtip.min.css';
-			$keYacTooltipJs = t3lib_extMgm::siteRelPath($this->extKey).'res/js/ke_yac_tooltips.js';
+			$qtip2 = ExtensionManagementUtility::siteRelPath($this->extKey).'res/js/jquery-qtip/jquery.qtip.min.js';
+			$qtip2Css = ExtensionManagementUtility::siteRelPath($this->extKey).'res/js/jquery-qtip/jquery.qtip.min.css';
+			$keYacTooltipJs = ExtensionManagementUtility::siteRelPath($this->extKey).'res/js/ke_yac_tooltips.js';
 			
 			if ($this->typo3version6) {
 				$this->pageRenderer->addJsFile($qtip2);
@@ -381,9 +322,6 @@ class tx_keyac_pi1 extends tslib_pibase {
 				$GLOBALS['TSFE']->additionalHeaderData[$this->prefixId.'_ttips'] = '<script type="text/javascript" src="'.$keYacTooltipJs.'"></script>';
 			}
 		}
-		
-		
-		
 	}
 
 	/**
@@ -391,7 +329,7 @@ class tx_keyac_pi1 extends tslib_pibase {
 	* show calendars and other elements of this view
 	*/
 	function getCalendarView($month=0,$year=0) {
-		
+
 		// get number of rows and cols from conf
 		$this->calRows = $this->conf['rows'];
 		$this->calColumns = $this->conf['columns'];
@@ -408,25 +346,6 @@ class tx_keyac_pi1 extends tslib_pibase {
 			$cur_month = $month;
 			$cur_year = $year;
 		}
-		
-		// add inline js for ajax vars
-		if ($this->ajax) {
-			$inlineJS = '
-				var ajaxPid = '.$GLOBALS['TSFE']->id.';
-				var ajaxType = '.$this->conf['ajaxPageType'].';
-				var day = "";
-				var month = '.$cur_month.';
-				var year = '.$cur_year.';
-				var lastCalMonth = '.$cur_month.';
-				var lastCalYear = '.$cur_year.';
-				var daysInMonth = '.date("t",mktime(0, 0, 0, $cur_month, $cur_year)).';
-			';
-
-			// include files
-			if ($this->typo3version6) $this->pageRenderer->addJsInlineCode('yac_ajax_inline', $inlineJS);
-			else $GLOBALS['TSFE']->additionalHeaderData[$this->prefixId.'_ajax_inline'] = '<script type="text/javascript">'.$inlineJS.'</script>';
-		}
-		
 
 		// Show months navigation row ?
 		if ($this->conf['showMonthsNavigation'] > 0) $monthsNav = $this->getMonthsNavigation($cur_month, $cur_year);
@@ -481,7 +400,7 @@ class tx_keyac_pi1 extends tslib_pibase {
 			$createEventLink = $this->cObj->typoLink($this->pi_getLL('create_event_link'),$linkconf);
 
 			// create event icon
-			$imageConf['file'] = t3lib_extMgm::siteRelPath($this->extKey).'res/images/add.png';
+			$imageConf['file'] = ExtensionManagementUtility::siteRelPath($this->extKey).'res/images/add.png';
 			$imageConf['altText'] = $this->pi_getLL('create_event');
 			$createEventIcon = $this->cObj->IMAGE($imageConf);
 
@@ -493,19 +412,10 @@ class tx_keyac_pi1 extends tslib_pibase {
 
 		// show legend if set
 		if ($this->conf['showLegend']) $legend = $this->legend();
-		
+
 		// list events if set
 		if ($this->conf['showList']) {
 			$listView = $this->listView();
-		}
-		
-		// spinner image
-		if ($this->ajax) {
-			// create spinner image
-			$imageConf = $this->conf['spinnerImage.'];
-			$spinnerImage = $this->cObj->IMAGE($imageConf);
-		} else {
-			$spinnerImage = '';
 		}
 
 		$markerArray = array(
@@ -515,17 +425,16 @@ class tx_keyac_pi1 extends tslib_pibase {
 			'next_arrow' => $next_arrow,
 			'legend' => $legend,
 			'listview' => $listView,
-			'spinner' => $spinnerImage,
 		);
 
 		// Hook for additional markers
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['tx_keyac']['additionalMainTemplateMarkers'])) {
 			foreach($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['tx_keyac']['additionalMainTemplateMarkers'] as $_classRef) {
-				$_procObj = & t3lib_div::getUserObj($_classRef);
+				$_procObj = & GeneralUtility::getUserObj($_classRef);
 				$_procObj->additionalMainTemplateMarkers($markerArray,$this);
 			}
 		}
-		
+
 		$content = $this->cObj->getSubpart($this->templateCode,'###MAIN_TEMPLATE###');
 		$content = $this->cObj->substituteMarkerArray($content,$markerArray,$wrap='###|###',$uppercase=1);
 
@@ -534,7 +443,7 @@ class tx_keyac_pi1 extends tslib_pibase {
 		if (!$this->conf['showList']) $content = $this->cObj->substituteSubpart ($content, '###SUB_LISTVIEW###', '');
 		if (!$this->conf['showMonthsNavigation']) $content = $this->cObj->substituteSubpart ($content, '###SUB_NAVIGATION###', '');
 
-		// fill "create event link" subpart
+		// fill "create event link"
 		$content = $this->cObj->substituteSubpart ($content, '###SUB_CREATE_LINK###', $createEventLinkContent);
 
 		return $content;
@@ -567,7 +476,6 @@ class tx_keyac_pi1 extends tslib_pibase {
 
 		// generate link
 		$image = $mode == 'prev' ? $prevIcon : $nextIcon;
-		if ($this->ajax) return $image;
 		$overrulePIVars=array('month' => $target_month, 'year' => $target_year);
 		$link = $this->pi_linkTP_keepPIVars($image, $overrulePIVars,$cache=1,0);
 		return $link;
@@ -603,28 +511,15 @@ class tx_keyac_pi1 extends tslib_pibase {
 				$pre_year +=1;
 			}
 			$timestamp = mktime(0,0,0,$pre_month,1,$pre_year);
-			$text = strftime('%B %y',$timestamp);
+			$text = utf8_decode(strftime('%B %y',$timestamp));
 
 			$var_year = date('Y',$timestamp);
 			$var_month = date('m',$timestamp);
-			
 			// print text
-			//$overrulePIVars=array('month' => $var_month, 'year' => $var_year);
-			//$link = $this->pi_linkTP_keepPIVars($text,$overrulePIVars,$cache=1);
-			
-			unset($linkconf);
-			$prevClass = ($i - $center)*-1;
-			$linkconf['parameter'] = $GLOBALS['TSFE']->id;
-			$linkconf['additionalParams'] = '&tx_keyac_pi1[month]='.$var_month.'&tx_keyac_pi1[year]='.$var_year;
-			$linkconf['ATagParams'] = 'class="navlink prev'.$prevClass.'"';
-			$link = $this->cObj->typoLink($text,$linkconf);
-			
+			$overrulePIVars=array('month' => $var_month, 'year' => $var_year);
+			$link = $this->pi_linkTP_keepPIVars($text,$overrulePIVars,$cache=1);
 			$temp_content = $this->cObj->getSubpart($this->templateCode,'###NAVIGATION_PRE_SINGLE###');
 			$temp_content = $this->cObj->substituteMarker($temp_content,'###LINK###',$link);
-			
-			
-			
-			
 			$pre_content .= $temp_content;
 		}
 
@@ -639,19 +534,11 @@ class tx_keyac_pi1 extends tslib_pibase {
 
 			$var_year = date('Y',$timestamp);
 			$var_month = date('m',$timestamp);
-			
-			unset($linkconf);
-			$nextClass = $i+1;
-			$linkconf['parameter'] = $GLOBALS['TSFE']->id;
-			$linkconf['additionalParams'] = '&tx_keyac_pi1[month]='.$var_month.'&tx_keyac_pi1[year]='.$var_year;
-			$linkconf['ATagParams'] = 'class="navlink next'.$nextClass.'"';
-			$link = $this->cObj->typoLink($text,$linkconf);
-			
+			// print text
+			$overrulePIVars=array('month' => $var_month, 'year' => $var_year);
+			$link = $this->pi_linkTP_keepPIVars($text,$overrulePIVars,$cache=1);
 			$temp_content = $this->cObj->getSubpart($this->templateCode,'###NAVIGATION_POST_SINGLE###');
 			$temp_content = $this->cObj->substituteMarker($temp_content,'###LINK###',$link);
-			
-			
-			
 			$post_content .= $temp_content;
 		}
 
@@ -673,7 +560,7 @@ class tx_keyac_pi1 extends tslib_pibase {
 	*/
 	function getDBData($month,$year) {
 
-		$lcObj=t3lib_div::makeInstance('tslib_cObj');
+		$lcObj = GeneralUtility::makeInstance('tslib_cObj');
 
 		// get timestamp for first day of month, 0:00:00
 		$timestamp_start = $this->getStartTimestamp($month,$year);
@@ -996,12 +883,11 @@ class tx_keyac_pi1 extends tslib_pibase {
 					$month_format = sprintf("%02d",$month);
 					$anchorlink = $day_format.'.'.$month_format.'.'.$year;
 
-					// render link
-					if ($this->conf['linkToSingleView']) {
-						// if set, render direct link to single view
+					// if set, render direct link to single view
+					if ($this->conf['linkToSingleView'] ) {
 						$timestamp_start = mktime(0,0,0,$month,$day,$year);
 						$timestamp_end = mktime(23,59,59,$month,$day,$year);
-							
+
 						$fields = '*';
 						$table = 'tx_keyac_dates';
 						$where = ' ( ( startdat >= '.$timestamp_start.' AND startdat <= '.$timestamp_end.' )';
@@ -1013,16 +899,18 @@ class tx_keyac_pi1 extends tslib_pibase {
 						$row=$GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
 
 						// generate Link to single view
+						#$overrulePIvars = array('showUid' => $row['uid']);
+						#$daylink = $this->pi_linkTP_keepPIvars_url($overrulePIvars,$cache=1,$clearAnyway=0);
 						unset($linkconf);
 						$linkconf['parameter'] = $this->singleviewPid;
 						$linkconf['additionalParams'] = '&tx_keyac_pi1[showUid]='.intval($row['uid']);
-
 						// set backlink pid if singleview pid is different from current pid
 						if ($this->singleviewPid != $GLOBALS['TSFE']->page['uid']) $linkconf['additionalParams'] .= '&tx_keyac_pi1[backPid]='.$GLOBALS['TSFE']->page['uid'];
 						$linkconf['useCacheHash'] = true;
 						$daylink = $this->cObj->typoLink_URL($linkconf);
-					} else {
-						// otherwise, link to entry in listview
+					}
+					// otherwise, link to entry in listview
+					else {
 						unset($linkconf);
 						$linkconf['parameter'] = $GLOBALS['TSFE']->id;
 						if (isset($this->piVars['month']) && $this->piVars['year']) {
@@ -1038,7 +926,7 @@ class tx_keyac_pi1 extends tslib_pibase {
 					$titleTag = 'title="'.$titleTag.'"';
 
 					// generate table cell content for current day
-					$cellContent = '<div id="'.$anchorlink.'_link"><a class="daylink" href="'.$daylink.'" '.$titleTag.'>'.sprintf("%0{$stellen}d",$day).'</a></div><div id="'.$anchorlink.'_layer" class="yac-tooltip" style="" name="'.$anchorlink.'_layer">'.$this->listView($day_format, $month_format, $year,true).'</div>';
+					$cellContent = '<div id="'.$anchorlink.'_link"><a href="'.$daylink.'" '.$titleTag.'>'.sprintf("%0{$stellen}d",$day).'</a></div><div id="'.$anchorlink.'_layer" class="yac-tooltip" style="" name="'.$anchorlink.'_layer">'.$this->listView($day_format, $month_format, $year,true).'</div>';
 					$calCells .= $this->cObj->getSubpart($this->templateCode,'###SUB_CAL_CELL###');
 					$calCells = $this->cObj->substituteMarker($calCells, '###CSSCLASS###', $class);
 					$calCells = $this->cObj->substituteMarker($calCells, '###CONTENT###',$cellContent);
@@ -1077,7 +965,7 @@ class tx_keyac_pi1 extends tslib_pibase {
 	 */
 	function listView($day=0,$month=0,$year=0,$tooltip=false) {
 		
-		$lcObj=t3lib_div::makeInstance('tslib_cObj');
+		$lcObj= GeneralUtility::makeInstance('tslib_cObj');
 
 		// generate "more" icon
 		$imageConf = $this->conf['listview.']['moreIcon.'];
@@ -1209,7 +1097,6 @@ class tx_keyac_pi1 extends tslib_pibase {
 				// set backlink pid if singleview pid is different from current pid
 				if ($this->singleviewPid != $GLOBALS['TSFE']->page['uid']) $linkconf['additionalParams'] .= '&tx_keyac_pi1[backPid]='.$GLOBALS['TSFE']->page['uid'];
 				$linkconf['useCacheHash'] = true;
-				$linkconf['ATagParams'] = 'class="single uid'.intval($row['dateuid']).'" ';
 				$linkStart = $this->cObj->typoLink_URL($linkconf);
 
 				// generate anchor tag
@@ -1222,7 +1109,7 @@ class tx_keyac_pi1 extends tslib_pibase {
 				$catIcon = $this->cObj->IMAGE($catIconConf);
 
 				// generate thumbnail
-				$images = t3lib_div::trimExplode(',',$row['images'], 1);
+				$images = GeneralUtility::trimExplode(',',$row['images'], 1);
 				unset($thumbnail);
 				if (sizeof($images)) {
 					$thumbConf = $this->conf['listview.']['thumbnail.'];
@@ -1243,7 +1130,7 @@ class tx_keyac_pi1 extends tslib_pibase {
 					'caticon' => $catIcon,
 					'more_icon' => $moreIcon,
 					'more_text' => $this->pi_getLL('more'),
-					'link_start' => '<a href="'.$linkStart.'" class="single uid'.intval($row['dateuid']).'">',
+					'link_start' => '<a href="'.$linkStart.'">',
 					'link_end' => '</a>',
 					'thumbnail' => $thumbnail,
 					'teasertext' => $this->pi_RTEcssText($row['teaser']),
@@ -1274,7 +1161,7 @@ class tx_keyac_pi1 extends tslib_pibase {
 				if (!$this->conf['deactivateAdditionalListviewMarkersHook']) {
 				    if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['tx_keyac']['additionalListviewMarkers'])) {
 					    foreach($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['tx_keyac']['additionalListviewMarkers'] as $_classRef) {
-						    $_procObj = & t3lib_div::getUserObj($_classRef);
+						    $_procObj = & GeneralUtility::getUserObj($_classRef);
 						    $_procObj->additionalListviewMarkers($markerArray,$this);
 					    }
 				    }
@@ -1385,7 +1272,7 @@ class tx_keyac_pi1 extends tslib_pibase {
 	 * @return array / false
 	 */
 	function fe_getRecord($fields, $from_table, $where_clause, $groupBy='',$orderBy='',$limit='1') {
-		$lcObj=t3lib_div::makeInstance('tslib_cObj');
+		$lcObj = GeneralUtility::makeInstance('tslib_cObj');
 		$where_clause .= $lcObj->enableFields($from_table);
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*',$from_table,$where_clause,$groupBy,$orderBy,$limit);
 		if ($GLOBALS['TYPO3_DB']->sql_num_rows($res)) {
@@ -1398,44 +1285,29 @@ class tx_keyac_pi1 extends tslib_pibase {
 	/**
 	 * single view of event
 	 */
-	function singleView($id=0, $day=0, $month=0, $year=0) {
-		$lcObj=t3lib_div::makeInstance('tslib_cObj');
-		// get event data from db
-		if ($day && $month && $year) {
-			$compStart = mktime(0,0,0,$month,$day,$year);
-			$compEnd = mktime(23,59,59,$month,$day,$year);
-			$table = 'tx_keyac_dates';
-			$fields = '*, tx_keyac_dates.uid as dateuid, tx_keyac_dates.title as datetitle';
-			$where = '((startdat between '.$compStart.' AND '.$compEnd.') ';
-			$where .= ' OR (enddat between '.$compStart.' AND '.$compEnd.') ';
-			$where .= ' OR (startdat < '.$compStart.' AND enddat > '.$compEnd.') ';
-			$where .= ' OR (startdat = '.$compStart.' AND enddat='.$compEnd.') ';
-			$where .= ' OR (startdat > '.$compStart.' AND enddat < '.$compEnd.') ';
-			$where .= ' OR (startdat = '.$compStart.' AND enddat < '.$compEnd.') ';
-			$where .= ' OR (startdat > '.$compStart.' AND enddat = '.$compEnd.') ';
-			$where .= ')';
-			$where .= $this->cObj->enableFields('tx_keyac_dates');
-		} else if ($id) {
-			$table = 'tx_keyac_dates';
-			$fields = '*, tx_keyac_dates.uid as dateuid, tx_keyac_dates.title as datetitle';
-			$enableFields = $lcObj->enableFields('tx_keyac_dates',$show_hidden=0);
-			$where=' tx_keyac_dates.uid="'.$id.' " ';
-			$where .= $this->cObj->enableFields('tx_keyac_dates');
-		}
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($fields,$table,$where,$groupBy='',$orderBy='startdat',$limit='');
-		
-		$numberOfResults = $GLOBALS['TYPO3_DB']->sql_num_rows($res);
+	function singleView($id) {
+		$lcObj = GeneralUtility::makeInstance('tslib_cObj');
 
-		$content = '';
+		// get event data from db
+		$table = 'tx_keyac_dates';
+		$fields = '*, tx_keyac_dates.uid as dateuid, tx_keyac_dates.title as datetitle';
+		$enableFields = $lcObj->enableFields('tx_keyac_dates',$show_hidden=0);
+		$where=' tx_keyac_dates.uid="'.$id.' " ';
+		$where.=$enableFields;
+
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($fields,$table,$where,$groupBy='',$orderBy='',$limit='');
+		$numberOfResults = $GLOBALS['TYPO3_DB']->sql_num_rows($res);
 		while($row=$GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+
 			// check authorization
 			// private: show only if user is owner
 			if ($row['private'] && $GLOBALS['TSFE']->fe_user->user['uid'] != $row['owner']  ) {
-			    $subContent = $this->cObj->getSubpart($this->templateCode,'###GENERAL_MESSAGE###');
-			    $subContent = $this->cObj->substituteMarker($subContent,'###CSSCLASS###','message-fail');
-			    $subContent = $this->cObj->substituteMarker($subContent,'###TEXT###',$this->pi_getLL('no_authorization'));
-			    $subContent = $this->cObj->substituteMarker($subContent,'###BACKLINK_ICON###', $this->backlinkIcon);
-			    $subContent = $this->cObj->substituteMarker($subContent,'###BACKLINK###',$this->getListviewLink($this->pi_getLL('back')));
+			    $content = $this->cObj->getSubpart($this->templateCode,'###GENERAL_MESSAGE###');
+			    $content = $this->cObj->substituteMarker($content,'###CSSCLASS###','message-fail');
+			    $content = $this->cObj->substituteMarker($content,'###TEXT###',$this->pi_getLL('no_authorization'));
+			    $content = $this->cObj->substituteMarker($content,'###BACKLINK_ICON###', $this->backlinkIcon);
+			    $content = $this->cObj->substituteMarker($content,'###BACKLINK###',$this->getListviewLink($this->pi_getLL('back')));
+			    return $content;
 			}
 
 			// set pagetitle to event title
@@ -1456,6 +1328,7 @@ class tx_keyac_pi1 extends tslib_pibase {
 			}
 			$categoriesText = trim($categoriesText);
 			$categoriesText = rtrim($categoriesText,',');
+
 
 			// no end date set
 			if (!$row['enddat']) $ende_uhrzeit =0;
@@ -1508,11 +1381,10 @@ class tx_keyac_pi1 extends tslib_pibase {
 			unset($linkconf);
 			$backlinkTarget = $this->piVars['backPid'] ? $this->piVars['backPid'] : ($this->conf['overviewPid'] ? $this->conf['overviewPid'] : $GLOBALS['TSFE']->id);
 			$linkconf['parameter'] = $backlinkTarget;
-			$linkconf['ATagParams'] = 'class="backlink"';
 			$backlink = $this->cObj->typoLink($this->pi_getLL('back'), $linkconf);
-			
+
 			// generate attendance info / link
-			if ($this->feuserIsAttendent($GLOBALS['TSFE']->fe_user->user['uid'],$row['dateuid'])) {
+			if ($this->feuserIsAttendent($GLOBALS['TSFE']->fe_user->user['uid'],$id)) {
 				$attendanceStatus = $this->pi_getLL('user_is_attendee');
 				unset($linkconf);
 				$linkconf['parameter'] = $GLOBALS['TSFE']->id;
@@ -1543,39 +1415,24 @@ class tx_keyac_pi1 extends tslib_pibase {
 			$singleview_url =$this->cObj->typoLink_URL($linkconf);
 			
 			// get next / previous events records (not in detail view)
-			if ($this->mode != 4) $prevNext = $this->getPreviousAndNextEvent($row['dateuid'], $row['startdat']);
+			if ($this->mode != 4) $prevNext = $this->getPreviousAndNextEvent($id, $row['startdat']);
 
 			// next link
-			//if (!$this->ajax && is_array($prevNext['next'])) {
 			if (is_array($prevNext['next'])) {
 				unset($linkconf);
 				$linkconf['parameter'] = $this->singleviewPid;
 				$linkconf['additionalParams'] = '&tx_keyac_pi1[showUid]='.intval($prevNext['next']['uid']);
 				$linkconf['useCacheHash'] = true;
-				$linkconf['ATagParams'] = 'class="next uid'.intval($prevNext['next']['uid']).'" ';
 				$nextLink = $this->cObj->typoLink($this->pi_getLL('next'), $linkconf);
 			}
 
 			// prev link
-			//if (!$this->ajax && is_array($prevNext['previous'])) {
 			if (is_array($prevNext['previous'])) {
 				unset($linkconf);
 				$linkconf['parameter'] = $this->singleviewPid;
 				$linkconf['additionalParams'] = '&tx_keyac_pi1[showUid]='.intval($prevNext['previous']['uid']);
 				$linkconf['useCacheHash'] = true;
-				$linkconf['ATagParams'] = 'class="prev uid'.intval($prevNext['previous']['uid']).'" ';
 				$prevLink = $this->cObj->typoLink($this->pi_getLL('previous'),$linkconf);
-			}
-			
-			// spinner image
-			if ($this->ajax) {
-				// create spinner image
-				$imageConf = $this->conf['spinnerImage.'];
-				$spinnerImage = $this->cObj->IMAGE($imageConf);
-			} else {
-				$spinnerImage = '';
-				//$prevLink = '';
-				//$nextLink = '';
 			}
 
 			// fill markers
@@ -1624,17 +1481,15 @@ class tx_keyac_pi1 extends tslib_pibase {
 				'next_link' => $nextLink,
 				'next_link_icon' => $nextLink ? $this->cObj->IMAGE($this->conf['singleview.']['nextLinkIcon.']) : '',
 				'divider' => $prevLink && $nextLink ? '|' : '',
-				'spinner' => $spinnerImage,
 			);
 
 			// show map?
 			if ($row['location'] && $row['address'] && $row['zip'] && $row['city']) {
 				
-				// show inline map - not if ajax mode is set!
-				if (!$this->conf['gmaps.']['showAsPopup'] && !$this->ajax) {
+				if (!ExtensionManagementUtility::isLoaded('ke_yac_googlemap')) {
 					// include gMaps Api v3
 					$gMapsSrc = 'http://maps.google.com/maps/api/js?sensor=false';
-					$gMapsJS = t3lib_extMgm::siteRelPath($this->extKey).'res/js/ke_yac_gmaps.js';
+					$gMapsJS = ExtensionManagementUtility::siteRelPath($this->extKey).'res/js/ke_yac_gmaps.js';
 
 					// inline js for gmaps
 					$mapZoom = $row['googlemap_zoom'] > 0 ? $row['googlemap_zoom'] : $this->conf['gmaps.']['defaultZoom'];
@@ -1657,18 +1512,19 @@ class tx_keyac_pi1 extends tslib_pibase {
 					$this->markerArray['label_map'] = $this->pi_getLL('map');
 				} else {
 					// render link to ke_yac_googlemaps
-					// icon
-					$imageConf = $this->conf['singleview.']['gmapsPopupIcon.'];
-					$mapIcon = $this->cObj->IMAGE($imageConf);
+					// image
+					$imageConf['file'] = ExtensionManagementUtility::siteRelPath('ke_yac_googlemap').'res/map.gif';
+					$imageConf['altText'] = 'Google Map';
+					$imageConf['params'] = 'style="vertical-align: middle;"';
+					$mapImage=$this->cObj->IMAGE($imageConf);
 
 					// show popup link only
 					unset($linkconf);
-					$mapURL = t3lib_div::locationHeaderUrl('index.php?eID=yac_googlemap&yacuid='.$row['dateuid']);
-					$linkconf['parameter'] = $mapURL.' '.$this->conf['gmaps.']['popupWidth'].'x'.$this->conf['gmaps.']['popupHeight'].':resizable=1,location=0,scrollbars=1';
+					$mapURL = GeneralUtility::locationHeaderUrl('index.php?eID=yac_googlemap&yacuid='.$id);
+					$linkconf['parameter'] = $mapURL.' 800x500:resizable=1,location=0,scrollbars=1';
 					$linkconf['additionalParams'] = '&tx_keyacgooglemap_pi1[showUid]='.intval($row['uid']);
 					$linkconf['useCacheHash'] = true;
-					$mapLink = $this->cObj->typoLink($mapIcon.$this->pi_getLL('mapview'),$linkconf);
-					
+					$mapLink = $mapImage.' '.$this->cObj->typoLink($this->pi_getLL('mapview'),$linkconf);
 				} 
 			}
 
@@ -1676,60 +1532,60 @@ class tx_keyac_pi1 extends tslib_pibase {
 			if (!$this->conf['deactivateAdditionalSingleviewMarkersHook']) {
 			    if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['tx_keyac']['additionalSingleviewMarkers'])) {
 				    foreach($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['tx_keyac']['additionalSingleviewMarkers'] as $_classRef) {
-					    $_procObj = & t3lib_div::getUserObj($_classRef);
+					    $_procObj = & GeneralUtility::getUserObj($_classRef);
 					    $_procObj->additionalSingleviewMarkers($this);
 				    }
 			    }
 			}
 
 			// fill marker
-			$subContent = $this->cObj->getSubpart($this->templateCode,'###SINGLEVIEW_TEMPLATE###');
-			$subContent = $this->cObj->substituteMarkerArray($subContent,$this->markerArray,$wrap='###|###',$uppercase=1);
+			$content = $this->cObj->getSubpart($this->templateCode,'###SINGLEVIEW_TEMPLATE###');
+			$content = $this->cObj->substituteMarkerArray($content,$this->markerArray,$wrap='###|###',$uppercase=1);
 			
 			// render map link?
-			if ($mapLink) { 
-				$subContent = $this->cObj->substituteSubpart($subContent, '###SUB_MAP_CONTENT###', $mapLink);
+			if ($mapLink && ExtensionManagementUtility::isLoaded('ke_yac_googlemap')) {
+				$content = $this->cObj->substituteSubpart($content, '###SUB_MAP###', $mapLink);
 			}
 			
 			// overwrite subparts if no content available
-			if (empty($row['teaser'])) $subContent = $this->cObj->substituteSubpart($subContent, '###SUB_TEASERTEXT###', '');
-			if (empty($row['bodytext'])) $subContent = $this->cObj->substituteSubpart($subContent, '###SUB_DESCRIPTION###', '');
-			if (empty($row['infolink'])) $subContent = $this->cObj->substituteSubpart($subContent, '###SUB_INFOLINK###', '');
-			if (empty($row['images']) && !$this->conf['showDefaultImageInSingleview']) $subContent = $this->cObj->substituteSubpart($subContent, '###SUB_IMAGES###', '');
-			if (empty($row['attachments'])) $subContent = $this->cObj->substituteSubpart($subContent, '###SUB_ATTACHMENTS###', '');
-			if (!$row['location'] || !$row['address'] || !$row['zip'] || !$row['city']) $subContent = $this->cObj->substituteSubpart($subContent, '###SUB_MAP###', '');
-			if (!$row['address'] || !$row['zip'] || !$row['city'])  $subContent = $this->cObj->substituteSubpart($subContent, '###SUB_ADDRESS###', '');
-			if (!$GLOBALS['TSFE']->loginUser) $subContent = $this->cObj->substituteSubpart($subContent, '###SUB_ATTENDANCE###', '');
+			if (empty($row['teaser'])) $content = $this->cObj->substituteSubpart($content, '###SUB_TEASERTEXT###', '');
+			if (empty($row['bodytext'])) $content = $this->cObj->substituteSubpart($content, '###SUB_DESCRIPTION###', '');
+			if (empty($row['infolink'])) $content = $this->cObj->substituteSubpart($content, '###SUB_INFOLINK###', '');
+			if (empty($row['images']) && !$this->conf['showDefaultImageInSingleview']) $content = $this->cObj->substituteSubpart($content, '###SUB_IMAGES###', '');
+			if (empty($row['attachments'])) $content = $this->cObj->substituteSubpart($content, '###SUB_ATTACHMENTS###', '');
+			if (!$row['location'] || !$row['address'] || !$row['zip'] || !$row['city']) $content = $this->cObj->substituteSubpart($content, '###SUB_MAP###', '');
+			if (!$row['address'] || !$row['zip'] || !$row['city'])  $content = $this->cObj->substituteSubpart($content, '###SUB_ADDRESS###', '');
+			if (!$GLOBALS['TSFE']->loginUser) $content = $this->cObj->substituteSubpart($content, '###SUB_ATTENDANCE###', '');
 			// special: show link to form only if form is activated in record
-			if (!$row['tx_keseminars_show_form']) $subContent = $this->cObj->substituteSubpart($subContent, '###SUB_LINK_TO_FORM###', '');
+			if (!$row['tx_keseminars_show_form']) $content = $this->cObj->substituteSubpart($content, '###SUB_LINK_TO_FORM###', '');
 
 
 			// generate footer menu
 			$footerMenuContent = $this->generateFooterMenu();
-			$subContent = $this->cObj->substituteSubpart ($subContent, '###SUB_FOOTER_MENU###', $footerMenuContent, $recursive=1);
+			$content = $this->cObj->substituteSubpart ($content, '###SUB_FOOTER_MENU###', $footerMenuContent, $recursive=1);
 
 			// event has attendees?
-			if (!$this->getNumberOfAttendees($row['dateuid']) || !$this->conf['enableFrontendEditing']) {
-				$subContent = $this->cObj->substituteSubpart ($subContent, '###SUB_ATTENDEES###', '');
+			if (!$this->getNumberOfAttendees($id)) {
+				$content = $this->cObj->substituteSubpart ($content, '###SUB_ATTENDEES###', '');
 			}
 
 			// UNIVERSAL KEWORKS BROWSER
-			if (t3lib_extMgm::isLoaded('ke_ukb')) {
-				require_once(t3lib_extMgm::extPath('ke_ukb').'class.ke_ukb.php');
-				$ukb = t3lib_div::makeInstance('ke_ukb');
-				$subContent = $this->cObj->substituteMarker($subContent,'###LABEL_UKB###', $this->pi_getLL('label_ukb'));
-				$subContent = $this->cObj->substituteMarker($subContent,'###UKB_CONTENT###', $ukb->renderContent('tx_keyac_dates', intval($this->piVars['showUid'])));
-				$subContent = $this->cObj->substituteMarker($subContent,'###UKB_FORM###', $ukb->renderForm());
+			// AK 13.04.2010
+			if (ExtensionManagementUtility::isLoaded('ke_ukb')) {
+				require_once(ExtensionManagementUtility::extPath('ke_ukb').'class.ke_ukb.php');
+				$ukb = GeneralUtility::makeInstance('ke_ukb');
+				$content = $this->cObj->substituteMarker($content,'###LABEL_UKB###', $this->pi_getLL('label_ukb'));
+				$content = $this->cObj->substituteMarker($content,'###UKB_CONTENT###', $ukb->renderContent('tx_keyac_dates', intval($this->piVars['showUid'])));
+				$content = $this->cObj->substituteMarker($content,'###UKB_FORM###', $ukb->renderForm());
 			}
-			else $subContent = $this->cObj->substituteSubpart ($subContent, '###SUB_UNIVERSAL_KEWORKS_BROWSER###', '');
-			
-			
-			$content .= $subContent;
+			else $content = $this->cObj->substituteSubpart ($content, '###SUB_UNIVERSAL_KEWORKS_BROWSER###', '');
+
+
 		}
-		
-		
-		// No event not found
+
+		// Event not found
 		if (!$numberOfResults) {
+		    $content = $this->pi_getLL('event_not_found');
 		    $content = $this->cObj->getSubpart($this->templateCode,'###GENERAL_MESSAGE###');
 		    $content = $this->cObj->substituteMarker($content,'###CSSCLASS###','message-fail');
 		    $content = $this->cObj->substituteMarker($content,'###TEXT###',$this->pi_getLL('event_not_found'));
@@ -1795,8 +1651,13 @@ class tx_keyac_pi1 extends tslib_pibase {
  	*/
  	function myEventsView() {
 
-		// get subpart
 		$content = $this->cObj->getSubpart($this->templateCode,'###MYEVENTS###');
+
+		// print message if no user is logged in
+		if (!$GLOBALS['TSFE']->loginUser) {
+			$content = $this->cObj->substituteSubpart ($content, '###MYEVENTS_ROW###', $this->pi_getLL('no_login'));
+			return $content;
+		}
 
 		// singleview pid
 		$singleViewPid = $this->conf['myEvents.']['singleViewPid'];
@@ -1804,74 +1665,68 @@ class tx_keyac_pi1 extends tslib_pibase {
 		// icon
 		$myEventsIcon = $this->cObj->IMAGE($this->conf['myEvents.']['icon.']);
 
-		// user logged in
-		if ($GLOBALS['TSFE']->loginUser) {
-			// today
-			$today = strtotime('today');
+		// today
+		$today = strtotime('today');
 
-			$fields = '*';
-			$table = 'tx_keyac_dates, tx_keyac_dates_attendees_mm';
-			$where = 'tx_keyac_dates.uid=uid_local ';
-			$where .= ' AND enddat >= '.$today.' ';
-			$where .= 'AND uid_foreign="'.intval($GLOBALS['TSFE']->fe_user->user['uid']).'" ';
-			$where .= $this->cObj->enableFields('tx_keyac_dates');
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($fields,$table,$where,$groupBy='',$orderBy='startdat asc',$limit='');
-			$anz = $GLOBALS['TYPO3_DB']->sql_num_rows($res);
-			$rowsContent = '';
-			$i=1;
-			while ($row=$GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+		$fields = '*';
+ 		$table = 'tx_keyac_dates, tx_keyac_dates_attendees_mm';
+ 		$where = 'tx_keyac_dates.uid=uid_local ';
+		$where .= ' AND enddat >= '.$today.' ';
+ 		$where .= 'AND uid_foreign="'.intval($GLOBALS['TSFE']->fe_user->user['uid']).'" ';
+ 		$where .= $this->cObj->enableFields('tx_keyac_dates');
+ 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($fields,$table,$where,$groupBy='',$orderBy='startdat asc',$limit='');
+ 		$anz = $GLOBALS['TYPO3_DB']->sql_num_rows($res);
+ 		$rowsContent = '';
+		$i=1;
+		while ($row=$GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 
-				// get formatstring for strftime from ts
-				$startNoTime = strftime($this->conf['myevents.']['strftimeFormatStringWithoutTime'], $row['startdat']);
-				$endNoTime = strftime($this->conf['myevents.']['strftimeFormatStringWithoutTime'], $row['enddat']);
-				$startWithTime = strftime($this->conf['myevents.']['strftimeFormatStringWithTime'], $row['startdat']);
-				$endWithTime = strftime($this->conf['myevents.']['strftimeFormatStringWithTime'], $row['enddat']);
-				$endTimeOnly = strftime($this->conf['myevents.']['strftimeFormatTime'], $row['enddat']);
-				$startday = strftime('%d.%m.%Y',$row['startdat']);
-				$endday = strftime('%d.%m.%Y',$row['enddat']);
+			// get formatstring for strftime from ts
+			$startNoTime = strftime($this->conf['myevents.']['strftimeFormatStringWithoutTime'], $row['startdat']);
+			$endNoTime = strftime($this->conf['myevents.']['strftimeFormatStringWithoutTime'], $row['enddat']);
+			$startWithTime = strftime($this->conf['myevents.']['strftimeFormatStringWithTime'], $row['startdat']);
+			$endWithTime = strftime($this->conf['myevents.']['strftimeFormatStringWithTime'], $row['enddat']);
+			$endTimeOnly = strftime($this->conf['myevents.']['strftimeFormatTime'], $row['enddat']);
+			$startday = strftime('%d.%m.%Y',$row['startdat']);
+			$endday = strftime('%d.%m.%Y',$row['enddat']);
 
 
-				// do not print time in teaser
-				if (!$row['showtime'] || $this->conf['teaser.']['dontShowTime'] ) {
-					if ($startNoTime == $endNoTime) $timestr = $startNoTime;
-					else $timestr = $startNoTime.' - '.$endNoTime;
-				}
-				// print time information
-				else {
-					if ($startWithTime == $endWithTime) $timestr = $startWithTime;
-					else if ($startday == $endday) $timestr = $startWithTime.' - '.$endTimeOnly;
-					else $timestr = $startWithTime.' - '.$endWithTime;
-				}
-
-				// generate single view url
-				$linkconf['parameter'] = $singleViewPid;
-				$linkconf['additionalParams'] = '&tx_keyac_pi1[showUid]='.$row['uid'];
-				$linkconf['additionalParams'] .= '&tx_keyac_pi1[backPid]='.$GLOBALS['TSFE']->id;
-				$linkconf['useCacheHash'] = true;
-				$singleViewURL = $this->cObj->typoLink_URL($linkconf);
-
-				$tempContent = $this->cObj->getSubpart($this->templateCode,'###MYEVENTS_ROW###');
-				$tempMarker = array(
-					'icon' => $myEventsIcon,
-					'link_start' => '<a href="'.$singleViewURL.'">',
-					'link_end' => '</a>',
-					'title' => $row['title'],
-					'teasertext' => $this->pi_RTEcssText($row['teaser']),
-					'date' => $timestr,
-					'css_class' => $i%2 ? 'odd' : 'even',
-				);
-				$tempContent = $this->cObj->substituteMarkerArray($tempContent,$tempMarker,$wrap='###|###',$uppercase=1);
-
-				$rowsContent .= $tempContent;
-				$i++;
+			// do not print time in teaser
+			if (!$row['showtime'] || $this->conf['teaser.']['dontShowTime'] ) {
+				if ($startNoTime == $endNoTime) $timestr = $startNoTime;
+				else $timestr = $startNoTime.' - '.$endNoTime;
+			}
+			// print time information
+			else {
+				if ($startWithTime == $endWithTime) $timestr = $startWithTime;
+				else if ($startday == $endday) $timestr = $startWithTime.' - '.$endTimeOnly;
+				else $timestr = $startWithTime.' - '.$endWithTime;
 			}
 
-			if ($anz) $content = $this->cObj->substituteSubpart ($content, '###MYEVENTS_ROW###', $rowsContent, $recursive=1);
-			else $content = $this->cObj->substituteSubpart ($content, '###MYEVENTS_ROW###', $this->pi_getLL('noResults'), $recursive=1);
-		} else {
-			// no login
-			$content = $this->cObj->substituteSubpart ($content, '###MYEVENTS_ROW###', $this->pi_getLL('no_login'));
-		}
+			// generate single view url
+			$linkconf['parameter'] = $singleViewPid;
+ 			$linkconf['additionalParams'] = '&tx_keyac_pi1[showUid]='.$row['uid'];
+ 			$linkconf['additionalParams'] .= '&tx_keyac_pi1[backPid]='.$GLOBALS['TSFE']->id;
+ 			$linkconf['useCacheHash'] = true;
+ 			$singleViewURL = $this->cObj->typoLink_URL($linkconf);
+
+			$tempContent = $this->cObj->getSubpart($this->templateCode,'###MYEVENTS_ROW###');
+			$tempMarker = array(
+				'icon' => $myEventsIcon,
+				'link_start' => '<a href="'.$singleViewURL.'">',
+				'link_end' => '</a>',
+				'title' => $row['title'],
+				'teasertext' => $this->pi_RTEcssText($row['teaser']),
+				'date' => $timestr,
+				'css_class' => $i%2 ? 'odd' : 'even',
+			);
+			$tempContent = $this->cObj->substituteMarkerArray($tempContent,$tempMarker,$wrap='###|###',$uppercase=1);
+
+			$rowsContent .= $tempContent;
+			$i++;
+ 		}
+
+		if ($anz) $content = $this->cObj->substituteSubpart ($content, '###MYEVENTS_ROW###', $rowsContent, $recursive=1);
+		else $content = $this->cObj->substituteSubpart ($content, '###MYEVENTS_ROW###', $this->pi_getLL('noResults'), $recursive=1);
 		
 		$content = $this->cObj->substituteMarker($content,'###HEADER###',$this->pi_getLL('myevents_header'));
 
@@ -1891,7 +1746,7 @@ class tx_keyac_pi1 extends tslib_pibase {
 			// IMAGES
 			case 'images':
 				// explode images string
-				$images = t3lib_div::trimExplode (',', $data, $onlyNonEmptyValues=1);
+				$images = GeneralUtility::trimExplode (',', $data, $onlyNonEmptyValues=1);
 				// run through the array and render image as set in ts
 				if (sizeof($images)) {
 					foreach ($images as $img) {
@@ -1921,7 +1776,8 @@ class tx_keyac_pi1 extends tslib_pibase {
 				foreach ($attachments as $att) {
 					unset($linkconf);
 					// generate link
-					$linkconf['parameter'] = 'uploads/tx_keyac/'.$att.' _blank';
+					$linkconf['parameter'] = 'uploads/tx_keyac/'.$att;
+					$linkconf['target'] = '_blank';
 
 					// generate attachment icon
 					$filetype = strtolower(substr(strrchr($att, '.'), 1));
@@ -1971,7 +1827,7 @@ class tx_keyac_pi1 extends tslib_pibase {
 			case 'attendees':
 
 				unset($imageConf);
-				$imageConf['file'] = t3lib_extMgm::siteRelPath($this->extKey).'res/images/attendee.gif';
+				$imageConf['file'] = ExtensionManagementUtility::siteRelPath($this->extKey).'res/images/attendee.gif';
 				$icon=$this->cObj->IMAGE($imageConf);
 
 				$fields = '*';
@@ -2073,7 +1929,7 @@ class tx_keyac_pi1 extends tslib_pibase {
 	* show teaser for latest events
 	*/
 	function teaserView() {
-		$lcObj=t3lib_div::makeInstance('tslib_cObj');
+		$lcObj = GeneralUtility::makeInstance('tslib_cObj');
 
 		// get pid of singleView and no. of entries in teaser; either from flexforms or from ts
 		$singlePid = $this->conf['singlePid'];
@@ -2135,11 +1991,13 @@ class tx_keyac_pi1 extends tslib_pibase {
 				// do not print time in teaser
 				if (!$row['showtime'] || $this->conf['teaser.']['dontShowTime'] ) {
 					if ($startNoTime == $endNoTime) $timestr = $startNoTime;
+					else if ($row['enddat'] == 0 || empty($row['enddat'])) $timestr = $startNoTime;
 					else $timestr = $startNoTime.' - '.$endNoTime;
 				}
 				// print time information
 				else {
 					if ($startWithTime == $endWithTime) $timestr = $startWithTime;
+					else if ($row['enddat'] == 0 || empty($row['enddat'])) $timestr = $startWithTime;
 					else if ($startday == $endday) $timestr = $startWithTime.' - '.$endTimeOnly;
 					else $timestr = $startWithTime.' - '.$endWithTime;
 				}
@@ -2426,7 +2284,7 @@ class tx_keyac_pi1 extends tslib_pibase {
 			'action' => $action,
 			'hiddenfields' => $hiddenFields,
 			'invitation_text_label' => $this->pi_getLL('invitation_text_label'),
-			'invitation_text_input' => '<textarea name="tx_keyac_pi1[invitation_text]">'.t3lib_div::removeXSS($this->piVars['invitation_text']).'</textarea>',
+			'invitation_text_input' => '<textarea name="tx_keyac_pi1[invitation_text]">'.  GeneralUtility::removeXSS($this->piVars['invitation_text']).'</textarea>',
 			'input_invitation_mode' => $this->renderFormField('invitation_mode'),
 
 		);
@@ -2464,7 +2322,7 @@ class tx_keyac_pi1 extends tslib_pibase {
 				$markerArray = array(
 					'salutation' => $this->pi_getLL($salutationText),
 					'invited_user_name' => $invitedUser['name'],
-					'event_link' => t3lib_div::getIndpEnv('TYPO3_REQUEST_HOST').$this->getSingleviewLink(intval($this->piVars['showUid'])),
+					'event_link' => GeneralUtility::getIndpEnv('TYPO3_REQUEST_HOST').$this->getSingleviewLink(intval($this->piVars['showUid'])),
 					'mail_footer' => $this->cObj->getSubpart($this->templateCode,'###GENERAL_MAIL_FOOTER###'),
 					'event_title' => $eventRow['title'],
 					'label_title' => $this->pi_getLL('label_title'),
@@ -2490,7 +2348,7 @@ class tx_keyac_pi1 extends tslib_pibase {
 				$mailContent = $this->cObj->substituteMarkerArray($mailContent,$markerArray,$wrap='###|###',$uppercase=1);
 
 				// show invitation text?
-				$invText  = trim(t3lib_div::removeXSS($this->piVars['invitation_text']));
+				$invText  = trim(GeneralUtility::removeXSS($this->piVars['invitation_text']));
 				if (!empty($invText)) {
 					$mailContent = $this->cObj->substituteMarker($mailContent,'###INVITATION_TEXT###',nl2br($this->piVars['invitation_text']));
 				} else {
@@ -2540,48 +2398,19 @@ class tx_keyac_pi1 extends tslib_pibase {
 		$sendAsHTML = 1;
 		
 		// Only ASCII is allowed in the header
-		$subject = html_entity_decode(t3lib_div::deHSCentities($subject), ENT_QUOTES, $GLOBALS['TSFE']->renderCharset);
-		$subject = t3lib_div::encodeHeader($subject, 'base64', $GLOBALS['TSFE']->renderCharset);
+		$subject = html_entity_decode(GeneralUtility::deHSCentities($subject), ENT_QUOTES, $GLOBALS['TSFE']->renderCharset);
+		$subject = GeneralUtility::encodeHeader($subject, 'base64', $GLOBALS['TSFE']->renderCharset);
 
 		// create the plain message body
 		$message = html_entity_decode(strip_tags($html_body), ENT_QUOTES, $GLOBALS['TSFE']->renderCharset);
 
-		// use new mail api if T3 v >= 4.5
-		if (t3lib_utility_VersionNumber::convertVersionNumberToInteger(TYPO3_version) >= 4005000) {
-			$Typo3_htmlmail = t3lib_div::makeInstance('t3lib_mail_Message');
-			$Typo3_htmlmail->setFrom(array($from_email => $from_name));
-			$Typo3_htmlmail->setTo(explode(',', $toEMail));
-			$Typo3_htmlmail->setSubject($subject);
-			if ($sendAsHTML) $Typo3_htmlmail->setBody($html_body, 'text/html');
-			if ($message)	$Typo3_htmlmail->addPart($message, 'text/plain');
-			$Typo3_htmlmail->send();
-		} else {
-			// use old mail api if T3 v < 4.5
-			// inspired by code from tt_products, thanks
-			$Typo3_htmlmail = t3lib_div::makeInstance('t3lib_htmlmail');
-			$Typo3_htmlmail->start();
-			$Typo3_htmlmail->subject = $subject;
-			$Typo3_htmlmail->from_email = $from_email;
-			$Typo3_htmlmail->from_name = $from_name;
-			$Typo3_htmlmail->replyto_email = $Typo3_htmlmail->from_email;
-			$Typo3_htmlmail->replyto_name = $Typo3_htmlmail->from_name;
-			$Typo3_htmlmail->organisation = '';
-			if ($sendAsHTML)  {
-				$Typo3_htmlmail->theParts['html']['content'] = $html_body;
-				$Typo3_htmlmail->theParts['html']['path'] = t3lib_div::getIndpEnv('TYPO3_REQUEST_HOST') . '/';
-				$Typo3_htmlmail->extractMediaLinks();
-				$Typo3_htmlmail->extractHyperLinks();
-				$Typo3_htmlmail->fetchHTMLMedia();
-				$Typo3_htmlmail->substMediaNamesInHTML(0);	// 0 = relative
-				$Typo3_htmlmail->substHREFsInHTML();
-				$Typo3_htmlmail->setHTML($Typo3_htmlmail->encodeMsg($Typo3_htmlmail->theParts['html']['content']));
-				if ($message)	$Typo3_htmlmail->addPlain($message);
-			} else $Typo3_htmlmail->addPlain($message);
-			$Typo3_htmlmail->setHeaders();
-			$Typo3_htmlmail->setContent();
-			$Typo3_htmlmail->setRecipient(explode(',', $toEMail));
-			$Typo3_htmlmail->sendTheMail();
-		}
+		$Typo3_htmlmail = GeneralUtility::makeInstance('TYPO3\CMS\Core\Mail\MailMessage');
+		$Typo3_htmlmail->setFrom(array($from_email => $from_name));
+		$Typo3_htmlmail->setTo(explode(',', $toEMail));
+		$Typo3_htmlmail->setSubject($subject);
+		if ($sendAsHTML) $Typo3_htmlmail->setBody($html_body, 'text/html');
+		if ($message)	$Typo3_htmlmail->addPart($message, 'text/plain');
+		$Typo3_htmlmail->send();
 	}
 
 
@@ -2641,7 +2470,7 @@ class tx_keyac_pi1 extends tslib_pibase {
 
 			// generate reason content
 			$reasonContent = $this->cObj->getSubpart($this->templateCode,'###SUB_DELETE_REASON###');
-			$reasonContent = $this->cObj->substituteMarker($reasonContent,'###TEXT###',nl2br(t3lib_div::removeXSS($this->piVars['delete_reason'])));
+			$reasonContent = $this->cObj->substituteMarker($reasonContent,'###TEXT###',nl2br(GeneralUtiltiy::removeXSS($this->piVars['delete_reason'])));
 
 			// run through attendees
 			if (is_array($attendees) && count($attendees)) {
@@ -2683,7 +2512,7 @@ class tx_keyac_pi1 extends tslib_pibase {
 						$mailContent = $this->cObj->substituteMarkerArray($mailContent,$markerArray,$wrap='###|###',$uppercase=1);
 
 						// fill reason subpart
-						$reason = t3lib_div::removeXSS($this->piVars['delete_reason']);
+						$reason = GeneralUtility::removeXSS($this->piVars['delete_reason']);
 						if (!empty($reason)) {
 							$mailContent = $this->cObj->substituteSubpart ($mailContent, '###SUB_DELETE_REASON###', $reasonContent, $recursive=1);
 							$mailContent = $this->cObj->substituteMarker($mailContent,'###CANCELLATION_TEXT_HEADLINE###', $this->pi_getLL('cancellation_text_headline'));
@@ -2717,7 +2546,7 @@ class tx_keyac_pi1 extends tslib_pibase {
 					'attendee_name' => $this->getUserNameFromUserId($eventRecord['owner']),
 					'user_name' => $this->getUserNameFromUserId($GLOBALS['TSFE']->fe_user->user['uid']),
 					'event_title' => $eventRecord['title'],
-					'event_link' => t3lib_div::getIndpEnv('TYPO3_REQUEST_HOST').$this->getSingleviewLink(intval($this->piVars['showUid'])),
+					'event_link' => GeneralUtility::getIndpEnv('TYPO3_REQUEST_HOST').$this->getSingleviewLink(intval($this->piVars['showUid'])),
 					'mail_footer' => $this->cObj->getSubpart($this->templateCode,'###GENERAL_MAIL_FOOTER###'),
 					'label_title' => $this->pi_getLL('label_title'),
 					'label_startdat' => $this->pi_getLL('label_startdat'),
@@ -2738,7 +2567,7 @@ class tx_keyac_pi1 extends tslib_pibase {
 				$mailContent = $this->cObj->substituteMarkerArray($mailContent,$markerArray,$wrap='###|###',$uppercase=1);
 
 				// fill reason subpart
-				$reason = t3lib_div::removeXSS($this->piVars['delete_reason']);
+				$reason = GeneralUtility::removeXSS($this->piVars['delete_reason']);
 				if (!empty($reason)) {
 					$mailContent = $this->cObj->substituteSubpart ($mailContent, '###SUB_DELETE_REASON###', $reasonContent, $recursive=1);
 					$mailContent = $this->cObj->substituteMarker($mailContent,'###CANCELLATION_TEXT_HEADLINE###', $this->pi_getLL('cancellation_text_headline'));
@@ -2803,7 +2632,7 @@ class tx_keyac_pi1 extends tslib_pibase {
 							'salutation' => $this->pi_getLL($salutationText),
 							'attendee_name' => $attendee['name'],
 							'event_title' => $recordData['title'],
-							'event_link' => t3lib_div::getIndpEnv('TYPO3_REQUEST_HOST').$this->getSingleviewLink(intval($this->piVars['showUid'])),
+							'event_link' => GeneralUtility::getIndpEnv('TYPO3_REQUEST_HOST').$this->getSingleviewLink(intval($this->piVars['showUid'])),
 							'mail_footer' => $this->cObj->getSubpart($this->templateCode,'###GENERAL_MAIL_FOOTER###'),
 							'label_title' => $this->pi_getLL('label_title'),
 							'label_startdat' => $this->pi_getLL('label_startdat'),
@@ -2847,7 +2676,7 @@ class tx_keyac_pi1 extends tslib_pibase {
 						'salutation' => $this->pi_getLL($salutationText),
 						'attendee_name' => $ownerRecord['name'],
 						'event_title' => $recordData['title'],
-						'event_link' => t3lib_div::getIndpEnv('TYPO3_REQUEST_HOST').$this->getSingleviewLink(intval($this->piVars['showUid'])),
+						'event_link' => GeneralUtility::getIndpEnv('TYPO3_REQUEST_HOST').$this->getSingleviewLink(intval($this->piVars['showUid'])),
 						'mail_footer' => $this->cObj->getSubpart($this->templateCode,'###GENERAL_MAIL_FOOTER###'),
 						'label_title' => $this->pi_getLL('label_title'),
 						'label_startdat' => $this->pi_getLL('label_startdat'),
@@ -2910,7 +2739,7 @@ class tx_keyac_pi1 extends tslib_pibase {
 					'salutation' => $this->pi_getLL($salutationText),
 					'attendee_name' => $attendee['name'],
 					'event_title' => $recordData['title'],
-					'event_link' => t3lib_div::getIndpEnv('TYPO3_REQUEST_HOST').$this->getSingleviewLink(intval($this->piVars['showUid'])),
+					'event_link' => GeneralUtility::getIndpEnv('TYPO3_REQUEST_HOST').$this->getSingleviewLink(intval($this->piVars['showUid'])),
 					'mail_footer' => $this->cObj->getSubpart($this->templateCode,'###GENERAL_MAIL_FOOTER###'),
 					'label_title' => $this->pi_getLL('label_title'),
 					'label_startdat' => $this->pi_getLL('label_startdat'),
@@ -2955,7 +2784,7 @@ class tx_keyac_pi1 extends tslib_pibase {
 				'salutation' => $this->pi_getLL($salutationText),
 				'attendee_name' => $ownerRecord['name'],
 				'event_title' => $recordData['title'],
-				'event_link' => t3lib_div::getIndpEnv('TYPO3_REQUEST_HOST').$this->getSingleviewLink(intval($this->piVars['showUid'])),
+				'event_link' => GeneralUtility::getIndpEnv('TYPO3_REQUEST_HOST').$this->getSingleviewLink(intval($this->piVars['showUid'])),
 				'mail_footer' => $this->cObj->getSubpart($this->templateCode,'###GENERAL_MAIL_FOOTER###'),
 				'label_title' => $this->pi_getLL('label_title'),
 				'label_startdat' => $this->pi_getLL('label_startdat'),
@@ -3520,16 +3349,16 @@ class tx_keyac_pi1 extends tslib_pibase {
 			'pid' => $this->pids,
 			'startdat' => strtotime($this->piVars['startdat']),
 			'enddat' => strtotime($this->piVars['enddat']),
-			'title' => t3lib_div::removeXSS($this->piVars['title']),
+			'title' => GeneralUtility::removeXSS($this->piVars['title']),
 			'bodytext' => $this->piVars['bodytext'],
 			'teaser' => $this->piVars['teaser'],
 			'showtime' => $this->piVars['showtime'],
 			'private' => $this->piVars['private'],
-			'location' => t3lib_div::removeXSS($this->piVars['location']),
+			'location' => GeneralUtility::removeXSS($this->piVars['location']),
 			'cat' => sizeof($this->piVars['cat']),
-			'address' => t3lib_div::removeXSS($this->piVars['address']),
-			'zip' => t3lib_div::removeXSS($this->piVars['zip']),
-			'city' => t3lib_div::removeXSS($this->piVars['city']),
+			'address' => GeneralUtility::removeXSS($this->piVars['address']),
+			'zip' => GeneralUtility::removeXSS($this->piVars['zip']),
+			'city' => GeneralUtility::removeXSS($this->piVars['city']),
 			'tstamp' => time(),
 			'crdate' => time(),
 			'cruser_id' => intval($GLOBALS['TSFE']->fe_user->user['uid']),
@@ -3601,18 +3430,18 @@ class tx_keyac_pi1 extends tslib_pibase {
 			// update existing entry
 			$where = 'uid="'.intval($editUid).'" ';
 			$fields_values = array(
-				'title' => t3lib_div::removeXSS($this->piVars['title']),
+				'title' => GeneralUtility::removeXSS($this->piVars['title']),
 				'startdat' => strtotime($this->piVars['startdat']),
 				'enddat' => strtotime($this->piVars['enddat']),
 				'bodytext' => $this->piVars['bodytext'],
 				'teaser' => $this->piVars['teaser'],
 				'showtime' => $this->piVars['showtime'],
 				'private' => $this->piVars['private'],
-				'location' => t3lib_div::removeXSS($this->piVars['location']),
+				'location' => GeneralUtility::removeXSS($this->piVars['location']),
 				'cat' => sizeof($this->piVars['cat']),
-				'address' => t3lib_div::removeXSS($this->piVars['address']),
-				'zip' => t3lib_div::removeXSS($this->piVars['zip']),
-				'city' => t3lib_div::removeXSS($this->piVars['city']),
+				'address' => GeneralUtility::removeXSS($this->piVars['address']),
+				'zip' => GeneralUtility::removeXSS($this->piVars['zip']),
+				'city' => GeneralUtility::removeXSS($this->piVars['city']),
 				'tstamp' => time(),
 				'attachments' => $this->piVars['attachments'],
 			);
@@ -3699,7 +3528,7 @@ class tx_keyac_pi1 extends tslib_pibase {
 							'last_name' => $this->getUserNameFromUserId($attendee['uid']),
 							'editor_name' => $this->getUserNameFromUserId($GLOBALS['TSFE']->fe_user->user['uid']),
 							'event_title' => $recordData['title'],
-							'event_link' => t3lib_div::getIndpEnv('TYPO3_REQUEST_HOST').$this->getSingleviewLink($editUid),
+							'event_link' => GeneralUtility::getIndpEnv('TYPO3_REQUEST_HOST').$this->getSingleviewLink($editUid),
 							'mail_footer' => $this->cObj->getSubpart($this->templateCode,'###GENERAL_MAIL_FOOTER###'),
 							'edit_notification_subject' => sprintf($this->pi_getLL('edit_notification_subject'), $this->getUserNameFromUserId($GLOBALS['TSFE']->fe_user->user['uid']), $recordData['title']),
 							'use_following_link' => $this->pi_getLL('use_following_link'),
@@ -3736,7 +3565,7 @@ class tx_keyac_pi1 extends tslib_pibase {
 					'last_name' => $this->getUserNameFromUserId($ownerData['uid']),
 					'editor_name' => $this->getUserNameFromUserId($GLOBALS['TSFE']->fe_user->user['uid']),
 					'event_title' => $recordData['title'],
-					'event_link' => t3lib_div::getIndpEnv('TYPO3_REQUEST_HOST').$this->getSingleviewLink($editUid),
+					'event_link' => GeneralUtility::getIndpEnv('TYPO3_REQUEST_HOST').$this->getSingleviewLink($editUid),
 					'mail_footer' => $this->cObj->getSubpart($this->templateCode,'###GENERAL_MAIL_FOOTER###'),
 					'edit_notification_subject' => sprintf($this->pi_getLL('edit_notification_subject'), $this->getUserNameFromUserId($GLOBALS['TSFE']->fe_user->user['uid']), $recordData['title']),
 					'use_following_link' => $this->pi_getLL('use_following_link'),
@@ -3973,7 +3802,8 @@ class tx_keyac_pi1 extends tslib_pibase {
 		// set deault values
 		$this->conf['maxFileSize'] = $this->conf['maxFileSize'] ? $this->conf['maxFileSize'] : 20000000;
 		// get the destination filename
-		$filefuncs = new t3lib_basicFilefunctions();
+		$filefuncs = GeneralUtility::makeInstance('\TYPO3\CMS\Core\Utility\File\BasicFileUtility');
+		
 		$uploadfile = $filefuncs->getUniqueName($filefuncs->cleanFileName($_FILES[$attachmentName]['name']), $this->uploadFolder);
 		// Filesize OK?
 		if($_FILES[$attachmentName]['size'] > $this->conf['maxFileSize']) {
@@ -4088,12 +3918,11 @@ class tx_keyac_pi1 extends tslib_pibase {
 	 */
 	function checkEditAccess() {
 		$access = false;
-		if (!$GLOBALS['TSFE']->loginUser) return $access;
-		$currentGroups = t3lib_div::trimExplode(',',  $GLOBALS['TSFE']->fe_user->user['usergroup']);
-		$allowedGroups = t3lib_div::trimExplode(',', $this->conf['userGroups']);
+		$currentGroups = GeneralUtility::trimExplode(',',  $GLOBALS['TSFE']->fe_user->user['usergroup']);
+		$allowedGroups = GeneralUtility::trimExplode(',', $this->conf['userGroups']);
 		if (is_array($currentGroups) && count($currentGroups)) {
 			foreach($currentGroups as $current) {
-				if (t3lib_div::inArray($allowedGroups, $current)) $access = true;
+				if (GeneralUtility::inArray($allowedGroups, $current)) $access = true;
 			}
 		}
 		return $access;
